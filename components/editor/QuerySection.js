@@ -65,8 +65,8 @@ const QuerySection = ({ initialValue, editorHeight, executeQuery, minHeight = 32
   }, [queryValue, isDarkMode, setEditorView, executeQuery]);
 
   const handleCopyCode = () => {
-    if (editorView.current) {
-      const code = editorView.current.state.doc.toString();
+    if (editorViewRef.current) {
+      const code = editorViewRef.current.state.doc.toString();
       navigator.clipboard.writeText(code).then(() => {
         showToast('코드 복사 성공!', 'success');
       }).catch((err) => {

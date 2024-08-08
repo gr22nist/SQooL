@@ -1,4 +1,4 @@
-// File: components/start/Content.js
+// components/start/Content.js
 
 import React, { useEffect, useState } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
