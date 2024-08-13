@@ -26,7 +26,7 @@ const NavBar = ({ isFullWidth }) => {
         ? 'bg-slate-900 border-b-2 border-slate-800 opacity-90'
         : 'bg-slate-50 border-b-2 border-slate-200 opacity-90'
     ) : 'bg-transparent'}`;
-  const navWrap = `${isFullWidth ? 'w-full' : 'max-w-content-full'} mx-auto flex justify-between items-center transition-width duration-500`;
+  const navWrap = `${isFullWidth ? 'w-full px-6' : 'max-w-content-full'} mx-auto flex justify-between items-center transition-width duration-500`;
   const navList = `flex justify-center items-center gap-12`;
   const listItem = `${isDarkMode ? 'text-slate-50 hover:text-primaryDark' : 'text-slate-900 hover:text-primaryLight'} duration-300`;
 
@@ -48,7 +48,7 @@ const NavBar = ({ isFullWidth }) => {
               <Link href="/">홈</Link>
             </li>
             <li className={listItem}>
-              <Link href="/start">시작하기</Link>
+              <Link href="/start">학습하기</Link>
             </li>
             <li className={listItem}>
               <Link href="/editor">에디터</Link>

@@ -10,6 +10,7 @@
   --background-rgb: 255, 255, 255;
   --drag-background-color: #cccccc;
   --drag-text-color: #000000;
+  --navbar-height: 59px; /* 네비게이션 바 높이를 전역 변수로 설정 */
   
 }
 
@@ -24,11 +25,15 @@ body {
   color: rgb(var(--foreground-rgb));
   background-color: rgb(var(--background-rgb));
   font-family: 'NanumSquareNeo-Variable', sans-serif;
+    scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE, Edge */
 }
+
 
 /* 웹킷 기반 브라우저에서 스크롤바 스타일 설정 */
 ::-webkit-scrollbar {
-  width: 8px;  /* 스크롤바 너비 */
+  width: 0;
+  height: 0;  /* 스크롤바 너비 */
 }
 
 ::-webkit-scrollbar-thumb {
@@ -43,6 +48,6 @@ body {
 
 /* Firefox에서 스크롤바 스타일 설정 */
 html {
-  scrollbar-width: thin;          /* 스크롤바 너비 설정 (auto, thin, none) */
+  scrollbar-width: thin; /* 스크롤바 너비 설정 (auto, thin, none) */
   scrollbar-color: #cccccc #f8f8f8;  /* 스크롤바 색상 (스크롤바, 트랙) */
 }

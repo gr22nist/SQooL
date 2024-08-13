@@ -2,7 +2,8 @@
 /** @type {import('tailwindcss').Config} */
 import * as colors from './tailwind/colors.js';
 import * as fonts from './tailwind/fonts.js';
-import flowbite from 'flowbite/plugin'; 
+import flowbite from 'flowbite/plugin';
+import typography from '@tailwindcss/typography';
 
 export const content = [
   "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -28,12 +29,16 @@ export const theme = {
     },
     width: {
       'card-pc': '288px',
+      'article': '588px',
     },
     maxWidth: {
       'content-full': '1200px',
     },
     minWidth: {
       'content-half': '640px',
+    },
+    spacing: {
+      'nav': '59px',
     },
     lineHeight: {
       'h1': '72px',
@@ -57,4 +62,6 @@ export const theme = {
   darkMode: 'class', // 다크모드 활성화
 };
 
-export const plugins = [flowbite]; 
+export const plugins = [
+  typography, flowbite
+];

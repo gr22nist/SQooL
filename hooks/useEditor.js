@@ -7,6 +7,12 @@ import { createSqoolTheme } from '../components/editor/Styles';
 import { sqliteCompletion } from '../components/editor/SqliteKeywords';
 import { placeholder } from '@codemirror/view';
 
+/**
+ * useEditor 훅
+ * - CodeMirror 에디터를 설정하고 초기화합니다.
+ * - 다크 모드 및 SQL 자동완성 기능을 설정합니다.
+ */
+
 const useEditor = (initialValue, isDarkMode, onChange) => {
   const editorElement = useRef(null);
   const editorView = useRef(null);

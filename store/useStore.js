@@ -1,12 +1,15 @@
-// src/store/useStore.js
+// store/useStore.js
+
 import { create } from 'zustand';
 
 const useStore = create((set) => ({
-  isDarkMode: false,
-  isFullWidth: false,
-  query: '',
-  setQuery: (newQuery) => set(() => ({ query: newQuery })),
+  isDarkMode: false, // 다크 모드 상태
+  isFullWidth: false, // 전체 너비 상태
+  query: '', // SQL 쿼리 상태
+  toastMessage: '', // 토스트 메시지 상태
+  toastType: 'success', // 토스트 타입 상태
 
+  // 다크 모드 토글 함수
   toggleDarkMode: () => set((state) => {
     const newMode = !state.isDarkMode;
     if (newMode) {
@@ -19,6 +22,7 @@ const useStore = create((set) => ({
     return { isDarkMode: newMode };
   }),
 
+  // 다크 모드 설정 함수
   setDarkMode: (mode) => set(() => {
     if (mode) {
       document.documentElement.classList.add('dark');
@@ -30,41 +34,36 @@ const useStore = create((set) => ({
     return { isDarkMode: mode };
   }),
 
+  // 전체 너비 토글 함수
   toggleFullWidth: () => set((state) => ({
     isFullWidth: !state.isFullWidth
   })),
 
+  // 전체 너비 설정 함수
   setFullWidth: (isFull) => set(() => ({
     isFullWidth: isFull
   })),
 
-  toastMessage: '',
-  toastType: 'success',
+  // 전체 너비 리셋 함수
+  resetFullWidth: () => set(() => ({
+    isFullWidth: false
+  })),
 
-  showToast: (message, type = 'success') => set(() => ({ toastMessage: message, toastType: type })),
-  hideToast: () => set(() => ({ toastMessage: '' })),
+  // 쿼리 상태 설정 함수
+  setQuery: (newQuery) => set(() => ({
+    query: newQuery
+  })),
 
-  resetDatabase: async () => {
-    const apiResetUrl = process.env.NEXT_PUBLIC_API_RESET_URL;
-    try {
-      const response = await fetch(apiResetUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8'
-        },
-      });
+  // 토스트 메시지 표시 함수
+  showToast: (message, type = 'success') => set(() => ({
+    toastMessage: message,
+    toastType: type
+  })),
 
-      if (!response.ok) {
-        throw new Error('Database reset failed');
-      }
-
-      console.log('Database reset successfully');
-      return true;
-    } catch (error) {
-      console.error('Error resetting database:', error);
-      return false;
-    }
-  },
+  // 토스트 메시지 숨김 함수
+  hideToast: () => set(() => ({
+    toastMessage: ''
+  })),
 }));
 
 export default useStore;

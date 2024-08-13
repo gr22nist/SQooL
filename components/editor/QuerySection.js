@@ -1,25 +1,73 @@
-import React, { useEffect, useRef } from 'react';
-import useEditor from '../../hooks/useEditor';
-import { CodeCopy, CodeReset } from '../IconSet';
-import useDarkMode from '../../hooks/useDarkMode';
+// components/editor/QuerySection.js
+import React, { useRef, useEffect, useState } from "react";
+import useDarkMode from "../../hooks/useDarkMode";
 import useStore from '../../store/useStore';
+import { EditorView, basicSetup } from "codemirror";
+import { sql } from "@codemirror/lang-sql";
+import { autocompletion } from "@codemirror/autocomplete";
+import { createSqoolTheme } from "./Styles";
+import { CodeCopy, DBReset } from "../IconSet";
+import { sqliteCompletion } from "./sqliteKeywords";
+import { keymap } from "@codemirror/view";
+import { defaultKeymap } from "@codemirror/commands";
+import { placeholder } from "@codemirror/view";
 
-const QuerySection = ({ initialValue, editorHeight, executeQuery, minHeight, setEditorView }) => {
+/**
+ * QuerySection 컴포넌트
+ * - SQL 쿼리 작성, 실행, 데이터베이스 초기화 기능을 담당합니다.
+ * - 부모 컴포넌트에서 전달된 상태와 함수를 사용하여 상호작용합니다.
+ */
+const QuerySection = ({ initialValue, editorHeight, executeQuery, minHeight = 320, setEditorView, resetDatabase }) => {
+  const editorElement = useRef(null);
+  const editorView = useRef(null);
   const { isDarkMode } = useDarkMode();
-  const { showToast, query, setQuery, resetDatabase } = useStore();
-  const editorElement = useEditor(initialValue, isDarkMode, setQuery);
-  const editorViewRef = useRef(null);
+  const { showToast, setQuery } = useStore();
+  const [queryValue, setQueryValue] = useState(initialValue);
 
   useEffect(() => {
-    if (editorElement.current) {
-      setEditorView(editorElement.current);
-      editorViewRef.current = editorElement.current.view; // 올바르게 editorViewRef를 설정
-    }
-  }, [editorElement, setEditorView]);
+    const initializeEditor = () => {
+      if (editorElement.current) {
+        if (editorView.current) {
+          editorView.current.destroy();
+        }
+        editorView.current = new EditorView({
+          extensions: [
+            basicSetup,
+            sql(),
+            createSqoolTheme(isDarkMode),
+            autocompletion({ override: [sqliteCompletion] }),
+            keymap.of([
+              ...defaultKeymap,
+              {
+                key: "Ctrl-Enter",
+                run: () => {
+                  setQueryValue(editorView.current.state.doc.toString());
+                  executeQuery();
+                  return true;
+                },
+              },
+            ]),
+            placeholder("쿼리문을 입력해주세요. 예시: SELECT * FROM Artist;"),
+          ],
+          parent: editorElement.current,
+          doc: queryValue,
+        });
+        setEditorView(editorView.current);
+      }
+    };
+
+    initializeEditor();
+
+    return () => {
+      if (editorView.current) {
+        editorView.current.destroy();
+      }
+    };
+  }, [queryValue, isDarkMode, setEditorView, executeQuery]);
 
   const handleCopyCode = () => {
-    if (editorViewRef.current) {
-      const code = editorViewRef.current.state.doc.toString();
+    if (editorView.current) {
+      const code = editorView.current.state.doc.toString();
       navigator.clipboard.writeText(code).then(() => {
         showToast('코드 복사 성공!', 'success');
       }).catch((err) => {
@@ -31,41 +79,30 @@ const QuerySection = ({ initialValue, editorHeight, executeQuery, minHeight, set
     }
   };
 
-  const handleResetCode = async () => {
-    const success = await resetDatabase();
-    if (success) {
-      setQuery(initialValue);
-      showToast('데이터베이스가 초기화되었습니다.', 'success');
-      console.log('Database reset to initial state');
-    } else {
-      showToast('데이터베이스 초기화에 실패했습니다.', 'error');
-    }
-  };
-
-  const queryWrap = `w-full flex flex-col rounded-lg border-1 ${isDarkMode ? "border-slate-800" : "border-slate-200"}`;
-  const queryHead = `w-full px-4 py-3 flex justify-between items-center font-bold rounded-tl-lg rounded-tr-lg ${isDarkMode ? "bg-primaryDark text-slate-50" : "bg-primaryLight text-slate-600"} bg-opacity-10`;
-  const editorBtn = `px-2 py-1 rounded-lg flex justify-center items-center gap-1 font-bold ${isDarkMode ? "bg-slate-900 text-slate-400" : "bg-slate-50 text-slate-500"} hover:opacity-70 duration-300`;
+  const queryWrap = `w-full flex flex-col rounded-lg border ${isDarkMode ? "border-slate-800" : "border-slate-200"}`;
+  const queryHead = `w-full p-4 flex justify-between items-center font-bold rounded-tl-lg rounded-tr-lg ${isDarkMode ? "bg-primaryDark text-slate-50" : "bg-primaryLight text-slate-600"} bg-opacity-10`;
+  const editorBtn = `px-3 py-2 rounded-lg flex justify-center items-center gap-2 font-bold ${isDarkMode ? "bg-slate-900 text-slate-400" : "bg-slate-50 text-slate-500"} hover:opacity-80 transition-opacity duration-300`;
   const editorIcon = `${isDarkMode ? "fill-primaryDark" : "fill-primaryLight"}`;
-  const queryBtn = `w-full py-4 rounded-bl-lg rounded-br-lg ${isDarkMode ? "bg-primaryDark text-slate-900 hover:bg-secondaryDark" : "bg-primaryLight text-slate-50 hover:bg-secondaryLight"} font-bold duration-300`;
+  const queryBtn = `w-full py-3 mt-2 rounded-lg ${isDarkMode ? "bg-primaryDark text-slate-900 hover:bg-secondaryDark" : "bg-primaryLight text-slate-50 hover:bg-secondaryLight"} font-bold transition-colors duration-300`;
 
   return (
-    <section className={queryWrap} style={{ minHeight, height: editorHeight }}>
+    <section className={queryWrap} style={{ minHeight: `${minHeight}px`, height: `${editorHeight}px` }}>
       <div className={queryHead}>
         <span>SQL 코드 작성</span>
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           <button className={editorBtn} onClick={handleCopyCode}>
-            <CodeCopy width={24} height={24} className={editorIcon} />
+            <CodeCopy width={20} height={20} className={editorIcon} />
             코드 복사
           </button>
-          <button className={editorBtn} onClick={handleResetCode}>
-            <CodeReset width={24} height={24} className={editorIcon} />
-            코드 초기화
+          <button className={editorBtn} onClick={resetDatabase}>
+            <DBReset width={20} height={20} className={editorIcon} />
+            DB 초기화
           </button>
         </div>
       </div>
-      <div ref={editorElement} className="w-full h-full flex-grow overflow-y-scroll"></div>
-      <button onClick={() => executeQuery(query)} className={queryBtn}>
-        <span>코드 실행(Ctrl + Enter)</span>
+      <div ref={editorElement} className="w-full h-full flex-grow overflow-auto"></div>
+      <button onClick={() => { setQueryValue(editorView.current.state.doc.toString()); executeQuery(); }} className={queryBtn}>
+        <span>코드 실행 (Ctrl + Enter)</span>
       </button>
     </section>
   );
