@@ -1,13 +1,12 @@
 // components/editor/QuerySection.js
 import React, { useRef, useEffect, useState } from "react";
-import useDarkMode from "../../hooks/useDarkMode";
 import useStore from '../../store/useStore';
 import { EditorView, basicSetup } from "codemirror";
 import { sql } from "@codemirror/lang-sql";
 import { autocompletion } from "@codemirror/autocomplete";
 import { createSqoolTheme } from "./Styles";
 import { CodeCopy, DBReset } from "../IconSet";
-import { sqliteCompletion } from "./sqliteKeywords";
+import { sqliteCompletion } from "./SqliteKeywords";
 import { keymap } from "@codemirror/view";
 import { defaultKeymap } from "@codemirror/commands";
 import { placeholder } from "@codemirror/view";
@@ -20,7 +19,7 @@ import { placeholder } from "@codemirror/view";
 const QuerySection = ({ initialValue, editorHeight, executeQuery, minHeight = 320, setEditorView, resetDatabase }) => {
   const editorElement = useRef(null);
   const editorView = useRef(null);
-  const { isDarkMode } = useDarkMode();
+  const { isDarkMode } = useStore();
   const { showToast, setQuery } = useStore();
   const [queryValue, setQueryValue] = useState(initialValue);
 
@@ -81,9 +80,9 @@ const QuerySection = ({ initialValue, editorHeight, executeQuery, minHeight = 32
 
   const queryWrap = `w-full flex flex-col rounded-lg border ${isDarkMode ? "border-slate-800" : "border-slate-200"}`;
   const queryHead = `w-full p-4 flex justify-between items-center font-bold rounded-tl-lg rounded-tr-lg ${isDarkMode ? "bg-primaryDark text-slate-50" : "bg-primaryLight text-slate-600"} bg-opacity-10`;
-  const editorBtn = `px-3 py-2 rounded-lg flex justify-center items-center gap-2 font-bold ${isDarkMode ? "bg-slate-900 text-slate-400" : "bg-slate-50 text-slate-500"} hover:opacity-80 transition-opacity duration-300`;
+  const editorBtn = `px-3 py-2 rounded-lg flex justify-center items-center gap-2 font-bold ${isDarkMode ? "bg-slate-900 text-slate-400" : "bg-slate-50 text-slate-500"} hover:opacity-80 transition-opacity duration-500`;
   const editorIcon = `${isDarkMode ? "fill-primaryDark" : "fill-primaryLight"}`;
-  const queryBtn = `w-full py-3 mt-2 rounded-lg ${isDarkMode ? "bg-primaryDark text-slate-900 hover:bg-secondaryDark" : "bg-primaryLight text-slate-50 hover:bg-secondaryLight"} font-bold transition-colors duration-300`;
+  const queryBtn = `w-full py-3 mt-2 rounded-lg ${isDarkMode ? "bg-primaryDark text-slate-900 hover:bg-secondaryDark" : "bg-primaryLight text-slate-50 hover:bg-secondaryLight"} font-bold transition-colors duration-500`;
 
   return (
     <section className={queryWrap} style={{ minHeight: `${minHeight}px`, height: `${editorHeight}px` }}>
@@ -100,9 +99,9 @@ const QuerySection = ({ initialValue, editorHeight, executeQuery, minHeight = 32
           </button>
         </div>
       </div>
-      <div ref={editorElement} className="w-full h-full flex-grow overflow-auto"></div>
+      <div ref={editorElement} className="w-full h-full flex-grow overflow-auto scrollbar-hide"></div>
       <button onClick={() => { setQueryValue(editorView.current.state.doc.toString()); executeQuery(); }} className={queryBtn}>
-        <span>코드 실행 (Ctrl + Enter)</span>
+        <span>코드 실행</span>
       </button>
     </section>
   );

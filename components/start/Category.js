@@ -1,7 +1,8 @@
 // components/start/Category.js
 import React, { useEffect, useState } from 'react';
 import { getCategoryList } from './Api';
-import useDarkMode from '../../hooks/useDarkMode';
+import useStore from '../../store/useStore';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 /**
  * CategoryList 컴포넌트
@@ -15,7 +16,7 @@ const CategoryList = ({ onSelectCategory }) => {
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null); // 선택된 카테고리 상태
-  const { isDarkMode } = useDarkMode();
+  const { isDarkMode } = useStore();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -58,11 +59,15 @@ const CategoryList = ({ onSelectCategory }) => {
   };
 
   if (isLoading) {
-    return <div className='w-full h-full flex justify-center items-center'>로딩 중 입니다</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
-  const container = `min-w-60 h-full flex flex-col rounded-lg border-1 overflow-y-scroll ${isDarkMode ? "border-slate-800" : "border-slate-200"}`;
-  const catagoryItem = `p-4 border-b-1 ${isDarkMode ? "border-slate-800" : "border-slate-200"} duration-300`;
+  const container = `min-w-60 h-full flex flex-col rounded-lg border-1 overflow-y-auto scrollbar-hide ${isDarkMode ? "border-slate-800" : "border-slate-200"}`;
+  const catagoryItem = `p-4 border-b-1 ${isDarkMode ? "border-slate-800" : "border-slate-200"} duration-500`;
   
   return (
     <div className={container}>
