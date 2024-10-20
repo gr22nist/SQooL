@@ -15,7 +15,7 @@ const sqliteKeywords = [
   "OUTER", "OVER", "PARTITION", "PLAN", "PRAGMA", "PRECEDING", "QUERY", "RAISE", "RANGE", "RECURSIVE",
   "REGEXP", "REINDEX", "RELEASE", "RENAME", "REPLACE", "RESTRICT", "RETURNING", "ROLLBACK", "ROW",
   "ROWS", "SAVEPOINT", "TEMPORARY", "TIES", "TRANSACTION", "UNBOUNDED", "VACUUM", "WITHOUT",
-  "Artist" // 테이블 이름 추가
+  "Artist", "Albums" // 테이블 이름 추가
 ].map(keyword => ({ label: keyword, type: "keyword", boost: 1 }));
 
 // boost 값 추가하여 우선순위 조정

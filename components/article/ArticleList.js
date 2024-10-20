@@ -1,9 +1,14 @@
 import React from 'react';
 import ArticleCard from './ArticleCard';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 const ArticleList = ({ articles, onSelectArticle, isLoading, page, perPage, onPageChange }) => {
   if (isLoading) {
-      return <div>Loading...</div>; // 로딩 상태 표시
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   if (articles.length === 0) {
@@ -32,7 +37,7 @@ const ArticleList = ({ articles, onSelectArticle, isLoading, page, perPage, onPa
         {page > 1 && (
           <button 
             onClick={() => onPageChange(page - 1)} 
-            className="px-4 py-2 mx-2 bg-blue-500 text-white rounded"
+            className="px-4 py-2 mx-2 bg-blue-500 text-white rounded-full"
           >
             이전
           </button>
@@ -41,7 +46,7 @@ const ArticleList = ({ articles, onSelectArticle, isLoading, page, perPage, onPa
           <button
             key={pageNum}
             onClick={() => onPageChange(pageNum)}
-            className={`px-4 py-2 mx-1 ${pageNum === page ? 'bg-blue-700' : 'bg-blue-500'} text-white rounded`}
+            className={`px-4 py-2 mx-1 ${pageNum === page ? 'bg-blue-700' : 'bg-blue-500'} text-white rounded-full`}
           >
               {pageNum}
           </button>
@@ -49,7 +54,7 @@ const ArticleList = ({ articles, onSelectArticle, isLoading, page, perPage, onPa
         {page < totalPages && (
           <button 
             onClick={() => onPageChange(page + 1)} 
-            className="px-4 py-2 mx-2 bg-blue-500 text-white rounded"
+            className="px-4 py-2 mx-2 bg-blue-500 text-white rounded-full"
           >
             다음
           </button>

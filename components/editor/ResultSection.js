@@ -14,7 +14,7 @@ const DataTable = ({ columns, rows, isDarkMode }) => {
   const tableCellClass = `py-3 px-5 border-b ${isDarkMode ? "text-slate-300 border-slate-700" : "text-gray-600 border-gray-200"}`;
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-y-auto scrollbar-hide">
       <table className={tableContainerClass}>
         <thead>
           <tr>
@@ -50,7 +50,7 @@ const DataTable = ({ columns, rows, isDarkMode }) => {
  * @param {number} minHeight - 섹션의 최소 높이 (픽셀 단위)
  */
 const ResultSection = ({ queryResult, minHeight }) => {
-  const { isDarkMode } = useDarkMode();
+  const { isDarkMode } = useStore();
   const { showToast } = useStore();
 
   useEffect(() => {

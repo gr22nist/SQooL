@@ -3,8 +3,9 @@
 import React, { useEffect, useState } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { getContent } from './Api';
-import useDarkMode from '../../hooks/useDarkMode';
+import useStore from '../../store/useStore';
 import DOMPurify from 'dompurify';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 /**
  * Content 컴포넌트
@@ -19,7 +20,7 @@ import DOMPurify from 'dompurify';
 const Content = ({ documentId }) => {
   const [content, setContent] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { isDarkMode } = useDarkMode();
+  const { isDarkMode } = useStore();
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -43,7 +44,11 @@ const Content = ({ documentId }) => {
   }, [documentId]);
 
   if (isLoading) {
-    return <div className='w-full h-full flex justify-center items-center'>로딩 중 입니다</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   if (!content) {
@@ -52,7 +57,7 @@ const Content = ({ documentId }) => {
 
   const container = `w-full h-full flex flex-col flex-grow rounded-lg border-1 ${isDarkMode ? "border-slate-800" : "border-slate-200"}`;
   const contentHead = `w-full p-4 font-bold rounded-tl-lg rounded-tr-lg ${isDarkMode ? "bg-slate-800 text-slate-50" : "bg-slate-200 text-slate-600"}`;
-  const contentField = `w-full max-w-none p-4 flex-grow items-center overflow-y-scroll ${isDarkMode ? "text-slate-50" : "text-slate-900"} prose ${isDarkMode ? "prose-dark" : ""}`;
+  const contentField = `w-full max-w-none p-4 flex-grow items-center overflow-y-auto scrollbar-hide ${isDarkMode ? "text-slate-50" : "text-slate-900"} prose ${isDarkMode ? "prose-dark" : ""}`;
 
   const cleanContent = DOMPurify.sanitize(content.Content);
 

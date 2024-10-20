@@ -2,11 +2,11 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import useDarkMode from '../hooks/useDarkMode';
-import { DarkLogo, LightLogo, LinkWISE, LinkGithub, LinkDiscord } from './IconSet'; // 아이콘 불러오기
+import useStore from '../store/useStore'; 
+import { LinkWISE, LinkGithub, LinkDiscord } from './IconSet'; // 아이콘 불러오기
 
 const Footer = () => {
-  const { isDarkMode } = useDarkMode();
+  const { isDarkMode } = useStore();
 
   const container = `w-full py-4 ${isDarkMode ? 'bg-slate-900' : 'bg-slate-200'} text-slate-400 absolute`;
   const footerWrap = `max-w-content-full mx-auto flex justify-between items-center`;
@@ -39,20 +39,20 @@ const Footer = () => {
             </li>
             <li>
               <a className={linkIcon}
-                href='https://github.com'
+                href='https://github.com/WISE-IT-TEAM/Wise.SQooL.FE'
                 target='_blank'
                 rel='noopener noreferrer'>
                 <LinkGithub width={20} height={20} className="fill-slate-400" title="Github 링크" />
               </a>
             </li>
-            <li>
+            {/* <li>
               <a className={linkIcon}
                 href='https://discord.com'
                 target='_blank'
                 rel='noopener noreferrer'>
                 <LinkDiscord width={20} height={20} className="fill-slate-400" title="Discord 링크" />
               </a>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>
