@@ -1,11 +1,10 @@
 // API URL 정의
 const articleListUrl = process.env.NEXT_PUBLIC_API_ARTICLE_LIST_URL;
 const articleDetailUrl = process.env.NEXT_PUBLIC_API_ARTICLE_DETAIL_URL;
-const contentsBaseUrl = process.env.NEXT_PUBLIC_BASE_URL; // 이미지가 호스팅되는 서버의 기본 URL
+const contentsBaseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 // adjustImagePaths 함수 정의
 const adjustImagePaths = (htmlContent) => {
-    const contentsBaseUrl = 'https://be.wiseit.kr'; // 이미지가 호스팅되는 서버의 기본 URL
 
     const div = document.createElement('div');
     div.innerHTML = htmlContent;
