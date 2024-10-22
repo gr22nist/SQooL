@@ -3,7 +3,7 @@ const articleListUrl = process.env.NEXT_PUBLIC_API_ARTICLE_LIST_URL;
 const articleDetailUrl = process.env.NEXT_PUBLIC_API_ARTICLE_DETAIL_URL;
 const contentsBaseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-// adjustImagePaths 함수 정의
+// adjustImagePaths
 const adjustImagePaths = (htmlContent) => {
 
     const div = document.createElement('div');
