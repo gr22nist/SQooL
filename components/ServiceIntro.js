@@ -1,7 +1,6 @@
-// components/ServiceIntro.js
 import React from 'react';
 import Link from 'next/link';
-import useStore from '../store/useStore';
+import useStore from '@/store/useStore';
 
 const ServiceIntro = ({ summary, title, content, linkText, linkUrl }) => {
   const { isDarkMode } = useStore();

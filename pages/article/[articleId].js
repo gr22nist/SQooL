@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import ArticleDetail from '../../components/article/ArticleDetail';
-import Comment from '../../components/article/Comments';
-import useStore from "../../store/useStore";
-import LoadingSpinner from '../../components/LoadingSpinner';
-import { getArticleDetail, getArticleComments, postArticleComment, updateArticleComment, deleteArticleComment } from '../../components/article/Api';
+import ArticleDetail from '@/components/article/ArticleDetail';
+import Comment from '@/components/article/Comments';
+import useStore from '@/store/useStore';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import { getArticleDetail } from '@/components/article/Api';
 
 const ArticleDetailPage = () => {
   const router = useRouter();
@@ -36,7 +36,7 @@ const ArticleDetailPage = () => {
 
     if (isLoading) {
       return (
-        <div className="flex justify-center items-center h-screen">
+        <div className='flex justify-center items-center h-screen'>
           <LoadingSpinner />
         </div>
       );
@@ -47,11 +47,11 @@ const ArticleDetailPage = () => {
     }
 
   const container = `max-w-content-full mx-auto flex flex-col pt-nav`;
-  const backBtn = `px-6 py-3 rounded-lg duration-500 font-bold ${ isDarkMode ? "bg-primaryDark text-slate-900 hover:bg-secondaryDark" : "bg-primaryLight text-slate-50 hover:bg-secondaryLight" }`;
+  const backBtn = `px-6 py-3 rounded-lg duration-500 font-bold ${ isDarkMode ? 'bg-primaryDark text-slate-900 hover:bg-secondaryDark' : 'bg-primaryLight text-slate-50 hover:bg-secondaryLight' }`;
 
   return (
     <div className={container}>
-      <main className="flex-grow w-full flex flex-col items-center p-4">
+      <main className='flex-grow w-full flex flex-col items-center p-4'>
         <ArticleDetail article={article} />
         <Comment 
           articleId={articleId}
@@ -61,7 +61,7 @@ const ArticleDetailPage = () => {
           deleteArticleComment={deleteArticleComment}
         />
       </main>
-      <footer className="w-full flex justify-center p-4">
+      <footer className='w-full flex justify-center p-4'>
         <button 
           onClick={handleBack} 
           className={backBtn}

@@ -1,4 +1,3 @@
-// components/sliders/Slide.js
 import React from 'react';
 
 const Slide = ({ children }) => {

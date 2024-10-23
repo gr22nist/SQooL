@@ -1,9 +1,9 @@
 // components/NavBar.js
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import useStore from '../store/useStore';
+import useStore from'@/store/useStore';
 import DarkModeToggle from './DarkModeToggle';
-import { DarkLogo, LightLogo } from './IconSet'; // 아이콘 불러오기
+import { DarkLogo, LightLogo } from './icons/IconSet'; // 아이콘 불러오기
 
 const NavBar = ({ isFullWidth }) => {
   const isDarkMode = useStore((state) => state.isDarkMode);

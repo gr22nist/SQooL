@@ -1,7 +1,6 @@
-// components/DarkModeToggle.js
 import React from 'react';
-import useStore from '../store/useStore';
-import { DarkToggle, LightToggle } from './IconSet'; // 아이콘 불러오기
+import useStore from'@/store/useStore';
+import { DarkToggle, LightToggle } from './icons/IconSet';
 
 
 const DarkModeToggle = () => {

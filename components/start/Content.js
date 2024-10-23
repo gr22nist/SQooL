@@ -1,11 +1,9 @@
-// components/start/Content.js
-
 import React, { useEffect, useState } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { getContent } from './Api';
-import useStore from '../../store/useStore';
+import useStore from '@/store/useStore';
 import DOMPurify from 'dompurify';
-import LoadingSpinner from '../../components/LoadingSpinner';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 /**
  * Content 컴포넌트
@@ -25,9 +23,7 @@ const Content = ({ documentId }) => {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        console.log(`Fetching content for document ID: ${documentId}`);
         const data = await getContent(documentId);
-        console.log('문서 데이터:', data);
         setContent(data.document);
       } catch (error) {
         console.error('문서 가져오는 중 오류 발생:', error);

@@ -1,6 +1,6 @@
 import React from 'react';
 import ArticleCard from './ArticleCard';
-import LoadingSpinner from '../../components/LoadingSpinner';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const ArticleList = ({ articles, onSelectArticle, isLoading, page, perPage, onPageChange }) => {
   if (isLoading) {
@@ -15,7 +15,6 @@ const ArticleList = ({ articles, onSelectArticle, isLoading, page, perPage, onPa
       return <div>No articles found</div>;
   }
 
-  // 페이지 수 계산
   const totalPages = Math.max(Math.ceil(articles.length / perPage), 1);
   const container = `flex flex-col gap-6`
   const articleListItem = `flex flex gap-6`

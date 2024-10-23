@@ -12,7 +12,7 @@ const useIntersection = (element, { rootMargin = '0px', threshold = 0.1 } = {}) 
       },
       {
         rootMargin,
-        threshold: Array.isArray(threshold) ? threshold : [threshold] // threshold를 배열로 설정
+        threshold: Array.isArray(threshold) ? threshold : [threshold]
       }
     );
 

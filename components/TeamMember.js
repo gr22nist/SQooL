@@ -4,16 +4,14 @@
 import React from 'react'; 
 import Image from 'next/image';
 import Link from 'next/link';
-import useStore from '../store/useStore';
-import useToast from '../hooks/useToast';
-import { MemberGithub, MemberEmail } from './IconSet';
+import useStore from '@/store/useStore';
+import useToast from '@/hooks/useToast';
+import { MemberGithub, MemberEmail } from './icons/IconSet';
 
 const TeamMember = ({ avatarDark, avatarLight, bio, role, nickname, github, email, className }) => {
   const { isDarkMode } = useStore();
-  // Toast 메시지 표시 함수
   const showToast = useToast();
   
-  // 이메일 주소를 클립보드에 복사하는 함수
   const copyClipboard = () => {
     navigator.clipboard.writeText(email).then(() => {
       showToast("✉️ 이메일 주소가 복사 되었습니다", 'success');

@@ -1,4 +1,3 @@
-// components/start/Document.js
 import React, { useState } from 'react';
 import CategoryList from './Category';
 import Content from './Content';

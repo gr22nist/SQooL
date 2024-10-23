@@ -2,8 +2,8 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import useStore from '../store/useStore'; 
-import { LinkWISE, LinkGithub, LinkDiscord } from './IconSet'; // 아이콘 불러오기
+import useStore from'@/store/useStore'; 
+import { LinkWISE, LinkGithub, LinkDiscord } from './icons/IconSet'; // 아이콘 불러오기
 
 const Footer = () => {
   const { isDarkMode } = useStore();

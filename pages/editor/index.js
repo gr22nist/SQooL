@@ -1,9 +1,6 @@
-// pages/editor/index.js
-
 import React, { useEffect, useState } from 'react';
-import SQLEditor from '../../components/editor/SqlEditor';
-import useStore from '../../store/useStore';
-import totalOffset from '../../store/useStore';
+import SQLEditor from '@/components/editor/SqlEditor';
+import useStore from '@/store/useStore';
 
 /**
  * Editor 컴포넌트
@@ -15,8 +12,8 @@ import totalOffset from '../../store/useStore';
  */
 const Editor = () => {
   const apiInitUrl = process.env.NEXT_PUBLIC_API_INIT_URL;
-  const isFullWidth = useStore((state) => state.isFullWidth); // Zustand에서 상태 가져오기
-  const totalOffset = useStore((state) => state.totalOffset); // Zustand에서 totalOffset 가져오기
+  const isFullWidth = useStore((state) => state.isFullWidth);
+  const totalOffset = useStore((state) => state.totalOffset);
   const [queryResult, setQueryResult] = useState({ columns: [], rows: [] });
 
   useEffect(() => {
@@ -34,7 +31,6 @@ const Editor = () => {
           },
           body: JSON.stringify({ dbname: "Artist" }),
         });
-
         if (!response.ok) {
           throw new Error('Database creation failed');
         }
@@ -44,7 +40,7 @@ const Editor = () => {
     };
 
     createDatabase();
-  }, [apiInitUrl]); // apiInitUrl이 변경될 때마다 useEffect가 다시 실행됨
+  }, [apiInitUrl]);
 
   const container = `max-w-content-full mx-auto h-full min-h-[calc(100vh-${totalOffset}px)]`;
 

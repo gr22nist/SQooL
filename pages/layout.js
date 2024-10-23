@@ -1,9 +1,8 @@
-// layout.js
 import React from 'react';
 import Head from 'next/head';
-import Navbar from '../components/NavBar';
-import Footer from '../components/Footer';
-import useStore from '../store/useStore';
+import Navbar from'@/components/NavBar';
+import Footer from'@/components/Footer';
+import useStore from'@/store/useStore';
 import { useRouter } from 'next/router';
 
 /**
@@ -23,13 +22,13 @@ import { useRouter } from 'next/router';
  * @returns {JSX.Element} - 레이아웃을 구성하는 JSX 요소를 반환합니다.
  */
 const Layout = ({ children }) => {
-  const isFullWidth = useStore((state) => state.isFullWidth); // Zustand에서 상태 가져오기
+  const isFullWidth = useStore((state) => state.isFullWidth);
   const router = useRouter();
 
   // 경로에 따라 레이아웃 조건을 설정합니다.
-  const shouldShowFooter = router.pathname !== "/start"; // `/start` 페이지에서는 푸터를 숨깁니다.
+  const shouldShowFooter = router.pathname !== "/start";
   const useFullHeight = router.pathname === "/start" || router.pathname === "/editor"; router.pathname === "/404";
-  const applyNavPadding = router.pathname !== "/"; // 메인 인덱스 페이지에서는 pt-nav를 적용하지 않음
+  const applyNavPadding = router.pathname !== "/";
 
   // 조건부로 클래스를 설정합니다.
   const containerClass = `font-body tracking-wide ${useFullHeight ? 'h-screen pt-nav' : 'min-h-screen'} ${isFullWidth ? 'w-full' : ''}`;
@@ -39,12 +38,12 @@ const Layout = ({ children }) => {
       <Head>
         <title>WISE SQooL</title>
         <meta name="description" content="한글 데이터로 배우는 마음 편한 SQLite!" />
-        <meta property="og:title" content="WISE SQooL" />
+        <meta property="og:title" content="SQooL" />
         <meta property="og:description" content="한글 데이터로 배우는 마음 편한 SQLite!" />
         <meta property="og:image" content="/img/wise-meta-img.jpg" />
-        <meta property="og:url" content="https://sqool.wiseit.kr" />
+        <meta property="og:url" content="https://sqool.kr" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="WISE SQooL" />
+        <meta name="twitter:title" content="SQooL" />
         <meta name="twitter:description" content="한글 데이터로 배우는 마음 편한 SQLite!" />
         <meta name="twitter:image" content="/img/wise-meta-img-tw.jpg" />
       </Head>

@@ -1,7 +1,7 @@
 // components/Toast.js
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import useStore from '../store/useStore';
+import useStore from '@/store/useStore';
 
 const Toast = () => {
   const { toastMessage, toastType, hideToast } = useStore((state) => ({

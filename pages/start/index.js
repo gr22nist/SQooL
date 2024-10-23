@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import CategoryList from '../../components/start/Category';
-import Content from '../../components/start/Content';
-import SQLEditor from '../../components/editor/SqlEditor';
-import ResizeHandler from '../../components/ResizeHandler';
-import { HeroBtn } from '../../components/IconSet';
-import useStore from '../../store/useStore';
+import React, { useState, useEffect, useCallback } from 'react';
+import CategoryList from '@/components/start/Category';
+import Content from '@/components/start/Content';
+import SQLEditor from '@/components/editor/SqlEditor';
+import ResizeHandler from '@/components/ResizeHandler';
+import { HeroBtn } from '@/components/icons/IconSet';
+import useStore from '@/store/useStore';
 
 const StartPage = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
@@ -38,9 +38,8 @@ const StartPage = () => {
     const initialWidth = typeof window !== 'undefined' ? window.innerWidth - 500 : 1000;
     setDocumentWidth(initialWidth);
 
-    // 레이아웃 조건 초기 설정
-    setUseFullHeight(true); // 예시로 전체 높이를 사용하는 상태로 설정
-    setTotalOffset(64); // 예시로 64px의 오프셋을 설정
+    setUseFullHeight(true);
+    setTotalOffset(64);
   }, [setUseFullHeight, setTotalOffset]);
 
   useEffect(() => {
@@ -53,9 +52,9 @@ const StartPage = () => {
     localStorage.setItem('query', query);
   }, [query]);
 
-  const handleSelectCategory = (categoryId) => {
+  const handleSelectCategory = useCallback((categoryId) => {
     setSelectedCategoryId(categoryId);
-  };
+  }, []);
 
   const toggleEditor = () => {
     setIsEditorOpen(!isEditorOpen);
@@ -75,13 +74,10 @@ const StartPage = () => {
         if (!response.ok) {
           throw new Error('Database creation failed');
         }
-
-        console.log('Database created successfully');
       } catch (error) {
         console.error('Error creating database:', error);
       }
     };
-
     createDatabase();
   }, [apiInitUrl]);
 
@@ -98,7 +94,6 @@ const StartPage = () => {
     setEditorWidth(window.innerWidth - newDocumentWidth);
   };
 
-  // 조건부로 클래스를 설정합니다.
   const container = `flex justify-center mx-auto duration-500 h-full ${useFullHeight ? `h-[calc(100vh-${totalOffset}px)]` : 'min-h-screen'} ${isFullWidth ? 'w-full px-8' : 'max-w-content-full'}`;
   const documentWrap = `flex min-w-80 flex-row justify-center flex-grow gap-4`;
   const editorWrap = `max-w-content-full min-w-content-half ${isEditorOpen ? 'flex' : 'hidden'} flex-grow`;

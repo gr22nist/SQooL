@@ -39,7 +39,7 @@ export const createSqoolTheme = (isDarkMode) => EditorView.theme({
   },
   '.cm-scroller': {
     overflowY: 'auto',
-    overflowX: 'hidden', // 가로 스크롤을 숨기기 위해 overflowX를 hidden으로 설정
+    overflowX: 'hidden',
   },
   '.cm-cursor': {
     borderLeftColor: `${isDarkMode ? '#f8fafc' : '#0f172a'}`,

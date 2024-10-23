@@ -1,8 +1,5 @@
-// components/editor/ResultSection.js
-
 import React, { useEffect, useMemo } from "react";
-import useDarkMode from "../../hooks/useDarkMode";
-import useStore from '../../store/useStore';
+import useStore from '@/store/useStore';
 
 /**
  * DataTable 컴포넌트
@@ -55,9 +52,9 @@ const ResultSection = ({ queryResult, minHeight }) => {
 
   useEffect(() => {
     if (queryResult.error) {
-      showToast(queryResult.error, 'error'); // 에러 발생 시 토스트 메시지 표시
+      showToast(queryResult.error, 'error');
     } else if (queryResult.message) {
-      showToast(queryResult.message, 'success'); // 성공 메시지 표시
+      showToast(queryResult.message, 'success');
     }
   }, [queryResult, showToast]);
 
