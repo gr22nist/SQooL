@@ -13,6 +13,7 @@
     "@codemirror/lang-sql": "^6.7.0",
     "@codemirror/state": "^6.4.1",
     "@codemirror/view": "^6.30.0",
+    "@tailwindcss/typography": "github:tailwindcss/typography",
     "codemirror": "^6.0.1",
     "dompurify": "^3.1.6",
     "flowbite": "^2.5.1",
@@ -25,7 +26,6 @@
     "react-resizable": "^3.0.5",
     "react-swipeable": "^7.0.1",
     "react-transition-group": "^4.4.5",
-    "typography": "^0.16.24",
     "zustand": "^4.5.4"
   },
   "devDependencies": {
