@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import CategoryList from '../../components/start/Category';
 import Content from '../../components/start/Content';
 import SQLEditor from '../../components/editor/SqlEditor';
@@ -53,9 +53,10 @@ const StartPage = () => {
     localStorage.setItem('query', query);
   }, [query]);
 
-  const handleSelectCategory = (categoryId) => {
+
+  const handleSelectCategory = useCallback((categoryId) => {
     setSelectedCategoryId(categoryId);
-  };
+  }, []);
 
   const toggleEditor = () => {
     setIsEditorOpen(!isEditorOpen);

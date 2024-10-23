@@ -15,7 +15,8 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 const CategoryList = ({ onSelectCategory }) => {
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { isDarkMode } = useDarkMode();
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null); // 선택된 카테고리 상태
+  const { isDarkMode } = useStore();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -41,26 +42,51 @@ const CategoryList = ({ onSelectCategory }) => {
         setIsLoading(false);
       }
     };
-
     fetchCategories();
-  }, []); // 빈 의존성 배열로 한 번만 호출되도록 설정
+  }, [onSelectCategory]);
+
+  /**
+   * 카테고리 클릭 핸들러
+   * - 선택된 카테고리 ID를 상태로 설정하고, 상위 컴포넌트에 전달합니다.
+   * 
+   * @param {string} categoryId - 선택된 카테고리의 ID
+   */
+
+  const handleCategoryClick = (categoryId) => {
+    setSelectedCategoryId(categoryId); // 선택된 카테고리 업데이트
+    onSelectCategory(categoryId); // 상위 컴포넌트에 선택된 카테고리 전달
+  };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
+  const container = `min-w-60 h-full flex flex-col rounded-lg border-1 overflow-y-auto scrollbar-hide ${isDarkMode ? "border-slate-800" : "border-slate-200"}`;
+  const catagoryItem = `p-4 border-b-1 ${isDarkMode ? "border-slate-800" : "border-slate-200"} duration-500`;
+  
   return (
-    <div className={`w-full min-w-fit h-full flex flex-col rounded-lg border-1 overflow-y-scroll ${isDarkMode ? "border-slate-800" : "border-slate-200"}`}>
+    <div className={container}>
       <ul>
-        {categories.map(category => (
-          <li 
-            key={category.Id} 
-            className={`p-2 border-b border-slate-400 ${category.Tree === 'doc' ? 'cursor-pointer' : 'cursor-not-allowed text-gray-500'}`}
-            onClick={() => category.Tree === 'doc' && onSelectCategory(category.Id)}
-          >
-            {category.Title}
-          </li>
-        ))}
+        {categories.map(category => {
+          const isSelected = selectedCategoryId === category.Id;
+          const treeClass = category.Tree === 'doc' ? 'cursor-pointer indent-2' : 'cursor-default text-slate-400';
+          const selectedClass = isSelected ? (isDarkMode ? 'bg-primaryDark text-slate-900 font-bold' : 'bg-primaryLight text-slate-50 font-bold') : '';
+          const hoverClass = category.Tree === 'doc' ? (isDarkMode ? 'hover:bg-secondaryDark hover:text-slate-900 font-bold' : 'hover:bg-secondaryLight hover:text-slate-50 font-bold') : '';
+
+          return (
+            <li 
+              key={category.Id} 
+              className={`${catagoryItem} ${treeClass} ${selectedClass} ${hoverClass}`}
+              onClick={() => category.Tree === 'doc' && handleCategoryClick(category.Id)}
+            >
+              {category.Title}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

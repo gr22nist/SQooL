@@ -38,6 +38,8 @@ const Editor = () => {
         if (!response.ok) {
           throw new Error('Database creation failed');
         }
+
+        console.log('Database created successfully');
       } catch (error) {
         console.error('Error creating database:', error);
       }
