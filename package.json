@@ -25,6 +25,7 @@
     "react-resizable": "^3.0.5",
     "react-swipeable": "^7.0.1",
     "react-transition-group": "^4.4.5",
+    "typography": "^0.16.24",
     "zustand": "^4.5.4"
   },
   "devDependencies": {
