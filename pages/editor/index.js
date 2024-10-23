@@ -1,9 +1,6 @@
-// pages/editor/index.js
-
 import React, { useEffect, useState } from 'react';
-import SQLEditor from '../../components/editor/SqlEditor';
-import useStore from '../../store/useStore';
-import totalOffset from '../../store/useStore';
+import SQLEditor from '@/components/editor/SqlEditor';
+import useStore from '@/store/useStore';
 
 /**
  * Editor 컴포넌트
@@ -38,13 +35,15 @@ const Editor = () => {
         if (!response.ok) {
           throw new Error('Database creation failed');
         }
+
+        console.log('Database created successfully');
       } catch (error) {
         console.error('Error creating database:', error);
       }
     };
 
     createDatabase();
-  }, [apiInitUrl]); // apiInitUrl이 변경될 때마다 useEffect가 다시 실행됨
+  }, [apiInitUrl]);
 
   const container = `max-w-content-full mx-auto h-full min-h-[calc(100vh-${totalOffset}px)]`;
 

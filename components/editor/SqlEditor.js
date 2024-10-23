@@ -17,7 +17,6 @@ const SQLEditor = ({ initialValue, page }) => {
   const [queryResult, setQueryResult] = useState({ columns: [], rows: [] });
   const [editorHeight, setEditorHeight] = useState(400);
   const editorViewRef = useRef(null);
-  const { isDarkMode } = useStore();
   const { showToast } = useStore();
 
   // 데이터베이스 초기화를 위한 useEffect

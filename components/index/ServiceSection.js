@@ -1,9 +1,8 @@
-// components/index/ServiceSection.js
 import React from 'react';
-import ServiceIntro from '../ServiceIntro';
-import ServiceData from '../../data/ServiceData';
-import AnimatedSection from '../AnimatedSection';
-import Slider from '../sliders/Slider';
+import ServiceIntro from'../ServiceIntro';
+import ServiceData from '@/data/ServiceData';
+import AnimatedSection from'../AnimatedSection';
+import Slider from'../sliders/Slider';
 
 const ServiceSection = () => {
   const section = `max-w-content-width mx-auto flex flex-col justify-center items-center gap-10 pt-20 select-none`;

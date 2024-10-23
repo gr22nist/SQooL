@@ -1,9 +1,8 @@
-// components/Footer.js
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import useStore from '../store/useStore'; 
-import { LinkWISE, LinkGithub, LinkDiscord } from './IconSet'; // 아이콘 불러오기
+import { LinkWISE, LinkGithub } from './icons/IconSet';
 
 const Footer = () => {
   const { isDarkMode } = useStore();
@@ -45,14 +44,6 @@ const Footer = () => {
                 <LinkGithub width={20} height={20} className="fill-slate-400" title="Github 링크" />
               </a>
             </li>
-            {/* <li>
-              <a className={linkIcon}
-                href='https://discord.com'
-                target='_blank'
-                rel='noopener noreferrer'>
-                <LinkDiscord width={20} height={20} className="fill-slate-400" title="Discord 링크" />
-              </a>
-            </li> */}
           </ul>
         </div>
       </div>

@@ -1,6 +1,5 @@
-// hooks/useDarkMode.js
 import { useEffect } from 'react';
-import useStore from '../store/useStore';
+import useStore from '@/store/useStore';
 
 /**
  * useDarkMode 훅

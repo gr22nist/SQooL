@@ -1,9 +1,7 @@
-// pages/404.js
-
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import useStore from '../store/useStore';
+import useStore from'@/store/useStore';
 
 const Custom404 = () => {
   const { isDarkMode } = useStore();

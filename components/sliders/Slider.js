@@ -1,14 +1,13 @@
-// components/sliders/Slider.js
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import Slide from './Slide';
 import SliderControls from './SliderControls';
 
 const Slider = ({ slides }) => {
-  const [currentSlide, setCurrentSlide] = useState(1); // 첫 번째 슬라이드로 설정
-  const [isPlaying, setIsPlaying] = useState(true); // 자동 플레이 상태
-  const [transitionEnabled, setTransitionEnabled] = useState(true); // 트랜지션 상태
-  const timeoutRef = useRef(null); // 타임아웃 참조
+  const [currentSlide, setCurrentSlide] = useState(1);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [transitionEnabled, setTransitionEnabled] = useState(true);
+  const timeoutRef = useRef(null);
 
   const resetTimeout = () => {
     if (timeoutRef.current) {
@@ -34,10 +33,10 @@ const Slider = ({ slides }) => {
   useEffect(() => {
     if (isPlaying) {
       resetTimeout();
-      timeoutRef.current = setTimeout(nextSlide, 5000); // 5초마다 다음 슬라이드로
+      timeoutRef.current = setTimeout(nextSlide, 5000);
     }
     return () => {
-      resetTimeout(); // 컴포넌트 언마운트 시 타임아웃 클리어
+      resetTimeout();
     };
   }, [nextSlide, isPlaying, currentSlide]);
 
@@ -52,7 +51,7 @@ const Slider = ({ slides }) => {
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange); // 이벤트 리스너 클리어
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, []);
 
@@ -91,11 +90,11 @@ const Slider = ({ slides }) => {
       onDragStart={(e) => e.preventDefault()}
     >
       <div className={slidesWrapper} style={{ transform: `translateX(-${currentSlide * 100}%)` }} onTransitionEnd={handleTransitionEnd}>
-        <Slide>{slides[slides.length - 1]}</Slide> {/* 무한 슬라이드를 위한 추가 슬라이드 */}
+        <Slide>{slides[slides.length - 1]}</Slide>
         {slides.map((slide, index) => (
           <Slide key={index}>{slide}</Slide>
         ))}
-        <Slide>{slides[0]}</Slide> {/* 무한 슬라이드를 위한 추가 슬라이드 */}
+        <Slide>{slides[0]}</Slide>
       </div>
       <SliderControls
         currentSlide={currentSlide}

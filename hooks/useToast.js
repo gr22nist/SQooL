@@ -1,6 +1,4 @@
-// hooks/useToast.js
-
-import useStore from '../store/useStore';
+import useStore from'@/store/useStore';
 
 /**
  * useToast 훅

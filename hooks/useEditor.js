@@ -3,8 +3,8 @@ import { useRef, useEffect } from 'react';
 import { EditorView, basicSetup } from 'codemirror';
 import { sql } from '@codemirror/lang-sql';
 import { autocompletion } from '@codemirror/autocomplete';
-import { createSqoolTheme } from '../components/editor/Styles';
-import { sqliteCompletion } from '../components/editor/SqliteKeywords';
+import { createSqoolTheme } from '@/components/editor/Styles';
+import { sqliteCompletion } from '@/components/editor/SqliteKeywords';
 import { placeholder } from '@codemirror/view';
 
 /**

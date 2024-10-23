@@ -1,7 +1,5 @@
-// components/article/CategoryList.js
-
 import React, { useEffect, useState } from 'react';
-import useStore from '../../store/useStore';
+import useStore from '@/store/useStore';
 
 /**
  * 

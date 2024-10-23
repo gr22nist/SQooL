@@ -1,4 +1,3 @@
-// src/components/BaseIcon.js
 import React from 'react';
 import PropTypes from 'prop-types';
 

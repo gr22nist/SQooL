@@ -1,8 +1,6 @@
-// src/components/IconSet.js
 import React from 'react';
 import Icon from './BaseIcon';
 
-// DarkLogo 아이콘
 export const DarkLogo = ({ title, width, height, ...props }) => (
   <Icon title={title} width={width} height={height} {...props}>
     <g clipPath="url(#clip0_1722_2359)">
@@ -32,7 +30,6 @@ export const DarkLogo = ({ title, width, height, ...props }) => (
   </Icon>
 );
 
-// LightLogo 아이콘
 export const LightLogo = ({ title, width, height, ...props }) => (
   <Icon title={title} width={width} height={height} {...props}>
     <g clipPath="url(#clip0_1722_2358)">
@@ -62,7 +59,6 @@ export const LightLogo = ({ title, width, height, ...props }) => (
   </Icon>
 );
 
-// DarkLogo 아이콘
 export const DarkToggle = ({ title, width, height, ...props }) => (
   <Icon title={title} width={width} height={height} {...props}>
     <rect width="24" height="24" rx="8" fill="#111519"/>
@@ -71,7 +67,6 @@ export const DarkToggle = ({ title, width, height, ...props }) => (
   </Icon>
 );
 
-// LightLogo 아이콘
 export const LightToggle = ({ title, width, height, ...props }) => (
   <Icon title={title} width={width} height={height} {...props}>
     <rect width="24" height="24" rx="8" fill="white"/>
@@ -80,8 +75,6 @@ export const LightToggle = ({ title, width, height, ...props }) => (
   </Icon>
 );
 
-
-// MemberGithub 아이콘
 export const MemberGithub = ({ title, width, height, ...props }) => (
   <Icon title={title} width={width} height={height} {...props}>
     <g clipPath="url(#clip0_1725_1819)">
@@ -95,14 +88,12 @@ export const MemberGithub = ({ title, width, height, ...props }) => (
   </Icon>
 );
 
-// MemberEmail 아이콘
 export const MemberEmail = ({ title, width, height, ...props }) => (
   <Icon title={title} width={width} height={height} {...props}>
     <path d="M17 3.5H7C4 3.5 2 5 2 8.5V15.5C2 19 4 20.5 7 20.5H17C20 20.5 22 19 22 15.5V8.5C22 5 20 3.5 17 3.5ZM17.47 9.59L14.34 12.09C13.68 12.62 12.84 12.88 12 12.88C11.16 12.88 10.31 12.62 9.66 12.09L6.53 9.59C6.21 9.33 6.16 8.85 6.41 8.53C6.67 8.21 7.14 8.15 7.46 8.41L10.59 10.91C11.35 11.52 12.64 11.52 13.4 10.91L16.53 8.41C16.85 8.15 17.33 8.2 17.58 8.53C17.84 8.85 17.79 9.33 17.47 9.59Z" fill=""/>
   </Icon>
 );
 
-// HeroBtn 아이콘
 export const HeroBtn = ({ title, width, height, ...props }) => (
   <Icon title={title} width={width} height={height} {...props}>
     <path opacity="0.4" d="M22 8.5V16.69C22 20.33 19.83 22.5 16.19 22.5H7.81C4.17 22.5 2 20.33 2 16.69V8.51L22 8.5Z" fill=""/>
@@ -112,7 +103,6 @@ export const HeroBtn = ({ title, width, height, ...props }) => (
   </Icon>
 );
 
-// ScrollDown 아이콘
 export const ScrollDown = ({ title, width, height, fill, stroke, ...props }) => (
   <Icon title={title} width={width} height={height} {...props}>
     <g clipPath="url(#clip0_1713_735)">
@@ -129,7 +119,6 @@ export const ScrollDown = ({ title, width, height, fill, stroke, ...props }) => 
   </Icon>
 );
 
-// LinkWISE 아이콘
 export const LinkWISE = ({ title, width, height, ...props }) => (
   <Icon title={title} width={width} height={height} {...props}>
     <rect width="11.3827" height="4.20524" rx="0.956938" transform="matrix(0.893235 -0.44959 -0.44959 -0.893235 1.89062 16.5088)" fill=""/>
@@ -142,7 +131,6 @@ export const LinkWISE = ({ title, width, height, ...props }) => (
   </Icon>
 );
 
-// LinkGithub 아이콘
 export const LinkGithub = ({ title, width, height, ...props }) => (
   <Icon title={title} width={width} height={height} {...props}>
     <g clipPath="url(#clip0_1704_339)">
@@ -156,7 +144,6 @@ export const LinkGithub = ({ title, width, height, ...props }) => (
   </Icon>
 );
 
-// LinkDiscord 아이콘
 export const LinkDiscord = ({ title, width, height, ...props }) => (
   <Icon title={title} width={width} height={height} {...props}>
     <path d="M8.23997 8.39014C7.66997 8.39014 7.21997 8.89014 7.21997 9.50014C7.21997 10.1101 7.67997 10.6101 8.23997 10.6101C8.80997 10.6101 9.25997 10.1101 9.25997 9.50014C9.26997 8.89014 8.80997 8.39014 8.23997 8.39014ZM11.89 8.39014C11.32 8.39014 10.87 8.89014 10.87 9.50014C10.87 10.1101 11.33 10.6101 11.89 10.6101C12.46 10.6101 12.91 10.1101 12.91 9.50014C12.91 8.89014 12.46 8.39014 11.89 8.39014Z" fill="#94A3B8"/>
@@ -164,7 +151,6 @@ export const LinkDiscord = ({ title, width, height, ...props }) => (
   </Icon>
 );
 
-// CodeCopy 아이콘
 export const CodeCopy = ({ title, width, height, ...props }) => (
   <Icon title={title} width={width} height={height} {...props}>
     <path opacity="0.4" d="M17.1 2H12.9C9.45001 2 8.05001 3.37 8.01001 6.75H11.1C15.3 6.75 17.25 8.7 17.25 12.9V15.99C20.63 15.95 22 14.55 22 11.1V6.9C22 3.4 20.6 2 17.1 2Z" fill="#33E364"/>
@@ -172,7 +158,6 @@ export const CodeCopy = ({ title, width, height, ...props }) => (
   </Icon>
 );
 
-// DBReset 아이콘
 export const DBReset = ({ title, width, height, ...props }) => (
   <Icon title={title} width={width} height={height} {...props}>
     <path opacity="0.4" d="M16.19 2H7.82001C4.17001 2 2 4.17 2 7.81V16.18C2 19.82 4.17 21.99 7.81 21.99H16.18C19.82 21.99 21.99 19.82 21.99 16.18V7.81C22 4.17 19.83 2 16.19 2Z" fill=""/>
@@ -181,7 +166,6 @@ export const DBReset = ({ title, width, height, ...props }) => (
   </Icon>
 );
 
-// // DatabaseReset 아이콘
 // export const DatabaseReset = ({ title, width, height, ...props }) => (
 //   <Icon title={title} width={width} height={height} {...props}>
 //     <path d="M2 12C2 10.89 2.89 10 4 10H20C21.11 10 22 10.89 22 12V17C22 18.11 21.11 19 20 19H4C2.89 19 2 18.11 2 17V12ZM5 13H19V16H5V13Z" fill="#33E364"/>
@@ -190,7 +174,6 @@ export const DBReset = ({ title, width, height, ...props }) => (
 //   </Icon>
 // );
 
-// SlidePlay 아이콘
 export const SlidePlay = ({ title, width, height, ...props }) => (
   <Icon title={title} width={width} height={height} {...props}>
     <path opacity="0.4" d="M11.9702 22C17.4931 22 21.9702 17.5228 21.9702 12C21.9702 6.47715 17.4931 2 11.9702 2C6.44737 2 1.97021 6.47715 1.97021 12C1.97021 17.5228 6.44737 22 11.9702 22Z" fill=""/>
@@ -198,7 +181,6 @@ export const SlidePlay = ({ title, width, height, ...props }) => (
   </Icon>
 );
 
-// SlidePause 아이콘
 export const SlidePause = ({ title, width, height, ...props }) => (
   <Icon title={title} width={width} height={height} {...props}>
     <path opacity="0.4" d="M11.9702 22C17.4931 22 21.9702 17.5228 21.9702 12C21.9702 6.47715 17.4931 2 11.9702 2C6.44737 2 1.97021 6.47715 1.97021 12C1.97021 17.5228 6.44737 22 11.9702 22Z" fill=""/>
@@ -207,7 +189,6 @@ export const SlidePause = ({ title, width, height, ...props }) => (
   </Icon>
 );
 
-// ResizeRow 아이콘
 export const ResizeRow = ({ title, width, height, ...props }) => (
   <Icon title={title} width={width} height={height} {...props}>
     <rect x="4" y="4" width="40" height="2" fill=""/>
@@ -215,7 +196,6 @@ export const ResizeRow = ({ title, width, height, ...props }) => (
   </Icon>
 );
 
-// ResizeColumn 아이콘
 export const ResizeColumn = ({ title, width, height, ...props }) => (
   <Icon title={title} width={width} height={height} {...props}>
     <rect x="4" y="4" width="2" height="40" fill=""/>

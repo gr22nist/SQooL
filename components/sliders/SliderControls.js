@@ -1,7 +1,6 @@
-// components/sliders/SliderControls.js
 import React from 'react';
-import { SlidePlay, SlidePause } from '../IconSet'; // 아이콘 불러오기
-import useStore from '../../store/useStore';
+import { SlidePlay, SlidePause } from'../icons/IconSet';
+import useStore from '@/store/useStore';
 
 const SliderControls = ({ currentSlide, slides, isPlaying, togglePlayPause, handleIndicatorClick }) => {
   const { isDarkMode } = useStore();

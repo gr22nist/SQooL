@@ -1,9 +1,7 @@
-// components/index/HeroSection.js
 import React from 'react';
 import Link from 'next/link';
-import useStore from '../../store/useStore'; 
-import { HeroBtn, ScrollDown } from '../IconSet'; 
-import styles from '../../styles/index.module.css'; 
+import useStore from '@/store/useStore'; 
+import { HeroBtn, ScrollDown } from'../icons/IconSet'; 
 
 /**
  * HeroSection 컴포넌트
@@ -29,7 +27,7 @@ const HeroSection = ({ scrollToContent }) => {
   const scrollDownBtn = `w-16 h-16 flex justify-center items-center absolute bottom-10 animate-bounce hover:opacity-80 duration-500`;
 
   return (
-    <div className={`${hero} ${isDarkMode ? styles.heroDark : styles.heroLight}`}>
+    <div className={`${hero} ${isDarkMode ? 'heroDark' : 'heroLight'}`}>
       <section className={heroContent}>
         <h1 className='text-5xl leading-h1 text-center font-semibold'>
           한글 데이터로 배우는<br />마음 편한 SQLite!

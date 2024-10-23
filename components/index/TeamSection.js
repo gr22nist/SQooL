@@ -1,8 +1,7 @@
-// components/index/TeamSection.js
 import React from 'react';
-import TeamMember from '../TeamMember';
-import TeamData from '../../data/TeamData';
-import AnimatedSection from '../AnimatedSection';
+import TeamMember from'../TeamMember';
+import TeamData from '@/data/TeamData';
+import AnimatedSection from'../AnimatedSection';
 
 const TeamSection = () => {
   const section = `max-w-content-full mx-auto flex flex-col justify-center items-center gap-10 my-20`;

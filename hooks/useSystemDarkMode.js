@@ -1,6 +1,5 @@
-// hooks/useSystemDarkMode.js
 import { useEffect } from 'react';
-import useStore from '../store/useStore';
+import useStore from'@/store/useStore';
 
 const useSystemDarkMode = () => {
   const toggleDarkMode = useStore((state) => state.toggleDarkMode);

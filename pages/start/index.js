@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import CategoryList from '../../components/start/Category';
-import Content from '../../components/start/Content';
-import SQLEditor from '../../components/editor/SqlEditor';
-import ResizeHandler from '../../components/ResizeHandler';
-import { HeroBtn } from '../../components/IconSet';
-import useStore from '../../store/useStore';
+import React, { useState, useEffect, useCallback } from 'react';
+import CategoryList from '@/components/start/Category';
+import Content from '@/components/start/Content';
+import SQLEditor from '@/components/editor/SqlEditor';
+import ResizeHandler from '@/components/ResizeHandler';
+import { HeroBtn } from '@/components/icons/IconSet';
+import useStore from '@/store/useStore';
+import { getCategoryList } from '@/components/start/Api';
 
-const StartPage = () => {
+const Start = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+  const [categories, setCategories] = useState([]);
   const [isEditorOpen, setIsEditorOpen] = useState(true);
   const [editorWidth, setEditorWidth] = useState(500);
-  const [documentWidth, setDocumentWidth] = useState(1000);
+  const [documentWidth, setDocumentWidth] = useState(700);
   const [query, setQuery] = useState("");
   
   const setFullWidth = useStore((state) => state.setFullWidth); 
@@ -38,9 +40,8 @@ const StartPage = () => {
     const initialWidth = typeof window !== 'undefined' ? window.innerWidth - 500 : 1000;
     setDocumentWidth(initialWidth);
 
-    // 레이아웃 조건 초기 설정
-    setUseFullHeight(true); // 예시로 전체 높이를 사용하는 상태로 설정
-    setTotalOffset(64); // 예시로 64px의 오프셋을 설정
+    setUseFullHeight(true);
+    setTotalOffset(64);
   }, [setUseFullHeight, setTotalOffset]);
 
   useEffect(() => {
@@ -53,9 +54,9 @@ const StartPage = () => {
     localStorage.setItem('query', query);
   }, [query]);
 
-  const handleSelectCategory = (categoryId) => {
+  const handleSelectCategory = useCallback((categoryId) => {
     setSelectedCategoryId(categoryId);
-  };
+  }, []);
 
   const toggleEditor = () => {
     setIsEditorOpen(!isEditorOpen);
@@ -75,13 +76,10 @@ const StartPage = () => {
         if (!response.ok) {
           throw new Error('Database creation failed');
         }
-
-        console.log('Database created successfully');
       } catch (error) {
         console.error('Error creating database:', error);
       }
     };
-
     createDatabase();
   }, [apiInitUrl]);
 
@@ -98,25 +96,42 @@ const StartPage = () => {
     setEditorWidth(window.innerWidth - newDocumentWidth);
   };
 
-  // 조건부로 클래스를 설정합니다.
   const container = `flex justify-center mx-auto duration-500 h-full ${useFullHeight ? `h-[calc(100vh-${totalOffset}px)]` : 'min-h-screen'} ${isFullWidth ? 'w-full px-8' : 'max-w-content-full'}`;
   const documentWrap = `flex min-w-80 flex-row justify-center flex-grow gap-4`;
-  const editorWrap = `max-w-content-full min-w-content-half ${isEditorOpen ? 'flex' : 'hidden'} flex-grow`;
+  const editorWrap = `max-w-content-full min-w-quarter ${isEditorOpen ? 'flex' : 'hidden'} flex-grow`;
   const toggleBtn = `fixed w-16 h-16 flex flex-col justify-center items-center gap-1 right-12 bottom-12 rounded-lg shadow-lg hover:opacity-80 duration-300 font-bold`;
   const btnBg = isEditorOpen 
     ? (isDarkMode ? 'bg-slate-500 text-slate-900' : 'bg-slate-400 text-slate-50') 
     : (isDarkMode ? 'bg-primaryDark text-slate-900' : 'bg-primaryLight text-slate-50');
   const buttonClass = `${toggleBtn} ${btnBg}`;
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const data = await getCategoryList();
+        if (data && Array.isArray(data.categories)) {
+          setCategories(data.categories);
+          const firstDocCategory = data.categories.find(category => category.Tree === 'doc');
+          if (firstDocCategory) {
+            setSelectedCategoryId(firstDocCategory.Id);
+          }
+        }
+      } catch (error) {
+        console.error('카테고리 가져오는 중 오류 발생:', error);
+      }
+    };
+    fetchCategories();
+  }, []);
+
   return (
     <section className={container}>
       <div className={documentWrap} style={{ width: documentWidth }}>
-        <CategoryList onSelectCategory={handleSelectCategory} />
-        {selectedCategoryId ? (
-          <Content documentId={selectedCategoryId} key={selectedCategoryId} />
-        ) : (
-          <p>카테고리를 선택해주세요.</p>
-        )}
+        <CategoryList 
+          categories={categories}
+          selectedCategoryId={selectedCategoryId}
+          onSelectCategory={handleSelectCategory} 
+        />
+        <Content documentId={selectedCategoryId} key={selectedCategoryId} />
       </div>
       {isEditorOpen && (
         <ResizeHandler
@@ -139,4 +154,4 @@ const StartPage = () => {
   );
 };
 
-export default StartPage;
+export default Start;

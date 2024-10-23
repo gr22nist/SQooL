@@ -1,8 +1,5 @@
-// components/editor/ResultSection.js
-
 import React, { useEffect, useMemo } from "react";
-import useDarkMode from "../../hooks/useDarkMode";
-import useStore from '../../store/useStore';
+import useStore from '@/store/useStore';
 
 /**
  * DataTable 컴포넌트
@@ -55,9 +52,9 @@ const ResultSection = ({ queryResult, minHeight }) => {
 
   useEffect(() => {
     if (queryResult.error) {
-      showToast(queryResult.error, 'error'); // 에러 발생 시 토스트 메시지 표시
+      showToast(queryResult.error, 'error');
     } else if (queryResult.message) {
-      showToast(queryResult.message, 'success'); // 성공 메시지 표시
+      showToast(queryResult.message, 'success');
     }
   }, [queryResult, showToast]);
 
@@ -76,7 +73,7 @@ const ResultSection = ({ queryResult, minHeight }) => {
   }, [queryResult, isDarkMode]);
 
   const containerClass = `w-full flex flex-col rounded-lg border ${isDarkMode ? "border-slate-800" : "border-slate-200"} flex-grow`;
-  const headerClass = `w-full p-4 flex justify-between items-center font-bold rounded-t-lg ${isDarkMode ? "bg-slate-800 text-slate-50" : "bg-slate-200 text-slate-600"}`;
+  const headerClass = `w-full p-4 flex justify-between items-center text-sm font-bold rounded-t-lg ${isDarkMode ? "bg-slate-800 text-slate-50" : "bg-slate-200 text-slate-600"}`;
   const resultAreaClass = `w-full h-full p-4 flex-grow overflow-auto`;
 
   return (

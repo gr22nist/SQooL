@@ -1,11 +1,9 @@
-// components/start/Content.js
-
 import React, { useEffect, useState } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { getContent } from './Api';
-import useStore from '../../store/useStore';
+import useStore from '@/store/useStore';
 import DOMPurify from 'dompurify';
-import LoadingSpinner from '../../components/LoadingSpinner';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 /**
  * Content 컴포넌트
@@ -19,45 +17,51 @@ import LoadingSpinner from '../../components/LoadingSpinner';
  */
 const Content = ({ documentId }) => {
   const [content, setContent] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const { isDarkMode } = useStore();
 
   useEffect(() => {
     const fetchContent = async () => {
+      if (!documentId) return;
+      
+      setIsLoading(true);
       try {
-        console.log(`Fetching content for document ID: ${documentId}`);
         const data = await getContent(documentId);
-        console.log('문서 데이터:', data);
         setContent(data.document);
       } catch (error) {
         console.error('문서 가져오는 중 오류 발생:', error);
-        setContent(null); 
+        setContent(null);
       } finally {
         setIsLoading(false);
       }
     };
 
-    if (documentId) {
-      setIsLoading(true);
-      fetchContent(); 
-    }
+    fetchContent();
   }, [documentId]);
+
+  const container = `w-full h-full flex flex-col flex-grow rounded-lg border-1 ${isDarkMode ? "border-slate-800" : "border-slate-200"}`;
+  const contentHead = `w-full p-4 font-bold rounded-tl-lg rounded-tr-lg ${isDarkMode ? "bg-slate-800 text-slate-50" : "bg-slate-200 text-slate-600"}`;
+  const contentField = `w-full max-w-none p-4 flex-grow items-center overflow-y-auto scrollbar-hide ${isDarkMode ? "text-slate-50" : "text-slate-900"} prose ${isDarkMode ? "prose-dark" : ""}`;
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <LoadingSpinner />
+      <div className={container}>
+        <div className="flex justify-center items-center h-full">
+          <LoadingSpinner />
+        </div>
       </div>
     );
   }
 
   if (!content) {
-    return <div className='w-full h-full flex justify-center items-center'>로딩 오류가 발생했습니다</div>;
+    return (
+      <div className={container}>
+        <div className="flex justify-center items-center h-full">
+          <p>카테고리를 선택해주세요</p>
+        </div>
+      </div>
+    );
   }
-
-  const container = `w-full h-full flex flex-col flex-grow rounded-lg border-1 ${isDarkMode ? "border-slate-800" : "border-slate-200"}`;
-  const contentHead = `w-full p-4 font-bold rounded-tl-lg rounded-tr-lg ${isDarkMode ? "bg-slate-800 text-slate-50" : "bg-slate-200 text-slate-600"}`;
-  const contentField = `w-full max-w-none p-4 flex-grow items-center overflow-y-auto scrollbar-hide ${isDarkMode ? "text-slate-50" : "text-slate-900"} prose ${isDarkMode ? "prose-dark" : ""}`;
 
   const cleanContent = DOMPurify.sanitize(content.Content);
 

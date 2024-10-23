@@ -5,7 +5,7 @@ import { EditorView, basicSetup } from "codemirror";
 import { sql } from "@codemirror/lang-sql";
 import { autocompletion } from "@codemirror/autocomplete";
 import { createSqoolTheme } from "./Styles";
-import { CodeCopy, DBReset } from "../IconSet";
+import { CodeCopy, DBReset } from "../icons/IconSet";
 import { sqliteCompletion } from "./SqliteKeywords";
 import { keymap } from "@codemirror/view";
 import { defaultKeymap } from "@codemirror/commands";
@@ -65,8 +65,8 @@ const QuerySection = ({ initialValue, editorHeight, executeQuery, minHeight = 32
   }, [queryValue, isDarkMode, setEditorView, executeQuery]);
 
   const handleCopyCode = () => {
-    if (editorViewRef.current) {
-      const code = editorViewRef.current.state.doc.toString();
+    if (editorView.current) {
+      const code = editorView.current.state.doc.toString();
       navigator.clipboard.writeText(code).then(() => {
         showToast('코드 복사 성공!', 'success');
       }).catch((err) => {
@@ -79,7 +79,7 @@ const QuerySection = ({ initialValue, editorHeight, executeQuery, minHeight = 32
   };
 
   const queryWrap = `w-full flex flex-col rounded-lg border ${isDarkMode ? "border-slate-800" : "border-slate-200"}`;
-  const queryHead = `w-full p-4 flex justify-between items-center font-bold rounded-tl-lg rounded-tr-lg ${isDarkMode ? "bg-primaryDark text-slate-50" : "bg-primaryLight text-slate-600"} bg-opacity-10`;
+  const queryHead = `w-full p-4 flex justify-between items-center text-sm font-bold rounded-tl-lg rounded-tr-lg ${isDarkMode ? "bg-primaryDark text-slate-50" : "bg-primaryLight text-slate-600"} bg-opacity-10`;
   const editorBtn = `px-3 py-2 rounded-lg flex justify-center items-center gap-2 font-bold ${isDarkMode ? "bg-slate-900 text-slate-400" : "bg-slate-50 text-slate-500"} hover:opacity-80 transition-opacity duration-500`;
   const editorIcon = `${isDarkMode ? "fill-primaryDark" : "fill-primaryLight"}`;
   const queryBtn = `w-full py-3 mt-2 rounded-lg ${isDarkMode ? "bg-primaryDark text-slate-900 hover:bg-secondaryDark" : "bg-primaryLight text-slate-50 hover:bg-secondaryLight"} font-bold transition-colors duration-500`;
