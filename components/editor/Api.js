@@ -2,6 +2,8 @@ const apiInitUrl = process.env.NEXT_PUBLIC_API_INIT_URL;
 const apiQueryUrl = process.env.NEXT_PUBLIC_API_QUERY_URL;
 const DB_NAME = 'Artist';
 
+let sessionId = null;
+
 const handleResponse = async (response) => {
   const result = await response.json();
   if (!response.ok) {
@@ -12,18 +14,24 @@ const handleResponse = async (response) => {
 
 export const createDatabase = async () => {
   try {
-    const result = await fetch(apiInitUrl, {
+    const response = await fetch(apiInitUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: JSON.stringify({ dbname: DB_NAME }),
       credentials: 'include',
-    }).then(handleResponse);
+    });
 
+    if (!response.ok) {
+      throw new Error('Database creation failed');
+    }
+
+    const result = await response.json();
+    sessionId = result.sessionId;
     return result;
   } catch (error) {
-
+    console.error('Error creating database:', error);
     throw error;
   }
 };
@@ -47,17 +55,23 @@ export const resetDatabase = async () => {
 };
 
 export const executeQuery = async (query, setQueryResult) => {
-
   try {
-    const result = await fetch(apiQueryUrl, {
+    const response = await fetch(apiQueryUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
+        'X-Session-ID': sessionId,
       },
       body: JSON.stringify({ query, dbname: DB_NAME }),
       credentials: 'include',
-    }).then(handleResponse);
+    });
 
+    if (response.status === 412) {
+      await createDatabase();
+      return executeQuery(query, setQueryResult);
+    }
+
+    const result = await response.json();
     setQueryResult({
       message: result.message,
       columns: result.columns || [],

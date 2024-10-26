@@ -11,36 +11,9 @@ import useStore from '@/store/useStore';
  * @returns {JSX.Element} SQL 편집기 페이지를 렌더링하는 컴포넌트
  */
 const Editor = () => {
-  const apiInitUrl = process.env.NEXT_PUBLIC_API_INIT_URL;
   const isFullWidth = useStore((state) => state.isFullWidth);
   const totalOffset = useStore((state) => state.totalOffset);
   const [queryResult, setQueryResult] = useState({ columns: [], rows: [] });
-
-  useEffect(() => {
-    /**
-     * createDatabase 함수
-     * - API를 호출하여 데이터베이스를 생성합니다.
-     * - 페이지가 로드될 때 한 번 실행됩니다.
-     */
-    const createDatabase = async () => {
-      try {
-        const response = await fetch(apiInitUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json; charset=UTF-8'
-          },
-          body: JSON.stringify({ dbname: "Artist" }),
-        });
-        if (!response.ok) {
-          throw new Error('Database creation failed');
-        }
-      } catch (error) {
-        console.error('Error creating database:', error);
-      }
-    };
-
-    createDatabase();
-  }, [apiInitUrl]);
 
   const container = `max-w-content-full mx-auto h-full min-h-[calc(100vh-${totalOffset}px)]`;
 

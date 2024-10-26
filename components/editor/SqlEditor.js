@@ -20,10 +20,17 @@ const SQLEditor = ({ initialValue, page }) => {
 
   // 데이터베이스 초기화를 위한 useEffect
   useEffect(() => {
-    createDatabase().catch((error) => {
-      console.error("Database initialization failed:", error);
-      showToast('데이터베이스 초기화에 실패했습니다.', 'error');
-    });
+    const initDatabase = async () => {
+      try {
+        await createDatabase();
+        showToast('데이터베이스가 초기화되었습니다.', 'success');
+      } catch (error) {
+        console.error("Database initialization failed:", error);
+        showToast('데이터베이스 초기화에 실패했습니다.', 'error');
+      }
+    };
+
+    initDatabase();
   }, [showToast]);
 
   // SQL 쿼리 실행 함수
