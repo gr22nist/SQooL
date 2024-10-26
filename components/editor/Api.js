@@ -13,62 +13,50 @@ const handleResponse = async (response) => {
 };
 
 export const createDatabase = async () => {
-  try {
-    const response = await fetch(apiInitUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: JSON.stringify({ dbname: DB_NAME }),
-      credentials: 'include',
-    });
+  if (sessionId) return;
 
-    if (!response.ok) {
-      throw new Error('Database creation failed');
-    }
+  const response = await fetch(apiInitUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+    body: JSON.stringify({ dbname: DB_NAME }),
+    credentials: 'include',
+  });
 
-    const result = await response.json();
-    sessionId = result.sessionId;
-    return result;
-  } catch (error) {
-    console.error('Error creating database:', error);
-    throw error;
+  if (!response.ok) {
+    throw new Error('Database creation failed');
   }
+
+  const result = await response.json();
+  sessionId = result.sessionId;
 };
 
 export const resetDatabase = async () => {
-  try {
-    const result = await fetch(apiInitUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: JSON.stringify({ dbname: DB_NAME, reset: true }),
-      credentials: 'include',
-    }).then(handleResponse);
-
-    return result;
-  } catch (error) {
-    console.error('Error resetting database:', error);
-    throw error;
-  }
+  sessionId = null;
+  return fetch(apiInitUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+    body: JSON.stringify({ dbname: DB_NAME, reset: true }),
+    credentials: 'include',
+  }).then(handleResponse);
 };
 
 export const executeQuery = async (query, setQueryResult) => {
   try {
+    if (!sessionId) {
+      await createDatabase();
+    }
+
     const response = await fetch(apiQueryUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
-        'X-Session-ID': sessionId,
       },
       body: JSON.stringify({ query, dbname: DB_NAME }),
       credentials: 'include',
     });
 
-    if (response.status === 412) {
-      await createDatabase();
-      return executeQuery(query, setQueryResult);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     const result = await response.json();

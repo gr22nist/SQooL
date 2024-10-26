@@ -15,25 +15,8 @@ const SQLEditor = ({ initialValue, page }) => {
   const [queryResult, setQueryResult] = useState({ columns: [], rows: [] });
   const [editorHeight, setEditorHeight] = useState(400);
   const editorViewRef = useRef(null);
-  const { isDarkMode } = useStore();
   const { showToast } = useStore();
 
-  // 데이터베이스 초기화를 위한 useEffect
-  useEffect(() => {
-    const initDatabase = async () => {
-      try {
-        await createDatabase();
-        showToast('데이터베이스가 초기화되었습니다.', 'success');
-      } catch (error) {
-        console.error("Database initialization failed:", error);
-        showToast('데이터베이스 초기화에 실패했습니다.', 'error');
-      }
-    };
-
-    initDatabase();
-  }, [showToast]);
-
-  // SQL 쿼리 실행 함수
   const executeQuery = useCallback(() => {
     const editorView = editorViewRef.current;
     if (editorView) {
@@ -44,10 +27,10 @@ const SQLEditor = ({ initialValue, page }) => {
       });
     } else {
       console.error("EditorView is not initialized");
+      showToast('에디터가 초기화되지 않았습니다.', 'error');
     }
   }, [showToast]);
 
-  // 데이터베이스 초기화 함수
   const resetDatabase = useCallback(() => {
     resetDatabaseApi().then(() => {
       setQueryResult({ columns: [], rows: [] });
