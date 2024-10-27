@@ -13,6 +13,8 @@ const handleResponse = async (response) => {
 };
 
 export const createDatabase = async () => {
+  if (sessionId) return;
+
   const response = await fetch(apiInitUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json; charset=UTF-8' },
@@ -25,30 +27,26 @@ export const createDatabase = async () => {
   }
 
   const result = await response.json();
-  return result.sqldb_id;
+  sessionId = result.sessionId;
 };
 
 export const resetDatabase = async () => {
   sessionId = null;
-  const response = await fetch(apiInitUrl, {
+  return fetch(apiInitUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json; charset=UTF-8' },
     body: JSON.stringify({ dbname: DB_NAME, reset: true }),
     credentials: 'include',
-  });
-  
-  if (!response.ok) {
-    throw new Error('Database reset failed');
-  }
-
-  const result = await response.json();
-  sessionId = result.sessionId;  // 새로운 세션 ID를 저장
-  return result;
+  }).then(handleResponse);
 };
 
 export const executeQuery = async (query, setQueryResult) => {
   try {
-    let response = await fetch(apiQueryUrl, {
+    if (!sessionId) {
+      await createDatabase();
+    }
+
+    const response = await fetch(apiQueryUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
@@ -56,20 +54,6 @@ export const executeQuery = async (query, setQueryResult) => {
       body: JSON.stringify({ query, dbname: DB_NAME }),
       credentials: 'include',
     });
-
-    if (response.status === 412) {
-      // 세션이 만료되었거나 sqldb_id가 없는 경우
-      await createDatabase();
-      // 데이터베이스를 새로 생성한 후 쿼리를 다시 실행
-      response = await fetch(apiQueryUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: JSON.stringify({ query, dbname: DB_NAME }),
-        credentials: 'include',
-      });
-    }
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
