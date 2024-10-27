@@ -64,8 +64,8 @@ const QuerySection = ({ initialValue, editorHeight, executeQuery, minHeight = 32
   }, [queryValue, isDarkMode, setEditorView, executeQuery]);
 
   const handleCopyCode = () => {
-    if (editorViewRef.current) {
-      const code = editorViewRef.current.state.doc.toString();
+    if (editorView.current) {
+      const code = editorView.current.state.doc.toString();
       navigator.clipboard.writeText(code).then(() => {
         showToast('코드 복사 성공!', 'success');
       }).catch((err) => {
@@ -83,6 +83,16 @@ const QuerySection = ({ initialValue, editorHeight, executeQuery, minHeight = 32
   const editorIcon = `${isDarkMode ? "fill-primaryDark" : "fill-primaryLight"}`;
   const queryBtn = `w-full py-3 mt-2 rounded-lg ${isDarkMode ? "bg-primaryDark text-slate-900 hover:bg-secondaryDark" : "bg-primaryLight text-slate-50 hover:bg-secondaryLight"} font-bold transition-colors duration-500`;
 
+  const handleResetDatabase = () => {
+    resetDatabase();
+    if (editorView.current) {
+      editorView.current.dispatch({
+        changes: { from: 0, to: editorView.current.state.doc.length, insert: '' }
+      });
+    }
+    setQueryValue('');
+  };
+
   return (
     <section className={queryWrap} style={{ minHeight: `${minHeight}px`, height: `${editorHeight}px` }}>
       <div className={queryHead}>
@@ -92,7 +102,7 @@ const QuerySection = ({ initialValue, editorHeight, executeQuery, minHeight = 32
             <CodeCopy width={20} height={20} className={editorIcon} />
             코드 복사
           </button>
-          <button className={editorBtn} onClick={resetDatabase}>
+          <button className={editorBtn} onClick={handleResetDatabase}>
             <DBReset width={20} height={20} className={editorIcon} />
             DB 초기화
           </button>

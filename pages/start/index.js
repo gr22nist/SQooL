@@ -131,11 +131,7 @@ const Start = () => {
           selectedCategoryId={selectedCategoryId}
           onSelectCategory={handleSelectCategory} 
         />
-        {selectedCategoryId ? (
-          <Content documentId={selectedCategoryId} key={selectedCategoryId} />
-        ) : (
-          <p>카테고리를 선택해주세요.</p>
-        )}
+        <Content documentId={selectedCategoryId} key={selectedCategoryId} />
       </div>
       {isEditorOpen && (
         <ResizeHandler

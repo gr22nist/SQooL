@@ -32,12 +32,20 @@ export const createDatabase = async () => {
 
 export const resetDatabase = async () => {
   sessionId = null;
-  return fetch(apiInitUrl, {
+  const response = await fetch(apiInitUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json; charset=UTF-8' },
     body: JSON.stringify({ dbname: DB_NAME, reset: true }),
     credentials: 'include',
-  }).then(handleResponse);
+  });
+  
+  if (!response.ok) {
+    throw new Error('Database reset failed');
+  }
+
+  const result = await response.json();
+  sessionId = result.sessionId;  // 새로운 세션 ID를 저장
+  return result;
 };
 
 export const executeQuery = async (query, setQueryResult) => {

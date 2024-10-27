@@ -43,6 +43,26 @@ const Content = ({ documentId }) => {
   const contentHead = `w-full p-4 font-bold rounded-tl-lg rounded-tr-lg ${isDarkMode ? "bg-slate-800 text-slate-50" : "bg-slate-200 text-slate-600"}`;
   const contentField = `w-full max-w-none p-4 flex-grow items-center overflow-y-auto scrollbar-hide ${isDarkMode ? "text-slate-50" : "text-slate-900"} prose ${isDarkMode ? "prose-dark" : ""}`;
 
+  if (isLoading) {
+    return (
+      <div className={container}>
+        <div className="flex justify-center items-center h-full">
+          <LoadingSpinner />
+        </div>
+      </div>
+    );
+  }
+
+  if (!content) {
+    return (
+      <div className={container}>
+        <div className="flex justify-center items-center h-full">
+          <p>카테고리를 선택해주세요</p>
+        </div>
+      </div>
+    );
+  }
+
   const cleanContent = DOMPurify.sanitize(content.Content);
 
   return (
