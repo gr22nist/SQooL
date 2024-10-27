@@ -5,9 +5,11 @@ import SQLEditor from '@/components/editor/SqlEditor';
 import ResizeHandler from '@/components/ResizeHandler';
 import { HeroBtn } from '@/components/icons/IconSet';
 import useStore from '@/store/useStore';
+import { getCategoryList } from '@/components/start/Api';
 
-const StartPage = () => {
+const Start = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+  const [categories, setCategories] = useState([]);
   const [isEditorOpen, setIsEditorOpen] = useState(true);
   const [editorWidth, setEditorWidth] = useState(500);
   const [documentWidth, setDocumentWidth] = useState(1000);
@@ -103,10 +105,32 @@ const StartPage = () => {
     : (isDarkMode ? 'bg-primaryDark text-slate-900' : 'bg-primaryLight text-slate-50');
   const buttonClass = `${toggleBtn} ${btnBg}`;
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const data = await getCategoryList();
+        if (data && Array.isArray(data.categories)) {
+          setCategories(data.categories);
+          const firstDocCategory = data.categories.find(category => category.Tree === 'doc');
+          if (firstDocCategory) {
+            setSelectedCategoryId(firstDocCategory.Id);
+          }
+        }
+      } catch (error) {
+        console.error('카테고리 가져오는 중 오류 발생:', error);
+      }
+    };
+    fetchCategories();
+  }, []);
+
   return (
     <section className={container}>
       <div className={documentWrap} style={{ width: documentWidth }}>
-        <CategoryList onSelectCategory={handleSelectCategory} />
+        <CategoryList 
+          categories={categories}
+          selectedCategoryId={selectedCategoryId}
+          onSelectCategory={handleSelectCategory} 
+        />
         {selectedCategoryId ? (
           <Content documentId={selectedCategoryId} key={selectedCategoryId} />
         ) : (
@@ -134,4 +158,4 @@ const StartPage = () => {
   );
 };
 
-export default StartPage;
+export default Start;
