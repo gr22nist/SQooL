@@ -48,7 +48,7 @@ export const resetDatabase = async () => {
 
 export const executeQuery = async (query, setQueryResult) => {
   try {
-    const response = await fetch(apiQueryUrl, {
+    let response = await fetch(apiQueryUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
@@ -60,7 +60,15 @@ export const executeQuery = async (query, setQueryResult) => {
     if (response.status === 412) {
       // 세션이 만료되었거나 sqldb_id가 없는 경우
       await createDatabase();
-      return executeQuery(query, setQueryResult);  // 재귀적으로 다시 시도
+      // 데이터베이스를 새로 생성한 후 쿼리를 다시 실행
+      response = await fetch(apiQueryUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify({ query, dbname: DB_NAME }),
+        credentials: 'include',
+      });
     }
 
     if (!response.ok) {
