@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import QuerySection from './QuerySection';
 import ResultSection from './ResultSection';
-import { createDatabase, executeQuery as executeQueryApi, resetDatabase as resetDatabaseApi } from './Api';
+import { executeQuery as executeQueryApi, resetDatabase as resetDatabaseApi } from './Api';
 import ResizeHandler from'../ResizeHandler';
 import useStore from '@/store/useStore';
 

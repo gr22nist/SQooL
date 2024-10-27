@@ -3,6 +3,7 @@ const apiQueryUrl = process.env.NEXT_PUBLIC_API_QUERY_URL;
 const DB_NAME = 'Artist';
 
 let sessionId = null;
+let isDbInitialized = false;
 
 const handleResponse = async (response) => {
   const result = await response.json();
@@ -13,8 +14,6 @@ const handleResponse = async (response) => {
 };
 
 export const createDatabase = async () => {
-  if (sessionId) return;
-
   const response = await fetch(apiInitUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json; charset=UTF-8' },
@@ -27,7 +26,7 @@ export const createDatabase = async () => {
   }
 
   const result = await response.json();
-  sessionId = result.sessionId;
+  sessionId = result.sqldb_id;
 };
 
 export const resetDatabase = async () => {
@@ -42,8 +41,9 @@ export const resetDatabase = async () => {
 
 export const executeQuery = async (query, setQueryResult) => {
   try {
-    if (!sessionId) {
+    if (!isDbInitialized) {
       await createDatabase();
+      isDbInitialized = true;
     }
 
     const response = await fetch(apiQueryUrl, {
@@ -74,5 +74,6 @@ export const executeQuery = async (query, setQueryResult) => {
       rows: [],
       error: error.message
     });
+    throw error;
   }
 };
