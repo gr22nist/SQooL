@@ -1,6 +1,6 @@
 const apiInitUrl = process.env.NEXT_PUBLIC_API_INIT_URL;
 const apiQueryUrl = process.env.NEXT_PUBLIC_API_QUERY_URL;
-const DB_NAME = 'Artist'; 
+const DB_NAME = 'Artist';
 
 export const createDatabase = async () => {
   try {
@@ -10,7 +10,7 @@ export const createDatabase = async () => {
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: JSON.stringify({ name: DB_NAME }),
+      body: JSON.stringify({ dbname: DB_NAME }),
       credentials: 'include',
     });
 
@@ -34,7 +34,7 @@ export const resetDatabase = async () => {
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: JSON.stringify({ dbname: 'Artist', reset: true }),
+      body: JSON.stringify({ dbname: DB_NAME, reset: true }),
       credentials: 'include',
     });
 
