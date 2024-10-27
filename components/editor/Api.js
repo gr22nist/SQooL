@@ -13,8 +13,6 @@ const handleResponse = async (response) => {
 };
 
 export const createDatabase = async () => {
-  if (sessionId) return;
-
   const response = await fetch(apiInitUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json; charset=UTF-8' },
@@ -27,7 +25,7 @@ export const createDatabase = async () => {
   }
 
   const result = await response.json();
-  sessionId = result.sessionId;
+  return result.sqldb_id;
 };
 
 export const resetDatabase = async () => {
@@ -50,10 +48,6 @@ export const resetDatabase = async () => {
 
 export const executeQuery = async (query, setQueryResult) => {
   try {
-    if (!sessionId) {
-      await createDatabase();
-    }
-
     const response = await fetch(apiQueryUrl, {
       method: 'POST',
       headers: {
@@ -62,6 +56,12 @@ export const executeQuery = async (query, setQueryResult) => {
       body: JSON.stringify({ query, dbname: DB_NAME }),
       credentials: 'include',
     });
+
+    if (response.status === 412) {
+      // 세션이 만료되었거나 sqldb_id가 없는 경우
+      await createDatabase();
+      return executeQuery(query, setQueryResult);  // 재귀적으로 다시 시도
+    }
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
