@@ -26,7 +26,7 @@ const CategoryList = ({ categories, selectedCategoryId, onSelectCategory }) => {
         {categories.map(category => {
           const isSelected = selectedCategoryId === category.Id;
           const treeClass = category.Tree === 'doc' ? 'cursor-pointer indent-2' : 'cursor-default text-slate-400';
-          const selectedClass = isSelected ? (isDarkMode ? 'bg-primaryDark text-slate-900 font-bold' : 'bg-primaryLight text-slate-50 font-bold') : '';
+          const selectedClass = isSelected ? (isDarkMode ? 'bg-primaryDark text-slate-900 font-bold ' : 'bg-primaryLight text-slate-50 font-bold ') : 'text-sm';
           const hoverClass = category.Tree === 'doc' ? (isDarkMode ? 'hover:bg-secondaryDark hover:text-slate-900 font-bold' : 'hover:bg-secondaryLight hover:text-slate-50 font-bold') : '';
 
           return (
