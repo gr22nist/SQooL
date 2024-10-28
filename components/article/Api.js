@@ -3,8 +3,6 @@ const articleDetailUrl = process.env.NEXT_PUBLIC_API_ARTICLE_DETAIL_URL;
 const contentsBaseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const adjustImagePaths = (htmlContent) => {
-  const contentsBaseUrl = 'https://back.sqool.kr';
-
   const div = document.createElement("div");
   div.innerHTML = htmlContent;
   const images = div.getElementsByTagName("img");
@@ -22,13 +20,11 @@ const adjustImagePaths = (htmlContent) => {
 
 export const getArticleList = async (page, perPage, category) => {
   try {
-      console.log('Fetching articles from:', `${articleListUrl}?page=${page}&perpage=${perPage}&category=${category}`);
       const response = await fetch(`${articleListUrl}?page=${page}&perpage=${perPage}&category=${category}`);
       if (!response.ok) {
           throw new Error(`Failed to fetch articles: ${response.statusText}`);
       }
       const data = await response.json();
-      console.log('Fetched article list data:', data);
       const articleList = data.articlelist || [];
       return articleList.map(article => ({
           ...article,
@@ -44,13 +40,11 @@ export const getArticleList = async (page, perPage, category) => {
 
 export const getArticleDetail = async (articleId) => {
   try {
-      console.log(`Fetching article detail for ID: ${articleId}`);
       const response = await fetch(`${articleDetailUrl}/${articleId}`);
       if (!response.ok) {
           throw new Error(`Failed to fetch article detail: ${response.statusText}`);
       }
       const data = await response.json();
-      console.log('Fetched article detail data:', data);
       const articleInfo = data.article || {};
 
       return {
