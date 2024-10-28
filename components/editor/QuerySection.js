@@ -5,7 +5,7 @@ import { EditorView, basicSetup } from "codemirror";
 import { sql } from "@codemirror/lang-sql";
 import { autocompletion } from "@codemirror/autocomplete";
 import { createSqoolTheme } from "./Styles";
-import { CodeCopy, DBReset } from "../IconSet";
+import { CodeCopy, DBReset } from "../icons/IconSet";
 import { sqliteCompletion } from "./SqliteKeywords";
 import { keymap } from "@codemirror/view";
 import { defaultKeymap } from "@codemirror/commands";
