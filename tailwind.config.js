@@ -4,6 +4,7 @@ import * as colors from './tailwind/colors.js';
 import * as fonts from './tailwind/fonts.js';
 import flowbite from 'flowbite/plugin';
 import typography from '@tailwindcss/typography';
+import scrollbarHide from 'tailwind-scrollbar-hide';
 
 export const content = [
   "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -68,5 +69,7 @@ export const theme = {
 };
 
 export const plugins = [
-  typography, flowbite
+  typography, 
+  flowbite,
+  scrollbarHide
 ];
