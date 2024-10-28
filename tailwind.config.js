@@ -35,7 +35,7 @@ export const theme = {
       'content-full': '1200px',
     },
     minWidth: {
-      'content-half': '640px',
+      'content-quarter': '320px',
     },
     spacing: {
       'nav': '59px',

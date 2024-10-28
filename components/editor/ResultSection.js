@@ -73,7 +73,7 @@ const ResultSection = ({ queryResult, minHeight }) => {
   }, [queryResult, isDarkMode]);
 
   const containerClass = `w-full flex flex-col rounded-lg border ${isDarkMode ? "border-slate-800" : "border-slate-200"} flex-grow`;
-  const headerClass = `w-full p-4 flex justify-between items-center font-bold rounded-t-lg ${isDarkMode ? "bg-slate-800 text-slate-50" : "bg-slate-200 text-slate-600"}`;
+  const headerClass = `w-full p-4 flex justify-between items-center text-sm font-bold rounded-t-lg ${isDarkMode ? "bg-slate-800 text-slate-50" : "bg-slate-200 text-slate-600"}`;
   const resultAreaClass = `w-full h-full p-4 flex-grow overflow-auto`;
 
   return (

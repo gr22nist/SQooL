@@ -4,7 +4,7 @@ import ArticleDetail from '@/components/article/ArticleDetail';
 import Comment from '@/components/article/Comments';
 import useStore from '@/store/useStore';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import { getArticleDetail } from '@/components/article/Api';
+import { getArticleDetail, getArticleComments, postArticleComment, updateArticleComment, deleteArticleComment } from '@/components/article/Api';
 
 const ArticleDetailPage = () => {
   const router = useRouter();

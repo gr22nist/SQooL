@@ -12,7 +12,7 @@ const ArticleList = ({ articles, onSelectArticle, isLoading, page, perPage, onPa
   }
 
   if (articles.length === 0) {
-      return <div>No articles found</div>;
+      return <div className='flex justify-center items-center font-bold'>게시된 아티클이 없습니다</div>;
   }
 
   const totalPages = Math.max(Math.ceil(articles.length / perPage), 1);
