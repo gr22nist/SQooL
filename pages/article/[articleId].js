@@ -51,7 +51,7 @@ const ArticleDetailPage = () => {
 
   return (
     <div className={container}>
-      <main className='flex-grow w-full flex flex-col items-center p-4'>
+      <main className="flex-grow w-full flex flex-col items-center p-4">
         <ArticleDetail article={article} />
         <Comment 
           articleId={articleId}
@@ -61,7 +61,7 @@ const ArticleDetailPage = () => {
           deleteArticleComment={deleteArticleComment}
         />
       </main>
-      <footer className='w-full flex justify-center p-4'>
+      <footer className="w-full flex justify-center p-4">
         <button 
           onClick={handleBack} 
           className={backBtn}
