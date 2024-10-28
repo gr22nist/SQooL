@@ -21,11 +21,25 @@ const SQLEditor = ({ initialValue, page }) => {
 
   // 데이터베이스 초기화를 위한 useEffect
   useEffect(() => {
-    createDatabase().catch((error) => {
-      console.error("Database initialization failed:", error);
-      showToast('데이터베이스 초기화에 실패했습니다.', 'error');
-    });
-  }, [showToast]);
+    let isInitialized = false;
+
+    const initDB = async () => {
+      if (!isInitialized) {
+        try {
+          await createDatabase();
+          isInitialized = true;
+        } catch (error) {
+          console.error("Database initialization failed:", error);
+        }
+      }
+    };
+
+    initDB();
+
+    return () => {
+      isInitialized = false;
+    };
+  }, []);
 
   // SQL 쿼리 실행 함수
   const executeQuery = useCallback(() => {

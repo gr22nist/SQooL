@@ -2,8 +2,16 @@ const apiInitUrl = process.env.NEXT_PUBLIC_API_INIT_URL;
 const apiQueryUrl = process.env.NEXT_PUBLIC_API_QUERY_URL;
 const DB_NAME = 'Artist';
 
+let isInitializing = false;
+
 export const createDatabase = async () => {
+  if (isInitializing) {
+    console.log('Database initialization already in progress');
+    return;
+  }
+
   try {
+    isInitializing = true;
     console.log('Creating database...');
     const response = await fetch(apiInitUrl, {
       method: 'POST',
@@ -23,6 +31,8 @@ export const createDatabase = async () => {
   } catch (error) {
     console.error('Error creating database:', error);
     throw error;
+  } finally {
+    isInitializing = false;
   }
 };
 
