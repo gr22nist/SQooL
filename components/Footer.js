@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import useStore from '../store/useStore'; 
-import { LinkWISE, LinkGithub, LinkDiscord } from './IconSet';
+import { LinkWISE, LinkGithub } from './icons/IconSet';
 
 const Footer = () => {
   const { isDarkMode } = useStore();
