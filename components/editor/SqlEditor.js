@@ -21,24 +21,16 @@ const SQLEditor = ({ initialValue, page }) => {
 
   // 데이터베이스 초기화를 위한 useEffect
   useEffect(() => {
-    let isInitialized = false;
-
     const initDB = async () => {
-      if (!isInitialized) {
-        try {
-          await createDatabase();
-          isInitialized = true;
-        } catch (error) {
-          console.error("Database initialization failed:", error);
-        }
+      try {
+        await createDatabase();
+        console.log("Database initialized successfully");
+      } catch (error) {
+        console.error("Database initialization failed:", error);
       }
     };
 
     initDB();
-
-    return () => {
-      isInitialized = false;
-    };
   }, []);
 
   // SQL 쿼리 실행 함수

@@ -63,27 +63,6 @@ const Start = () => {
   };
 
   useEffect(() => {
-    const createDatabase = async () => {
-      try {
-        const response = await fetch(apiInitUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json; charset=UTF-8'
-          },
-          body: JSON.stringify({ dbname: "Artist" })
-        });
-
-        if (!response.ok) {
-          throw new Error('Database creation failed');
-        }
-      } catch (error) {
-        console.error('Error creating database:', error);
-      }
-    };
-    createDatabase();
-  }, [apiInitUrl]);
-
-  useEffect(() => {
     if (isEditorOpen) {
       setDocumentWidth(window.innerWidth - editorWidth);
     } else {
