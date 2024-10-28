@@ -1,9 +1,11 @@
-import React, { useState, useRef, useCallback } from 'react';
+// components/editor/SqlEditor.js
+
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import QuerySection from './QuerySection';
 import ResultSection from './ResultSection';
-import { executeQuery as executeQueryApi, resetDatabase as resetDatabaseApi } from './Api';
-import ResizeHandler from'../ResizeHandler';
-import useStore from '@/store/useStore';
+import { createDatabase, executeQuery as executeQueryApi, resetDatabase as resetDatabaseApi } from './Api';
+import ResizeHandler from '../ResizeHandler';
+import useStore from '../../store/useStore';
 
 /**
  * SQLEditor 컴포넌트
@@ -17,6 +19,15 @@ const SQLEditor = ({ initialValue, page }) => {
   const editorViewRef = useRef(null);
   const { showToast } = useStore();
 
+  // 데이터베이스 초기화를 위한 useEffect
+  useEffect(() => {
+    createDatabase().catch((error) => {
+      console.error("Database initialization failed:", error);
+      showToast('데이터베이스 초기화에 실패했습니다.', 'error');
+    });
+  }, [showToast]);
+
+  // SQL 쿼리 실행 함수
   const executeQuery = useCallback(() => {
     const editorView = editorViewRef.current;
     if (editorView) {
@@ -27,10 +38,10 @@ const SQLEditor = ({ initialValue, page }) => {
       });
     } else {
       console.error("EditorView is not initialized");
-      showToast('에디터가 초기화되지 않았습니다.', 'error');
     }
   }, [showToast]);
 
+  // 데이터베이스 초기화 함수
   const resetDatabase = useCallback(() => {
     resetDatabaseApi().then(() => {
       setQueryResult({ columns: [], rows: [] });

@@ -1,10 +1,11 @@
+// components/editor/QuerySection.js
 import React, { useRef, useEffect, useState } from "react";
-import useStore from '@/store/useStore';
+import useStore from '../../store/useStore';
 import { EditorView, basicSetup } from "codemirror";
 import { sql } from "@codemirror/lang-sql";
 import { autocompletion } from "@codemirror/autocomplete";
 import { createSqoolTheme } from "./Styles";
-import { CodeCopy, DBReset } from "../icons/IconSet";
+import { CodeCopy, DBReset } from "../IconSet";
 import { sqliteCompletion } from "./SqliteKeywords";
 import { keymap } from "@codemirror/view";
 import { defaultKeymap } from "@codemirror/commands";
@@ -83,16 +84,6 @@ const QuerySection = ({ initialValue, editorHeight, executeQuery, minHeight = 32
   const editorIcon = `${isDarkMode ? "fill-primaryDark" : "fill-primaryLight"}`;
   const queryBtn = `w-full py-3 mt-2 rounded-lg ${isDarkMode ? "bg-primaryDark text-slate-900 hover:bg-secondaryDark" : "bg-primaryLight text-slate-50 hover:bg-secondaryLight"} font-bold transition-colors duration-500`;
 
-  const handleResetDatabase = () => {
-    resetDatabase();
-    if (editorView.current) {
-      editorView.current.dispatch({
-        changes: { from: 0, to: editorView.current.state.doc.length, insert: '' }
-      });
-    }
-    setQueryValue('');
-  };
-
   return (
     <section className={queryWrap} style={{ minHeight: `${minHeight}px`, height: `${editorHeight}px` }}>
       <div className={queryHead}>
@@ -102,7 +93,7 @@ const QuerySection = ({ initialValue, editorHeight, executeQuery, minHeight = 32
             <CodeCopy width={20} height={20} className={editorIcon} />
             코드 복사
           </button>
-          <button className={editorBtn} onClick={handleResetDatabase}>
+          <button className={editorBtn} onClick={resetDatabase}>
             <DBReset width={20} height={20} className={editorIcon} />
             DB 초기화
           </button>
