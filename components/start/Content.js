@@ -39,9 +39,11 @@ const Content = ({ documentId }) => {
     fetchContent();
   }, [documentId]);
 
-  const container = `w-full h-full flex flex-col flex-grow rounded-lg border-1 ${isDarkMode ? "border-slate-800" : "border-slate-200"}`;
+  const container = `w-full h-full flex flex-col rounded-lg border-1 ${isDarkMode ? "border-slate-800" : "border-slate-200"}`;
   const contentHead = `w-full p-4 text-sm font-bold rounded-tl-lg rounded-tr-lg ${isDarkMode ? "bg-slate-800 text-slate-50" : "bg-slate-200 text-slate-600"}`;
-  const contentField = `w-full p-4 text-sm items-center overflow-y-auto scrollbar-hide ${isDarkMode ? "text-slate-50" : "text-slate-900"} prose ${isDarkMode ? "prose-dark" : ""}`;
+  const contentField = `w-full p-4 text-sm items-center overflow-y-auto prose prose-slate max-w-none ${
+    isDarkMode ? "text-slate-50 prose-dark" : "text-slate-900"
+  }`;
 
   if (isLoading) {
     return (
