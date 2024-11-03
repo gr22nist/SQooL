@@ -80,8 +80,21 @@ const Slider = ({ slides }) => {
     }
   };
 
-  const slider = `max-w-content-full py-10 relative overflow-hidden scrollbar-hide cursor-grab`;
-  const slidesWrapper = `flex ${transitionEnabled ? 'transition-transform duration-500 ease-in-out' : ''}`;
+  const slider = `
+    w-full 
+    max-w-[calc(100vw-32px)] // 양쪽 패딩을 고려한 최대 너비
+    py-10 
+    relative 
+    overflow-hidden 
+    scrollbar-hide 
+    cursor-grab
+  `;
+
+  const slidesWrapper = `
+    flex 
+    w-full
+    ${transitionEnabled ? 'transition-transform duration-500 ease-in-out' : ''}
+  `;
 
   return (
     <div
@@ -89,7 +102,13 @@ const Slider = ({ slides }) => {
       {...handlers}
       onDragStart={(e) => e.preventDefault()}
     >
-      <div className={slidesWrapper} style={{ transform: `translateX(-${currentSlide * 100}%)` }} onTransitionEnd={handleTransitionEnd}>
+      <div 
+        className={slidesWrapper} 
+        style={{
+          transform: `translateX(-${currentSlide * 100}%)`
+        }}
+        onTransitionEnd={handleTransitionEnd}
+      >
         <Slide>{slides[slides.length - 1]}</Slide>
         {slides.map((slide, index) => (
           <Slide key={index}>{slide}</Slide>

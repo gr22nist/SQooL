@@ -15,34 +15,64 @@ import { HeroBtn, ScrollDown } from'../icons/IconSet';
 const HeroSection = ({ scrollToContent }) => {
   const { isDarkMode } = useStore();
 
-  const hero = `h-screen flex flex-col justify-center items-center relative`;
+  const hero = `
+    w-full
+    h-[100dvh]
+    relative
+  `;
+
   const heroIcon = `${isDarkMode ? 'fill-slate-900' : 'fill-slate-50'}`;
-  const heroContent = `flex flex-col gap-10 justify-center items-center text-center`;
-  const heroBtn = `w-auto inline-flex px-8 py-4 rounded-lg gap-2 ${
-    isDarkMode
+  const heroContent = `
+    w-full h-full
+    flex flex-col items-center justify-center
+    px-6
+    gap-10
+    relative
+  `;
+  const heroBtn = `
+    w-auto inline-flex items-center
+    px-6 py-3 sm:px-8 sm:py-4 
+    rounded-lg gap-2 
+    text-base sm:text-lg
+    ${isDarkMode
       ? 'bg-slate-50 text-slate-900 hover:bg-secondaryDark'
       : 'bg-slate-900 text-slate-50 hover:bg-secondaryLight'
-  } duration-500`;
+    } duration-500
+  `;
 
-  const scrollDownBtn = `w-16 h-16 flex justify-center items-center absolute bottom-10 animate-bounce hover:opacity-80 duration-500`;
+  const scrollDownBtn = `
+    absolute 
+    left-0 right-0
+    bottom-8 sm:bottom-10
+    mx-auto
+    w-12 h-12 sm:w-16 sm:h-16 
+    flex justify-center items-center 
+    animate-bounce hover:opacity-80 
+    duration-500
+    z-10
+  `;
 
   return (
-    <div className={`${hero} ${isDarkMode ? 'heroDark' : 'heroLight'}`}>
-      <section className={heroContent}>
-        <h1 className='text-5xl leading-h1 text-center font-semibold'>
-          한글 데이터로 배우는<br />마음 편한 SQLite!
+    <section className={`${hero} ${isDarkMode ? 'heroDark' : 'heroLight'}`}>
+      <div className={heroContent}>
+        <h1 className='text-4xl sm:text-5xl font-semibold text-center'>
+          <span className="block leading-normal sm:leading-relaxed">
+            한글 데이터로 배우는<br />마음 편한 SQLite!
+          </span>
         </h1>
-        <Link href="/editor" legacyBehavior>
-          <a className={heroBtn}>
-            <HeroBtn width={24} height={25} className={heroIcon} />
-            SQooL 에디터 실행
-          </a>
+        <Link href="/editor" className={heroBtn}>
+          <HeroBtn width={20} height={21} className={heroIcon} />
+          SQooL 에디터 실행
         </Link>
         <button className={scrollDownBtn} onClick={scrollToContent}>
-          <ScrollDown width={32} height={67} className='fill-slate-400 stroke-slate-400' />
+          <ScrollDown 
+            width={24} 
+            height={50} 
+            className='fill-slate-400 stroke-slate-400 sm:w-[32px] sm:h-[67px]' 
+          />
         </button>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 };
 

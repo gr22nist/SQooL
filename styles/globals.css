@@ -10,7 +10,8 @@
   --background-rgb: 255, 255, 255;
   --drag-background-color: #cccccc;
   --drag-text-color: #000000;
-  --navbar-height: 59px;
+  --navbar-height-mobile: 56px;
+  --navbar-height-desktop: 72px;
   
 }
 
@@ -54,11 +55,21 @@ html {
 }
 
 .heroLight {
-  background-image: url('/img/hero_bg_light.png');
+  background-image: url('/img/hero_bg_light_mobile.png');
+  background-position: center;
   background-size: cover;
+
+  @media (min-width: 640px) {
+    background-image: url('/img/hero_bg_light.png');
+  }
 }
 
 .heroDark {
-  background-image: url('/img/hero_bg_dark.png');
+  background-image: url('/img/hero_bg_dark_mobile.png');
+  background-position: center;
   background-size: cover;
+
+  @media (min-width: 640px) {
+    background-image: url('/img/hero_bg_dark.png');
+  }
 }

@@ -61,7 +61,7 @@ const ResultSection = ({ queryResult, minHeight }) => {
   const renderContent = useMemo(() => {
     if (!queryResult || (!queryResult.columns || queryResult.columns.length === 0)) {
       return (
-        <div className="text-left text-lg font-semibold text-gray-500">
+        <div className="text-left font-semibold text-gray-500">
           코드를 실행하면 결과가 표시됩니다.
         </div>
       );

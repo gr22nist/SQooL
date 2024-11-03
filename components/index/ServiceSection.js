@@ -1,11 +1,27 @@
 import React from 'react';
-import ServiceIntro from'../ServiceIntro';
+import ServiceIntro from '../ServiceIntro';
 import ServiceData from '@/data/ServiceData';
-import AnimatedSection from'../AnimatedSection';
-import Slider from'../sliders/Slider';
+import AnimatedSection from '../AnimatedSection';
+import Slider from '../sliders/Slider';
+import useStore from '@/store/useStore';
 
 const ServiceSection = () => {
-  const section = `max-w-content-width mx-auto flex flex-col justify-center items-center gap-10 pt-20 select-none`;
+  const { isDarkMode } = useStore();
+
+  const section = `
+    w-full
+    overflow-hidden
+    bg-opacity-95 ${isDarkMode ? 'bg-slate-900' : 'bg-slate-50'}
+  `;
+
+  const content = `
+    container
+    mx-auto
+    flex flex-col 
+    justify-center items-center 
+    gap-10
+    px-6 sm:px-8 lg:px-10
+  `;
 
   const slides = ServiceData.map((service) => (
     <ServiceIntro
@@ -21,10 +37,14 @@ const ServiceSection = () => {
 
   return (
     <section className={section}>
-      <h2 className='text-2xl font-bold'>와이즈 잇은 보다 즐거운 세상을 상상합니다</h2>
-      <AnimatedSection>
-        <Slider slides={slides} />
-      </AnimatedSection>
+      <div className={content}>
+        <h2 className='text-2xl font-bold text-center'>
+          와이즈 잇은 보다 즐거운 세상을 상상합니다
+        </h2>
+        <AnimatedSection className="w-full">
+          <Slider slides={slides} />
+        </AnimatedSection>
+      </div>
     </section>
   );
 };
