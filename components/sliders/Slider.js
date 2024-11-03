@@ -83,7 +83,6 @@ const Slider = ({ slides }) => {
   const slider = `
     w-full 
     max-w-[calc(100vw-32px)] // 양쪽 패딩을 고려한 최대 너비
-    py-10 
     relative 
     overflow-hidden 
     scrollbar-hide 

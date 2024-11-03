@@ -37,7 +37,7 @@ const Index = () => {
   const handleWheel = useCallback((e) => {
     if (isScrolling) return;
     
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const scrollTop = window.scrollY|| document.documentElement.scrollTop;
     
     if (e.deltaY > 0 && scrollTop < heroHeight) {
       e.preventDefault();
@@ -52,7 +52,7 @@ const Index = () => {
   const handleTouchMove = useCallback((e) => {
     if (!touchStart || isScrolling) return;
 
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
     const touchEnd = e.touches[0].clientY;
     const deltaY = touchStart - touchEnd;
 
@@ -85,15 +85,24 @@ const Index = () => {
 
   return (
     <>
-      <div style={{ height: `${heroHeight}px` }}>
+      <section 
+        id="hero-section" 
+        className="relative w-full"
+      >
         <HeroSection scrollToContent={scrollToContent} />
-      </div>
-      <div id="service-section" className="relative z-10">
+      </section>
+      <section 
+        id="service-section" 
+        className="relative w-full"
+      >
         <ServiceSection />
-      </div>
-      <div id="team-section" className="relative z-10">
+      </section>
+      <section 
+        id="team-section" 
+        className="relative w-full"
+      >
         <TeamSection />
-      </div>
+      </section>
     </>
   );
 };

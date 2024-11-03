@@ -11,7 +11,6 @@ const ServiceSection = () => {
   const section = `
     w-full
     overflow-hidden
-    bg-opacity-95 ${isDarkMode ? 'bg-slate-900' : 'bg-slate-50'}
   `;
 
   const content = `
@@ -20,7 +19,7 @@ const ServiceSection = () => {
     flex flex-col 
     justify-center items-center 
     gap-10
-    px-6 sm:px-8 lg:px-10
+    py-20 px-6 sm:px-8 lg:px-10
   `;
 
   const slides = ServiceData.map((service) => (
@@ -38,8 +37,8 @@ const ServiceSection = () => {
   return (
     <section className={section}>
       <div className={content}>
-        <h2 className='text-2xl font-bold text-center'>
-          와이즈 잇은 보다 즐거운 세상을 상상합니다
+        <h2 className='text-xl sm:text-2xl font-bold text-center'>
+          SQooL은 보다 즐거운 세상을 상상합니다
         </h2>
         <AnimatedSection className="w-full">
           <Slider slides={slides} />

@@ -20,7 +20,7 @@ const TeamMember = ({ avatarDark, avatarLight, bio, role, nickname, github, emai
     });
   };
   
-  const memberCard = `w-full flex flex-col gap-3 py-8 justify-center items-center border-1 rounded-2xl`;
+  const memberCard = `w-card-pc flex flex-col gap-4 py-8 justify-center items-center border-1 rounded-2xl`;
   const iconWrap = `flex gap-2`;
   const memberIcon = `${isDarkMode ? 'fill-slate-400 hover:fill-subDark' : 'fill-slate-400 hover:fill-subLight'} duration-500`;
   const roleBadge = `text-xs px-2 py-1 rounded font-semibold ${isDarkMode ? 'bg-primaryDark text-slate-900' : 'bg-primaryLight text-slate-50'}`
