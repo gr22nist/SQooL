@@ -87,11 +87,12 @@ const Slider = ({ slides }) => {
     overflow-hidden 
     scrollbar-hide 
     cursor-grab
+    border
+    rounded-xl
   `;
 
   const slidesWrapper = `
     flex 
-    w-full
     ${transitionEnabled ? 'transition-transform duration-500 ease-in-out' : ''}
   `;
 
@@ -103,9 +104,7 @@ const Slider = ({ slides }) => {
     >
       <div 
         className={slidesWrapper} 
-        style={{
-          transform: `translateX(-${currentSlide * 100}%)`
-        }}
+        style={{ transform: `translateX(-${currentSlide * 100}%)` }}
         onTransitionEnd={handleTransitionEnd}
       >
         <Slide>{slides[slides.length - 1]}</Slide>

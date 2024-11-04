@@ -1,5 +1,4 @@
 import React from 'react';
-import ServiceIntro from './ServiceIntro';
 import ServiceData from '@/data/ServiceData';
 import AnimatedSection from '../common/AnimatedSection';
 import Slider from '../sliders/Slider';
@@ -23,24 +22,38 @@ const ServiceSection = () => {
   `;
 
   const slides = ServiceData.map((service) => (
-    <ServiceIntro
-      key={service.id}
-      icon={service.icon}
-      summary={service.summary}
-      title={service.title}
-      content={service.content}
-      linktext={service.linkText}
-      linkUrl={service.linkUrl}
-    />
+    <div key={service.id} className="w-full flex flex-col gap-3 px-6 pt-10 pb-20 justify-center items-center">
+      <h3 className={`text-sm font-semibold mb-2 text-center ${isDarkMode ? 'text-green-400' : 'text-green-600'}`}>
+        {service.summary}
+      </h3>
+      <h2 className={`text-lg font-semibold text-center whitespace-pre-line ${isDarkMode ? 'text-slate-200' : 'text-slate-800'}`}>
+        {service.title}
+      </h2>
+      <p className={`text-sm text-center whitespace-pre-line ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
+        {service.content}
+      </p>
+      {service.linkText && (
+        <a 
+          href={service.linkUrl}
+          className={`text-center mt-4 transition-colors duration-200 ${
+            isDarkMode 
+              ? 'text-primaryDark hover:text-secondaryDark' 
+              : 'text-primaryLight hover:text-secondaryLight'
+          }`}
+        >
+          {service.linkText}
+        </a>
+      )}
+    </div>
   ));
 
   return (
     <section className={section}>
       <div className={content}>
-        <h2 className='text-xl sm:text-2xl font-bold text-center'>
+        <h2 className={`text-xl sm:text-2xl font-bold text-center ${isDarkMode ? 'text-slate-200' : 'text-slate-800'}`}>
           SQooL은 보다 즐거운 세상을 상상합니다
         </h2>
-        <AnimatedSection className="w-full">
+        <AnimatedSection className="w-full max-w-3xl">
           <Slider slides={slides} />
         </AnimatedSection>
       </div>
