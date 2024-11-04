@@ -12,7 +12,6 @@
   --drag-text-color: #000000;
   --navbar-height-mobile: 56px;
   --navbar-height-desktop: 72px;
-  
 }
 
 .dark {
@@ -26,7 +25,7 @@ body {
   color: rgb(var(--foreground-rgb));
   background-color: rgb(var(--background-rgb));
   font-family: 'NanumSquareNeo-Variable', sans-serif;
-    scrollbar-width: none;
+  scrollbar-width: none;
   -ms-overflow-style: none;
 }
 

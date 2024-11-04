@@ -1,26 +1,63 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
-import Navbar from '@/components/NavBar';
-import Footer from '@/components/Footer';
+import Navbar from '@/components/common/NavBar';
+import Footer from '@/components/common/Footer';
 import useStore from '@/store/useStore';
 import { useRouter } from 'next/router';
 
 const Layout = ({ children }) => {
   const isFullWidth = useStore((state) => state.isFullWidth);
   const router = useRouter();
+  const [isMobile, setIsMobile] = useState(false);
+
+  const isLargeScreen = useCallback(() => {
+    return window.innerWidth >= 1024;
+  }, []);
+
+  const [isLarge, setIsLarge] = useState(false);
+
+  useEffect(() => {
+    const checkScreen = () => {
+      setIsMobile(window.innerWidth < 768);
+      setIsLarge(window.innerWidth >= 1024);
+    };
+    
+    checkScreen();
+    window.addEventListener('resize', checkScreen);
+    return () => window.removeEventListener('resize', checkScreen);
+  }, []);
 
   const shouldShowFooter = router.pathname !== "/start";
-  const useFullHeight = router.pathname === "/start" || router.pathname === "/editor" || router.pathname === "/404";
+  const isEditorPage = router.pathname === "/editor";
+  const useFullHeight = router.pathname === "/start" || router.pathname === "/404";
   const isMainPage = router.pathname === "/";
   const applyNavPadding = router.pathname !== "/";
 
   const containerClass = `
     font-body 
     tracking-wide
-    ${isMainPage ? '' : 'min-h-screen'}
+    flex flex-col
+
     ${useFullHeight ? 'h-screen' : ''}
     ${isFullWidth ? 'w-full' : ''}
     ${applyNavPadding ? 'pt-nav' : ''}
+  `;
+
+  const mainClass = `
+    flex-1
+    ${isEditorPage ? 'mb-12' : ''}
+    ${!isMainPage && !isEditorPage && !useFullHeight 
+      ? 'pt-4 sm:pt-6'
+      : ''}
+  `;
+
+  const footerClass = `
+    w-full
+    ${isMobile 
+      ? 'mt-auto' 
+      : isEditorPage 
+        ? 'relative mt-auto border-t dark:border-slate-800' 
+        : 'mt-auto'}
   `;
 
   return (
@@ -38,10 +75,14 @@ const Layout = ({ children }) => {
         <meta name="twitter:image" content="/img/wise-meta-img-tw.jpg" />
       </Head>
       <Navbar isFullWidth={isFullWidth} />
-      <main className="h-full pb-10">
+      <main className={mainClass}>
         {children}
       </main>
-      {shouldShowFooter && <Footer />}
+      {shouldShowFooter && (
+        <footer className={footerClass}>
+          <Footer />
+        </footer>
+      )}
     </div>
   );
 };

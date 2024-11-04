@@ -13,9 +13,11 @@ const useStore = create((set) => ({
     const newMode = !state.isDarkMode;
     if (newMode) {
       document.documentElement.classList.add('dark');
+      document.documentElement.style.colorScheme = 'dark';
       localStorage.setItem('darkMode', 'enabled');
     } else {
       document.documentElement.classList.remove('dark');
+      document.documentElement.style.colorScheme = 'light';
       localStorage.setItem('darkMode', 'disabled');
     }
     return { isDarkMode: newMode };

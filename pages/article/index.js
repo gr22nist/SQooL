@@ -13,27 +13,36 @@ import useStore from "@/store/useStore";
  * @returns {JSX.Element} 카테고리와 게시물 목록을 렌더링하는 컴포넌트
  */
 const ArticlePage = () => {
-  const [selectedCategory, setSelectedCategory] = useState("공지사항");
+  const [selectedCategory, setSelectedCategory] = useState("전체");
   const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const perPage = 10;
+  const [hasMore, setHasMore] = useState(true);
+  const perPage = 12;
   const router = useRouter();
-  const isFullWidth = useStore((state) => state.isFullWidth);
 
-  const container = `flex flex-col gap-6 ${
-    isFullWidth ? "w-full" : "max-w-content-full mx-auto"
-  } min-h-screen`;
+  const container = `
+    max-w-content-full mx-auto
+    px-6 sm:px-8 lg:px-6
+    min-h-screen
+    flex flex-col gap-6
+  `;
 
   useEffect(() => {
     const fetchArticles = async () => {
       setIsLoading(true);
       try {
         const data = await getArticleList(page, perPage, selectedCategory);
-        setArticles(data);
+        if (selectedCategory === '전체') {
+          setArticles(prev => page === 1 ? data : [...prev, ...data]);
+        } else {
+          setArticles(data);
+        }
+        setHasMore(data.length === perPage);
       } catch (error) {
         console.error("Error fetching articles:", error);
         setArticles([]);
+        setHasMore(false);
       } finally {
         setIsLoading(false);
       }
@@ -42,17 +51,23 @@ const ArticlePage = () => {
     fetchArticles();
   }, [page, selectedCategory]);
 
-  const handleSelectArticle = (articleId) => {
-    router.push(`/article/${articleId}`);
+  const handleLoadMore = () => {
+    if (!isLoading && hasMore) {
+      setPage(prev => prev + 1);
+    }
   };
 
   const handleSelectCategory = (category) => {
     setSelectedCategory(category);
     setPage(1);
+    setArticles([]);
+    setHasMore(true);
   };
 
-  const handlePageChange = (newPage) => {
-    setPage(newPage);
+  const handleSelectArticle = (articleId) => {
+    if (articleId) {
+      router.push(`/article/${articleId}`);
+    }
   };
 
   return (
@@ -62,9 +77,8 @@ const ArticlePage = () => {
         articles={articles}
         onSelectArticle={handleSelectArticle}
         isLoading={isLoading}
-        page={page}
-        perPage={perPage}
-        onPageChange={handlePageChange}
+        hasMore={hasMore}
+        onLoadMore={handleLoadMore}
       />
     </section>
   );

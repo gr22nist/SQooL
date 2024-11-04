@@ -1,11 +1,15 @@
 // hooks/useEditor.js
 import { useRef, useEffect } from 'react';
-import { EditorView, basicSetup } from 'codemirror';
+import { EditorView } from '@codemirror/view';
+import { EditorState } from '@codemirror/state';
+import { basicSetup } from 'codemirror';
 import { sql } from '@codemirror/lang-sql';
 import { autocompletion } from '@codemirror/autocomplete';
+import { keymap } from '@codemirror/view';
+import { defaultKeymap } from '@codemirror/commands';
+import { placeholder } from '@codemirror/view';
 import { createSqoolTheme } from '@/components/editor/Styles';
 import { sqliteCompletion } from '@/components/editor/SqliteKeywords';
-import { placeholder } from '@codemirror/view';
 
 /**
  * useEditor 훅
@@ -13,29 +17,43 @@ import { placeholder } from '@codemirror/view';
  * - 다크 모드 및 SQL 자동완성 기능을 설정합니다.
  */
 
-const useEditor = (initialValue, isDarkMode, onChange) => {
+const useEditor = (initialValue, isDarkMode, setEditorView, isMobile) => {
   const editorElement = useRef(null);
   const editorView = useRef(null);
 
   useEffect(() => {
-    if (editorElement.current && !editorView.current) {
-      editorView.current = new EditorView({
-        extensions: [
-          basicSetup,
-          sql(),
-          createSqoolTheme(isDarkMode),
-          autocompletion({ override: [sqliteCompletion] }),
-          EditorView.updateListener.of((update) => {
-            if (update.changes) {
-              onChange(update.state.doc.toString());
-            }
-          }),
-          placeholder("쿼리문을 입력해주세요. 예시) SELECT * FROM Artist;")
-        ],
-        parent: editorElement.current,
-        doc: initialValue,
-      });
-      editorElement.current.view = editorView.current; // editorView를 editorElement에 저장
+    if (editorView.current) {
+      editorView.current.destroy();
+      editorView.current = null;
+    }
+
+    if (!editorElement.current) return;
+
+    const state = EditorState.create({
+      doc: initialValue || "",
+      extensions: [
+        basicSetup,
+        sql(),
+        createSqoolTheme(isDarkMode),
+        autocompletion({ override: [sqliteCompletion] }),
+        keymap.of(defaultKeymap),
+        EditorView.lineWrapping,
+        placeholder("쿼리문을 입력해주세요.\n예시) SELECT * FROM Artist;"),
+        EditorView.updateListener.of((update) => {
+          if (update.docChanged) {
+            const doc = update.state.doc.toString();
+          }
+        })
+      ]
+    });
+
+    editorView.current = new EditorView({
+      state,
+      parent: editorElement.current
+    });
+
+    if (setEditorView) {
+      setEditorView(editorView.current);
     }
 
     return () => {
@@ -44,9 +62,9 @@ const useEditor = (initialValue, isDarkMode, onChange) => {
         editorView.current = null;
       }
     };
-  }, [initialValue, isDarkMode, onChange]);
+  }, [initialValue, isDarkMode, isMobile, setEditorView]);
 
   return editorElement;
 };
-
 export default useEditor;
+

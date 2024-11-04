@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import ArticleDetail from '@/components/article/ArticleDetail';
 import Comment from '@/components/article/Comments';
 import useStore from '@/store/useStore';
-import LoadingSpinner from '@/components/LoadingSpinner';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 import { getArticleDetail, getArticleComments, postArticleComment, updateArticleComment, deleteArticleComment } from '@/components/article/Api';
 
 const ArticleDetailPage = () => {

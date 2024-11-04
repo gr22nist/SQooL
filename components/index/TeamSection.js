@@ -1,7 +1,7 @@
 import React from 'react';
-import TeamMember from '../TeamMember';
+import TeamMember from './TeamMember';
 import TeamData from '@/data/TeamData';
-import AnimatedSection from '../AnimatedSection';
+import AnimatedSection from '../common/AnimatedSection';
 
 const TeamSection = () => {
   const section = `

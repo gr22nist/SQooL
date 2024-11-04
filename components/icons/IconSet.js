@@ -194,3 +194,15 @@ export const ResizeColumn = ({ title, width, height, ...props }) => (
     <rect x="10" y="4" width="2" height="40" fill=""/>
   </Icon>
 );
+
+export const ChevronDown = ({ title, width, height, ...props }) => (
+  <Icon title={title} width={width} height={height} {...props}>
+    <path fillRule="evenodd" clipRule="evenodd" d="M12 15.5L4.5 8L5.9 6.6L12 12.7L18.1 6.6L19.5 8L12 15.5Z"/>
+  </Icon>
+);
+
+export const ChevronUp = ({ title, width, height, ...props }) => (
+  <Icon title={title} width={width} height={height} {...props}>
+    <path fillRule="evenodd" clipRule="evenodd" d="M12 8.5L19.5 16L18.1 17.4L12 11.3L5.9 17.4L4.5 16L12 8.5Z"/>
+  </Icon>
+);

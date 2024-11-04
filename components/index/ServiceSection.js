@@ -1,7 +1,7 @@
 import React from 'react';
-import ServiceIntro from '../ServiceIntro';
+import ServiceIntro from './ServiceIntro';
 import ServiceData from '@/data/ServiceData';
-import AnimatedSection from '../AnimatedSection';
+import AnimatedSection from '../common/AnimatedSection';
 import Slider from '../sliders/Slider';
 import useStore from '@/store/useStore';
 
