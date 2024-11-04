@@ -16,7 +16,7 @@ const Comment = ({
   const [editingContent, setEditingContent] = useState("");
   const [deletingCommentId, setDeletingCommentId] = useState(null);
   const [showOptions, setShowOptions] = useState({});
-  const { isDarkMode } = useStore();
+  const { isDarkMode, showToast } = useStore();
 
   useEffect(() => {
     if (articleId) {
@@ -35,15 +35,15 @@ const Comment = ({
 
   const handleCommentSubmit = async () => {
     if (!nickname.trim()) {
-      alert("닉네임을 입력해주세요.");
+      showToast('닉네임을 입력해주세요.', 'warning');
       return;
     }
     if (!passwords.new || !passwords.new.trim()) {
-      alert("비밀번호를 입력해주세요.");
+      showToast('비밀번호를 입력해주세요.', 'warning');
       return;
     }
     if (!newComment.trim()) {
-      alert("댓글 내용을 입력해주세요.");
+      showToast('댓글 내용을 입력해주세요.', 'warning');
       return;
     }
 
@@ -54,15 +54,16 @@ const Comment = ({
       setNewComment("");
       setNickname("");
       setPasswords((prev) => ({ ...prev, new: "" }));
-      alert("댓글이 작성되었습니다.");
+      showToast('댓글이 작성되었습니다.', 'success');
     } catch (error) {
       console.error("댓글 작성 중 오류 발생:", error);
+      showToast('댓글 작성 중 오류가 발생했습니다.', 'error');
     }
   };
 
   const handleCommentUpdate = async () => {
     if (!passwords[editingCommentId]) {
-      alert("비밀번호를 입력해주세요.");
+      showToast('비밀번호를 입력해주세요.', 'warning');
       return;
     }
 
@@ -79,15 +80,16 @@ const Comment = ({
       setEditingContent("");
       setPasswords((prev) => ({ ...prev, [editingCommentId]: "" }));
       setShowOptions((prev) => ({ ...prev, [editingCommentId]: false }));
-      alert("댓글이 수정되었습니다.");
+      showToast('댓글이 수정되었습니다.', 'success');
     } catch (error) {
       console.error("댓글 수정 중 오류 발생:", error);
+      showToast('댓글 수정 중 오류가 발생했습니다.', 'error');
     }
   };
 
   const handleCommentDelete = async () => {
     if (!passwords[deletingCommentId]) {
-      alert("비밀번호를 입력해주세요.");
+      showToast('비밀번호를 입력해주세요.', 'warning');
       return;
     }
 
@@ -101,9 +103,10 @@ const Comment = ({
       setPasswords((prev) => ({ ...prev, [deletingCommentId]: "" }));
       setShowOptions((prev) => ({ ...prev, [deletingCommentId]: false }));
       setDeletingCommentId(null);
-      alert("댓글이 삭제되었습니다.");
+      showToast('댓글이 삭제되었습니다.', 'success');
     } catch (error) {
       console.error("댓글 삭제 중 오류 발생:", error);
+      showToast('댓글 삭제 중 오류가 발생했습니다.', 'error');
     }
   };
 
@@ -118,7 +121,7 @@ const Comment = ({
   const container = `comments-section w-full mx-auto p-6 flex flex-col gap-4 shadow-lg rounded-lg mb-4 ${
     isDarkMode ? "bg-slate-900 text-slate-50" : "bg-slate-50 text-slate-900"
   }`;
-  const inputItem = `w-full p-2 border rounded-lg mb-2`
+  const inputItem = `w-full p-2 border text-sm rounded-lg mb-2`
 
   return (
     <div className={container}>

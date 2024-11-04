@@ -20,14 +20,18 @@ const adjustImagePaths = (htmlContent) => {
 
 export const getArticleList = async (page, perPage, category) => {
   try {
-    const response = await fetch(
-      `${articleListUrl}?page=${page}&perpage=${perPage}&category=${category}`
-    );
+    const url = category === '전체' 
+      ? `${articleListUrl}?page=${page}&perpage=${perPage}`
+      : `${articleListUrl}?page=${page}&perpage=${perPage}&category=${category}`;
+
+    const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`Failed to fetch articles: ${response.statusText}`);
     }
+    
     const data = await response.json();
     const articleList = data.articlelist || [];
+    
     return articleList.map((article) => ({
       ...article,
       Tags: typeof article.Tags === "string" ? article.Tags.split(",") : [],
