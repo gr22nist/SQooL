@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import useStore from '@/store/useStore';
 import DarkModeToggle from './DarkModeToggle';
-import { DarkLogo, LightLogo } from './icons/IconSet';
+import { DarkLogo, LightLogo } from '../icons/IconSet';
 import { useRouter } from 'next/router';
 
 const NavBar = ({ isFullWidth }) => {

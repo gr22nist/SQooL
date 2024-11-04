@@ -1,6 +1,6 @@
 import React from 'react';
 import useStore from'@/store/useStore';
-import { DarkToggle, LightToggle } from './icons/IconSet';
+import { DarkToggle, LightToggle } from '../icons/IconSet';
 
 
 const DarkModeToggle = () => {

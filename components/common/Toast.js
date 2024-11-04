@@ -21,9 +21,21 @@ const Toast = () => {
 
   if (!toastMessage) return null;
 
-  const baseClass = 'fixed top-32 left-1/2 transform -translate-x-1/2 py-4 px-8 rounded transition-opacity duration-500';
-  const typeClass = toastType === 'success' ? 'bg-green-500 bg-opacity-85 text-slate-50' : 'bg-red-500 bg-opacity-85 text-slate-50';
-  const toastClass = `${baseClass} ${typeClass}`;
+  const baseClass = `
+    fixed top-32 left-1/2 transform -translate-x-1/2 
+    py-4 px-8 rounded-lg shadow-lg
+    transition-all duration-500 ease-in-out
+    font-medium text-slate-50
+  `;
+
+  const typeClasses = {
+    success: 'bg-green-500 bg-opacity-90',
+    error: 'bg-red-500 bg-opacity-90',
+    warning: 'bg-yellow-500 bg-opacity-90',
+    info: 'bg-blue-500 bg-opacity-90'
+  };
+
+  const toastClass = `${baseClass} ${typeClasses[toastType] || typeClasses.info}`;
 
   return (
     <div className={toastClass}>
@@ -35,7 +47,7 @@ const Toast = () => {
 Toast.propTypes = {
   message: PropTypes.string,
   visible: PropTypes.bool,
-  type: PropTypes.oneOf(['success', 'error', 'info', 'warning']),
+  type: PropTypes.oneOf(['success', 'error', 'warning', 'info']),
 };
 
 export default Toast;

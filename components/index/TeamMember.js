@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import useStore from '@/store/useStore';
 import useToast from '@/hooks/useToast';
-import { MemberGithub, MemberEmail } from './icons/IconSet';
+import { MemberGithub, MemberEmail } from '../icons/IconSet';
 
 const TeamMember = ({ avatarDark, avatarLight, bio, role, nickname, github, email, className }) => {
   const { isDarkMode } = useStore();

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ResizeRow, ResizeColumn } from './icons/IconSet';
+import { ResizeRow, ResizeColumn } from '../icons/IconSet';
 
 const ResizeHandler = ({
   onResize,

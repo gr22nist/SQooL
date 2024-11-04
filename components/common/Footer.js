@@ -1,8 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import useStore from '../store/useStore'; 
-import { LinkWISE, LinkGithub } from './icons/IconSet';
+import useStore from '../../store/useStore'; 
+import { LinkWISE, LinkGithub } from '../icons/IconSet';
 
 const Footer = ({ isFullWidth }) => {
   const { isDarkMode } = useStore();
@@ -107,7 +107,7 @@ const Footer = ({ isFullWidth }) => {
           </li>
           <li>
             <a className={linkIcon}
-              href='https://github.com/WISE-IT-TEAM/Wise.SQooL.FE'
+              href='https://github.com/gr22nist/SQooL'
               target='_blank'
               rel='noopener noreferrer'>
               <LinkGithub width={20} height={20} className="fill-slate-400" title="Github 링크" />
