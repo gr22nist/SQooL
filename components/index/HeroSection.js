@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import useStore from '@/store/useStore'; 
 import { HeroBtn, ScrollDown } from'../icons/IconSet'; 
@@ -14,6 +14,24 @@ import { HeroBtn, ScrollDown } from'../icons/IconSet';
  */
 const HeroSection = ({ scrollToContent }) => {
   const { isDarkMode } = useStore();
+  const [typedText, setTypedText] = useState('');
+  const fullText = '한글 데이터로 배우는\n마음 편한 SQLite!';
+  
+  useEffect(() => {
+    let currentText = '';
+    let currentIndex = 0;
+    
+    const typeText = () => {
+      if (currentIndex < fullText.length) {
+        currentText += fullText[currentIndex];
+        setTypedText(currentText);
+        currentIndex++;
+        setTimeout(typeText, 100);
+      }
+    };
+    
+    typeText();
+  }, []);
 
   const hero = `
     w-full
@@ -30,14 +48,23 @@ const HeroSection = ({ scrollToContent }) => {
     relative
   `;
   const heroBtn = `
+    relative
     w-auto inline-flex items-center
     px-6 py-3 sm:px-8 sm:py-4 
     rounded-lg gap-2 
     text-base sm:text-lg
+    overflow-hidden
     ${isDarkMode
       ? 'bg-slate-50 text-slate-900 hover:bg-secondaryDark'
       : 'bg-slate-900 text-slate-50 hover:bg-secondaryLight'
-    } duration-500
+    }
+    transition-all duration-300
+    before:absolute before:inset-0 
+    before:bg-gradient-to-r 
+    before:from-transparent before:via-white/20 before:to-transparent
+    before:translate-x-[-200%]
+    hover:before:translate-x-[200%]
+    before:transition-transform before:duration-700
   `;
 
   const scrollDownBtn = `
@@ -53,22 +80,32 @@ const HeroSection = ({ scrollToContent }) => {
   `;
 
   return (
-    <section className={`${hero} ${isDarkMode ? 'heroDark' : 'heroLight'}`}>
+    <section className={`
+      ${hero} 
+      ${isDarkMode ? 'heroDark' : 'heroLight'}
+      relative overflow-hidden
+    `}>
+      <div className="absolute inset-0 bg-grid-pattern opacity-10 animate-grid" />
       <div className={heroContent}>
-        <h1 className='text-4xl sm:text-5xl font-semibold text-center'>
-          <span className="block leading-normal sm:leading-relaxed">
-            한글 데이터로 배우는<br />마음 편한 SQLite!
-          </span>
+        <h1 className="text-4xl sm:text-5xl font-semibold text-center whitespace-pre-line leading-normal lg:leading-relaxed">
+          {typedText}
         </h1>
         <Link href="/editor" className={heroBtn}>
           <HeroBtn width={20} height={21} className={heroIcon} />
           SQooL 에디터 실행
         </Link>
-        <button className={scrollDownBtn} onClick={scrollToContent}>
+        <button 
+          className={`
+            ${scrollDownBtn}
+            transform hover:translate-y-1
+            transition-transform duration-300
+          `} 
+          onClick={scrollToContent}
+        >
           <ScrollDown 
             width={24} 
             height={50} 
-            className='fill-slate-400 stroke-slate-400 sm:w-[32px] sm:h-[67px]' 
+            className="fill-slate-400 stroke-slate-400 sm:w-[32px] sm:h-[67px]" 
           />
         </button>
       </div>

@@ -19,7 +19,7 @@ const ServiceSection = () => {
     flex flex-col 
     justify-center items-center 
     gap-10
-    py-20 px-6 sm:px-8 lg:px-10
+    pt-20 px-6 sm:px-8 lg:px-10
   `;
 
   const slides = ServiceData.map((service) => (

@@ -1,8 +1,14 @@
+import dynamic from 'next/dynamic';
 import React, { useEffect, useState, useCallback } from 'react';
-import HeroSection from '@/components/index/HeroSection';
-import ServiceSection from '@/components/index/ServiceSection';
-import TeamSection from '@/components/index/TeamSection';
 import useStore from '@/store/useStore';
+
+const LoadingSection = ({ isDark = false }) => (
+  <div 
+    className={`w-full h-screen animate-pulse ${
+      isDark ? 'bg-slate-100 dark:bg-slate-800' : 'bg-slate-50 dark:bg-slate-900'
+    }`} 
+  />
+);
 
 const Index = () => {
   const navHeight = useStore((state) => state.navHeight);
@@ -19,12 +25,15 @@ const Index = () => {
     if (isScrolling) return;
     
     setIsScrolling(true);
-    const content = document.getElementById('service-section');
+    const heroSection = document.getElementById('hero-section');
+    const serviceSection = document.getElementById('service-section');
     
-    if (content) {
-      const offsetTop = heroHeight;
+    if (heroSection && serviceSection) {
+      const heroRect = heroSection.getBoundingClientRect();
+      const targetScroll = window.scrollY + heroRect.height;
+      
       window.scrollTo({ 
-        top: offsetTop, 
+        top: targetScroll, 
         behavior: 'smooth' 
       });
 
@@ -32,18 +41,22 @@ const Index = () => {
         setIsScrolling(false);
       }, 1000);
     }
-  }, [heroHeight, isScrolling]);
+  }, [isScrolling]);
   
   const handleWheel = useCallback((e) => {
     if (isScrolling) return;
     
-    const scrollTop = window.scrollY|| document.documentElement.scrollTop;
+    const heroSection = document.getElementById('hero-section');
+    if (!heroSection) return;
     
-    if (e.deltaY > 0 && scrollTop < heroHeight) {
+    const heroRect = heroSection.getBoundingClientRect();
+    const isInHeroSection = heroRect.bottom > 0 && heroRect.top <= 0;
+    
+    if (e.deltaY > 0 && isInHeroSection) {
       e.preventDefault();
       scrollToContent();
     }
-  }, [scrollToContent, isScrolling, heroHeight]);
+  }, [scrollToContent, isScrolling]);
 
   const handleTouchStart = useCallback((e) => {
     setTouchStart(e.touches[0].clientY);
@@ -52,15 +65,18 @@ const Index = () => {
   const handleTouchMove = useCallback((e) => {
     if (!touchStart || isScrolling) return;
 
-    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const heroSection = document.getElementById('hero-section');
+    if (!heroSection) return;
+
     const touchEnd = e.touches[0].clientY;
     const deltaY = touchStart - touchEnd;
+    const heroRect = heroSection.getBoundingClientRect();
 
-    if (deltaY > 50 && scrollTop < heroHeight) {
+    if (deltaY > 50 && heroRect.bottom > 0) {
       e.preventDefault();
       scrollToContent();
     }
-  }, [touchStart, isScrolling, scrollToContent, heroHeight]);
+  }, [touchStart, isScrolling, scrollToContent]);
 
   const handleTouchEnd = useCallback(() => {
     setTouchStart(null);
@@ -83,26 +99,42 @@ const Index = () => {
     };
   }, [handleWheel, handleTouchStart, handleTouchMove, handleTouchEnd, calculateHeroHeight]);
 
+  const sections = [
+    {
+      id: 'hero-section',
+      Component: dynamic(
+        () => import('@/components/index/HeroSection'),
+        { loading: () => <LoadingSection isDark={true} /> }
+      ),
+      props: { scrollToContent }
+    },
+    {
+      id: 'service-section',
+      Component: dynamic(
+        () => import('@/components/index/ServiceSection'),
+        { loading: () => <LoadingSection isDark={false} /> }
+      )
+    },
+    {
+      id: 'team-section',
+      Component: dynamic(
+        () => import('@/components/index/TeamSection'),
+        { loading: () => <LoadingSection isDark={true} /> }
+      )
+    }
+  ];
+
   return (
     <>
-      <section 
-        id="hero-section" 
-        className="relative w-full"
-      >
-        <HeroSection scrollToContent={scrollToContent} />
-      </section>
-      <section 
-        id="service-section" 
-        className="relative w-full"
-      >
-        <ServiceSection />
-      </section>
-      <section 
-        id="team-section" 
-        className="relative w-full"
-      >
-        <TeamSection />
-      </section>
+      {sections.map((section) => (
+        <section 
+          key={section.id} 
+          id={section.id} 
+          className="relative w-full"
+        >
+          <section.Component {...section.props} />
+        </section>
+      ))}
     </>
   );
 };
