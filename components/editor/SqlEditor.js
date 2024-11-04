@@ -1,11 +1,16 @@
 // components/editor/SqlEditor.js
 
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback, useState } from 'react';
 import QuerySection from './QuerySection';
 import ResultSection from './ResultSection';
 import { createDatabase, executeQuery as executeQueryApi, resetDatabase as resetDatabaseApi } from './Api';
-import ResizeHandler from '../ResizeHandler';
-import useStore from '../../store/useStore';
+import useStore from '@/store/useStore';
+import { EditorView } from '@codemirror/view';
+import { EditorState } from '@codemirror/state';
+import { basicSetup } from 'codemirror';
+import { sql } from '@codemirror/lang-sql';
+import { placeholder } from '@codemirror/view';
+import { createSqoolTheme } from './Styles';
 
 /**
  * SQLEditor 컴포넌트
@@ -13,39 +18,28 @@ import useStore from '../../store/useStore';
  * - QuerySection과 ResultSection으로 구성되어 있으며, 이 두 컴포넌트 간의 상태 관리를 담당합니다.
  * - 초기 데이터베이스 생성과 같은 사이드 이펙트를 관리합니다.
  */
-const SQLEditor = ({ initialValue, page }) => {
-  const [queryResult, setQueryResult] = useState({ columns: [], rows: [] });
-  const [editorHeight, setEditorHeight] = useState(400);
-  const editorViewRef = useRef(null);
+const SQLEditor = ({ 
+  initialValue = '', 
+  placeholder: placeholderText, 
+  queryResult, 
+  setQueryResult, 
+  isMobile,
+  isEditorPage
+}) => {
+  const isDarkMode = useStore((state) => state.isDarkMode);
   const { showToast } = useStore();
-
-  // 데이터베이스 초기화를 위한 useEffect
-  useEffect(() => {
-    const initDB = async () => {
-      try {
-        await createDatabase();
-        console.log("Database initialized successfully");
-      } catch (error) {
-        console.error("Database initialization failed:", error);
-      }
-    };
-
-    initDB();
-  }, []);
+  const editorViewRef = useRef(null);
+  const [queryValue, setQueryValue] = useState(initialValue);
 
   // SQL 쿼리 실행 함수
-  const executeQuery = useCallback(() => {
-    const editorView = editorViewRef.current;
-    if (editorView) {
-      const query = editorView.state.doc.toString();
+  const executeQuery = useCallback((query) => {
+    if (query) {
       executeQueryApi(query, setQueryResult).catch((error) => {
         console.error("Query execution failed:", error);
         showToast('쿼리 실행에 실패했습니다.', 'error');
       });
-    } else {
-      console.error("EditorView is not initialized");
     }
-  }, [showToast]);
+  }, [showToast, setQueryResult]);
 
   // 데이터베이스 초기화 함수
   const resetDatabase = useCallback(() => {
@@ -61,32 +55,35 @@ const SQLEditor = ({ initialValue, page }) => {
       console.error('Database reset failed:', error);
       showToast('데이터베이스 초기화에 실패했습니다.', 'error');
     });
-  }, [showToast]);
+  }, [showToast, setQueryResult]);
 
-  const containerClass = `flex flex-col w-full h-full`;
+  const containerClass = `
+    flex flex-col w-full
+    ${isEditorPage
+      ? 'gap-4'
+      : isMobile
+        ? 'gap-4'
+        : 'h-[calc(100vh-4rem-2rem-2rem)]'}
+  `;
 
   return (
     <section className={containerClass}>
       <QuerySection
-        initialValue={initialValue}
-        editorHeight={editorHeight}
+        initialValue={queryValue}
+        placeholder={placeholderText}
         executeQuery={executeQuery}
-        setEditorView={(view) => editorViewRef.current = view}
+        setEditorView={(view) => {
+          editorViewRef.current = view;
+        }}
         resetDatabase={resetDatabase}
-        setQueryResult={setQueryResult}
-        showToast={showToast} 
-      />
-      <ResizeHandler
-        onResize={setEditorHeight}
-        startHeight={editorHeight}
-        minHeight={320}
-        direction="horizontal"
-        title="드래그로 창 크기를 조절해보세요"
+        isEditorPage={isEditorPage}
+        setQueryValue={setQueryValue}
       />
       <ResultSection
         queryResult={queryResult}
-        editorHeight={editorHeight}
-        minHeight={240}
+        minHeight={isMobile || isEditorPage ? 'auto' : 'flex-1'}
+        isMobile={isMobile}
+        isEditorPage={isEditorPage}
       />
     </section>
   );
