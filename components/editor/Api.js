@@ -12,14 +12,12 @@ export const createDatabase = async () => {
   }
 
   if (isInitializing) {
-    console.log('Database initialization already in progress');
-    await new Promise(resolve => setTimeout(resolve, 1000));  // 잠시 대기
-    return createDatabase();  // 재시도
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    return createDatabase();
   }
 
   try {
     isInitializing = true;
-    console.log('Creating database...');
     const response = await fetch(apiInitUrl, {
       method: 'POST',
       headers: {
@@ -34,7 +32,6 @@ export const createDatabase = async () => {
     }
 
     const data = await response.json();
-    console.log('Database created successfully', data);
     isInitialized = true;
   } catch (error) {
     console.error('Error creating database:', error);
@@ -47,7 +44,6 @@ export const createDatabase = async () => {
 
 export const resetDatabase = async () => {
   try {
-    console.log('Resetting database...');
     const response = await fetch(apiInitUrl, {
       method: 'POST',
       headers: {
@@ -62,7 +58,6 @@ export const resetDatabase = async () => {
     }
 
     const data = await response.json();
-    console.log('Database reset successfully', data);
   } catch (error) {
     console.error('Error resetting database:', error);
     throw error;
