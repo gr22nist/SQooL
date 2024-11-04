@@ -2,6 +2,12 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import useStore from '@/store/useStore'; 
 import { HeroBtn, ScrollDown } from'../icons/IconSet'; 
+import Image from 'next/image';
+import useMediaQuery from '@/hooks/useMediaQuery';
+import heroBgLightMobile from '@/public/img/hero_bg_light_mobile.png';
+import heroBgLight from '@/public/img/hero_bg_light.png';
+import heroBgDarkMobile from '@/public/img/hero_bg_dark_mobile.png';
+import heroBgDark from '@/public/img/hero_bg_dark.png';
 
 /**
  * HeroSection 컴포넌트
@@ -13,7 +19,8 @@ import { HeroBtn, ScrollDown } from'../icons/IconSet';
  * @param {function} scrollToContent - 페이지 아래로 스크롤하는 함수입니다.
  */
 const HeroSection = ({ scrollToContent }) => {
-  const { isDarkMode } = useStore();
+  const isDarkMode = useStore((state) => state.isDarkMode);
+  const isMobile = useMediaQuery('(max-width: 640px)');
   const [typedText, setTypedText] = useState('');
   const fullText = '한글 데이터로 배우는\n마음 편한 SQLite!';
   
@@ -80,12 +87,22 @@ const HeroSection = ({ scrollToContent }) => {
   `;
 
   return (
-    <section className={`
-      ${hero} 
-      ${isDarkMode ? 'heroDark' : 'heroLight'}
-      relative overflow-hidden
-    `}>
-      <div className="absolute inset-0 bg-grid-pattern opacity-10 animate-grid" />
+    <div className="hero relative w-full h-screen">
+      <Image
+        src={isMobile 
+          ? (isDarkMode ? heroBgDarkMobile : heroBgLightMobile)
+          : (isDarkMode ? heroBgDark : heroBgLight)
+        }
+        alt="Background"
+        fill
+        priority
+        quality={75}
+        sizes="100vw"
+        style={{
+          objectFit: 'cover',
+          objectPosition: 'center',
+        }}
+      />
       <div className={heroContent}>
         <h1 className="text-4xl sm:text-5xl font-semibold text-center whitespace-pre-line leading-normal lg:leading-relaxed">
           {typedText}
@@ -114,7 +131,7 @@ const HeroSection = ({ scrollToContent }) => {
           />
         </button>
       </div>
-    </section>
+    </div>
   );
 };
 
