@@ -1,5 +1,5 @@
 export const fonts = {
-  body: ["NanumSquareNeo-Variable", "PretendardVariable-Regular", "sans-serif"],
+  body: ["NanumSquareNeo-Variable", "system-ui", "sans-serif"],
   code: ["EliceDigitalCodingver.H", "monospace"],
 };
 

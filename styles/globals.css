@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import './fonts.css';
 @import 'flowbite';
 
 :root {
@@ -50,27 +49,12 @@ html {
 }
 
 .hero {
-  transition: background-image .5s ease;
+  position: relative;
+  transition: all .5s ease;
 }
 
-.heroLight {
-  background-image: url('/img/hero_bg_light_mobile.png');
-  background-position: center;
-  background-size: cover;
-
-  @media (min-width: 640px) {
-    background-image: url('/img/hero_bg_light.png');
-  }
-}
-
-.heroDark {
-  background-image: url('/img/hero_bg_dark_mobile.png');
-  background-position: center;
-  background-size: cover;
-
-  @media (min-width: 640px) {
-    background-image: url('/img/hero_bg_dark.png');
-  }
+.hero > span {
+  z-index: -1 !important;
 }
 
 * {
