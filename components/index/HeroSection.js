@@ -101,11 +101,16 @@ const HeroSection = ({ scrollToContent }) => {
             transition-transform duration-300
           `} 
           onClick={scrollToContent}
+          aria-label="다음 섹션으로 스크롤"
+          title="아래로 스크롤하여 서비스 소개 보기"
+          role="button"
+          tabIndex={0}
         >
           <ScrollDown 
             width={24} 
             height={50} 
-            className="fill-slate-400 stroke-slate-400 sm:w-[32px] sm:h-[67px]" 
+            className="fill-slate-400 stroke-slate-400 sm:w-8 sm:h-17"
+            aria-hidden="true"
           />
         </button>
       </div>

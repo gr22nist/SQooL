@@ -9,8 +9,7 @@ const Footer = ({ isFullWidth }) => {
 
   const container = `
     w-full py-4 
-    ${isDarkMode ? 'bg-slate-800' : 'bg-slate-200'} 
-    text-slate-400 
+    ${isDarkMode ? 'bg-slate-800 text-slate-400' : 'bg-slate-200 text-slate-600 '} 
   `;
 
   const footerWrap = `
@@ -60,7 +59,7 @@ const Footer = ({ isFullWidth }) => {
               )}
             </a>
           </Link>
-          <span className="text-xs">
+          <span className="text-sm">
             Copyright ©WISE IT All Rights Reserved.
           </span>
         </div>
@@ -76,7 +75,7 @@ const Footer = ({ isFullWidth }) => {
             </li>
             <li>
               <a className={linkIcon}
-                href='https://github.com/WISE-IT-TEAM/Wise.SQooL.FE'
+                href='https://github.com/gr22nist/SQooL'
                 target='_blank'
                 rel='noopener noreferrer'>
                 <LinkGithub width={20} height={20} className="fill-slate-400" title="Github 링크" />

@@ -33,6 +33,8 @@ const TeamMember = ({ avatarDark, avatarLight, bio, role, nickname, github, emai
           alt={`${nickname} 아바타`} 
           fill 
           className="object-contain"
+          aria-label={`${nickname}의 아바타 이미지`}
+          role="img"
         />
       </div>
       <h3 className="text-xl font-bold">{nickname}</h3>
@@ -40,11 +42,21 @@ const TeamMember = ({ avatarDark, avatarLight, bio, role, nickname, github, emai
       <p className='text-center'>{bio}</p>
       <div className={iconWrap}>
         <Link href={github} legacyBehavior>
-          <a target="_blank" rel="noopener noreferrer">
+          <a 
+            target="_blank" 
+            rel="noopener noreferrer"
+            aria-label={`${nickname}의 Github 프로필 링크`}
+            title={`${nickname}의 Github 프로필로 이동`}
+          >
             <MemberGithub width={24} height={24} className={memberIcon} />
           </a>
         </Link>
-        <button onClick={copyClipboard} className='inline-flex gap-2'>
+        <button 
+          onClick={copyClipboard} 
+          className='inline-flex gap-2'
+          aria-label="이메일 주소 복사"
+          title="클릭하여 이메일 주소 복사하기"
+        >
           <MemberEmail width={24} height={24} className={memberIcon} />
         </button>
       </div>

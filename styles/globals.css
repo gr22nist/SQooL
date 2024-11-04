@@ -72,3 +72,7 @@ html {
     background-image: url('/img/hero_bg_dark.png');
   }
 }
+
+* {
+  touch-action: manipulation;
+}
