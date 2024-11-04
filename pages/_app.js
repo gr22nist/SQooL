@@ -19,20 +19,22 @@ const nanum = localFont({
   fallback: ['system-ui', 'sans-serif']
 });
 
+const elice = localFont({
+  src: '../public/fonts/EliceDigitalCodingverH_Regular.woff2',
+  weight: '400',
+  variable: '--font-elice',
+  display: 'block',
+  preload: true,
+  fallback: ['monospace']
+});
 
-function MyApp({ Component, pageProps }) {
+function SQooL({ Component, pageProps }) {
   useSystemDarkMode();
   const router = useRouter();
 
   return (
-    <>
-      <Head>
-        <meta 
-          name="viewport" 
-          content="width=device-width, initial-scale=1"
-        />
-      </Head>
-      <Layout className={`${nanum.variable} font-suit antialiased`}>
+    <main className={`${nanum.variable} ${elice.variable} font-nanum antialiased`}>
+      <Layout>
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={router.asPath}
@@ -44,10 +46,10 @@ function MyApp({ Component, pageProps }) {
             <Component {...pageProps} />
           </motion.div>
         </AnimatePresence>
-        <Toast />
       </Layout>
-    </>
+      <Toast />
+    </main>
   );
 }
 
-export default MyApp;
+export default SQooL;

@@ -23,7 +23,6 @@
 body {
   color: rgb(var(--foreground-rgb));
   background-color: rgb(var(--background-rgb));
-  font-family: 'NanumSquareNeo-Variable', sans-serif;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
