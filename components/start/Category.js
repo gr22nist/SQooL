@@ -13,33 +13,59 @@ const CategoryList = ({ categories, selectedCategoryId, onSelectCategory }) => {
     }
   }, [categories, selectedCategoryId, onSelectCategory]);
 
-  const handleCategoryClick = (categoryId) => {
-    onSelectCategory(categoryId);
-  };
-
-  const container = `min-w-60 h-full flex flex-col rounded-lg border-1 overflow-y-auto scrollbar-hide ${isDarkMode ? "border-slate-800" : "border-slate-200"}`;
-  const catagoryItem = `p-4 border-b-1 ${isDarkMode ? "border-slate-800" : "border-slate-200"} duration-500`;
-  
   return (
-    <div className={container}>
-      <ul>
+    <div className={`
+      h-full w-full
+      rounded-lg border
+      ${isDarkMode ? 'border-slate-800 bg-slate-900/50' : 'border-slate-200 bg-white'}
+    `}>
+      <div className={`
+        h-full overflow-y-auto
+        scrollbar-thin scrollbar-thumb-rounded
+        ${isDarkMode 
+          ? 'scrollbar-thumb-slate-700 scrollbar-track-slate-800/50' 
+          : 'scrollbar-thumb-slate-300 scrollbar-track-slate-100'}
+      `}>
         {categories.map(category => {
           const isSelected = selectedCategoryId === category.Id;
-          const treeClass = category.Tree === 'doc' ? 'cursor-pointer indent-2' : 'cursor-default text-slate-400';
-          const selectedClass = isSelected ? (isDarkMode ? 'bg-primaryDark text-slate-900 font-bold ' : 'bg-primaryLight text-slate-50 font-bold ') : 'text-sm';
-          const hoverClass = category.Tree === 'doc' ? (isDarkMode ? 'hover:bg-secondaryDark hover:text-slate-900 font-bold' : 'hover:bg-secondaryLight hover:text-slate-50 font-bold') : '';
-
+          const isDoc = category.Tree === 'doc';
+          
           return (
-            <li 
-              key={category.Id} 
-              className={`${catagoryItem} ${treeClass} ${selectedClass} ${hoverClass}`}
-              onClick={() => category.Tree === 'doc' && handleCategoryClick(category.Id)}
+            <button
+              key={category.Id}
+              onClick={() => isDoc && onSelectCategory(category.Id)}
+              disabled={!isDoc}
+              className={`
+                w-full p-4 text-left text-sm font-semibold
+                transition-colors duration-200
+                ${!isDoc && (isDarkMode ? 'text-slate-500' : 'text-slate-400')}
+                ${isDoc && 'indent-2'}
+                ${isSelected && isDoc
+                  ? (isDarkMode 
+                      ? 'bg-primaryDark text-slate-900 font-bold' 
+                      : 'bg-primaryLight text-slate-50 font-bold'
+                    ) 
+                  : (isDarkMode 
+                      ? 'text-slate-300 hover:bg-slate-800/50 hover:text-slate-50' 
+                      : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                    )
+                }
+                border-b last:border-b-0
+                ${isDarkMode ? 'border-slate-800/50' : 'border-slate-200'}
+                ${isDoc 
+                  ? (isDarkMode 
+                      ? 'hover:bg-slate-800 hover:text-slate-50' 
+                      : 'hover:bg-slate-50 hover:text-slate-900'
+                    )
+                  : ''
+                }
+              `}
             >
               {category.Title}
-            </li>
+            </button>
           );
         })}
-      </ul>
+      </div>
     </div>
   );
 };

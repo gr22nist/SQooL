@@ -40,7 +40,7 @@ const Dropdown = ({
     transition-all duration-200 ease-in-out
     ${isDarkMode 
       ? 'bg-slate-800 text-slate-200 hover:bg-slate-700/80' 
-      : 'bg-white text-slate-600 hover:bg-slate-50'}
+      : 'bg-white text-slate-600 hover:bg-slate-100'}
     border
     ${isOpen 
       ? `rounded-t-lg ${isDarkMode 
