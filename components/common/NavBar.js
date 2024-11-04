@@ -45,9 +45,9 @@ const NavBar = ({ isFullWidth }) => {
 
   const navWrap = `
     h-full
-    ${isFullWidth ? 'w-full' : 'max-w-content-full mx-auto'}
+    ${isFullWidth ? 'w-full' : 'lg:max-w-content-full mx-auto'}
     flex justify-between items-center
-    px-4 sm:px-6 lg:px-8
+    px-4 sm:px-6 lg:px-0
   `;
 
   const desktopNav = `

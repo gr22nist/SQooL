@@ -18,7 +18,7 @@ const Footer = ({ isFullWidth }) => {
     justify-between
     items-center
     gap-6 lg:gap-0
-    px-6 sm:px-8
+    px-6 sm:px-8 lg:px-0
   `;
 
   const iconList = `
