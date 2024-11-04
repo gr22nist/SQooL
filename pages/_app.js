@@ -1,7 +1,7 @@
 'use client';
 
 import '@/styles/globals.css';
-import { AnimatePresence, motion } from 'framer-motion';
+import dynamic from 'next/dynamic';
 import Layout from './layout';
 import Toast from '@/components/common/Toast';
 import useSystemDarkMode from '@/hooks/useSystemDarkMode';
@@ -28,6 +28,16 @@ const elice = localFont({
   fallback: ['monospace']
 });
 
+const MotionDiv = dynamic(() => 
+  import('framer-motion').then((mod) => mod.motion.div), {
+  ssr: false
+});
+
+const AnimatePresence = dynamic(() => 
+  import('framer-motion').then((mod) => mod.AnimatePresence), {
+  ssr: false
+});
+
 function SQooL({ Component, pageProps }) {
   useSystemDarkMode();
   const router = useRouter();
@@ -36,7 +46,7 @@ function SQooL({ Component, pageProps }) {
     <main className={`${nanum.variable} ${elice.variable} font-nanum antialiased`}>
       <Layout>
         <AnimatePresence mode="wait" initial={false}>
-          <motion.div
+          <MotionDiv
             key={router.asPath}
             initial="initial"
             animate="animate"
@@ -44,7 +54,7 @@ function SQooL({ Component, pageProps }) {
             variants={pageTransition}
           >
             <Component {...pageProps} />
-          </motion.div>
+          </MotionDiv>
         </AnimatePresence>
       </Layout>
       <Toast />

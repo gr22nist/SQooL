@@ -1,16 +1,28 @@
 // components/editor/SqlEditor.js
 
 import React, { useEffect, useRef, useCallback, useState } from 'react';
+import dynamic from 'next/dynamic';
 import QuerySection from './QuerySection';
 import ResultSection from './ResultSection';
 import { createDatabase, executeQuery as executeQueryApi, resetDatabase as resetDatabaseApi } from './Api';
 import useStore from '@/store/useStore';
-import { EditorView } from '@codemirror/view';
-import { EditorState } from '@codemirror/state';
-import { basicSetup } from 'codemirror';
-import { sql } from '@codemirror/lang-sql';
-import { placeholder } from '@codemirror/view';
 import { createSqoolTheme } from './Styles';
+
+// 코드미러 관련 동적 임포트
+const CodeMirrorImports = dynamic(() => 
+  Promise.all([
+    import('@codemirror/view').then(mod => ({ EditorView: mod.EditorView, placeholder: mod.placeholder })),
+    import('@codemirror/state').then(mod => ({ EditorState: mod.EditorState })),
+    import('codemirror').then(mod => ({ basicSetup: mod.basicSetup })),
+    import('@codemirror/lang-sql').then(mod => ({ sql: mod.sql }))
+  ]).then(([view, state, codemirror, sql]) => ({
+    EditorView: view.EditorView,
+    placeholder: view.placeholder,
+    EditorState: state.EditorState,
+    basicSetup: codemirror.basicSetup,
+    sql: sql.sql
+  }))
+);
 
 /**
  * SQLEditor 컴포넌트
@@ -31,7 +43,6 @@ const SQLEditor = ({
   const editorViewRef = useRef(null);
   const [queryValue, setQueryValue] = useState(initialValue);
 
-  // SQL 쿼리 실행 함수
   const executeQuery = useCallback((query) => {
     if (query) {
       executeQueryApi(query, setQueryResult).catch((error) => {
@@ -41,7 +52,6 @@ const SQLEditor = ({
     }
   }, [showToast, setQueryResult]);
 
-  // 데이터베이스 초기화 함수
   const resetDatabase = useCallback(() => {
     resetDatabaseApi().then(() => {
       setQueryResult({ columns: [], rows: [] });

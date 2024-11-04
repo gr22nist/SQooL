@@ -6,7 +6,10 @@
     "dev": "next dev -H 0.0.0.0",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "analyze": "cross-env ANALYZE=true next build",
+    "analyze:win": "set ANALYZE=true && npm run build",
+    "build:analyze": "cross-env ANALYZE=true next build"
   },
   "dependencies": {
     "@codemirror/autocomplete": "^6.18.0",
@@ -31,6 +34,8 @@
     "zustand": "^4.5.4"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^15.0.2",
+    "cross-env": "^7.0.3",
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
     "postcss": "^8",
