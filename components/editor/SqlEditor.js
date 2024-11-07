@@ -14,7 +14,7 @@ const CodeMirrorImports = dynamic(() =>
     import('@codemirror/view').then(mod => ({ EditorView: mod.EditorView, placeholder: mod.placeholder })),
     import('@codemirror/state').then(mod => ({ EditorState: mod.EditorState })),
     import('codemirror').then(mod => ({ basicSetup: mod.basicSetup })),
-    import('@codemirror/lang-sql').then(mod => ({ sql: mod.sql }))
+    import('@codemirror/lang-sql').then(mod => ({ sql: mod.sql({ dialect: mod.SQLite }) }))
   ]).then(([view, state, codemirror, sql]) => ({
     EditorView: view.EditorView,
     placeholder: view.placeholder,

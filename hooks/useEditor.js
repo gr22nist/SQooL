@@ -3,7 +3,7 @@ import { useRef, useEffect } from 'react';
 import { EditorView } from '@codemirror/view';
 import { EditorState } from '@codemirror/state';
 import { basicSetup } from 'codemirror';
-import { sql } from '@codemirror/lang-sql';
+import { sql, SQLite } from '@codemirror/lang-sql';
 import { autocompletion } from '@codemirror/autocomplete';
 import { keymap } from '@codemirror/view';
 import { defaultKeymap } from '@codemirror/commands';
@@ -33,7 +33,7 @@ const useEditor = (initialValue, isDarkMode, setEditorView, isMobile) => {
       doc: initialValue || "",
       extensions: [
         basicSetup,
-        sql(),
+        sql({ dialect: SQLite }),
         createSqoolTheme(isDarkMode),
         autocompletion({ override: [sqliteCompletion] }),
         keymap.of(defaultKeymap),
