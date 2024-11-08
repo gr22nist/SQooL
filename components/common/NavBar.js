@@ -34,31 +34,30 @@ const NavBar = ({ isFullWidth }) => {
   }, [router]);
 
   const container = `
-    fixed top-0 left-0 right-0 z-50
+    fixed top-0 left-0 right-0
     h-14 sm:h-18
-    w-screen
-    bg-opacity-90 backdrop-blur-sm
-    transition-shadow duration-300
-    ${isDarkMode ? 'bg-slate-900/90' : 'bg-slate-50/90'}
-    ${isScrolled ? 'shadow-md' : 'shadow-none'}
+    bg-opacity-80
+    backdrop-blur-md
+    transition-colors duration-200
+    ${isDarkMode ? 'bg-slate-900/80' : 'bg-slate-50/80'}
+    z-50
   `;
 
   const navWrap = `
     h-full
-    ${isFullWidth ? 'w-full' : 'lg:max-w-content-full mx-auto'}
-    flex justify-between items-center
-    px-4 sm:px-6 lg:px-0
-  `;
-
-  const desktopNav = `
-    hidden lg:flex items-center gap-8
-    ${isDarkMode ? 'bg-slate-900/90' : 'bg-slate-50/90'}
+    mx-auto
+    flex items-center justify-between
+    gap-4
+    transition-all duration-300
+    xl:max-w-[1200px]
+    px-4 sm:px-6 lg:px-8 xl:px-0
   `;
 
   const desktopNavItem = `
     ${isDarkMode ? 'text-slate-50 hover:text-primaryDark' : 'text-slate-900 hover:text-primaryLight'} 
     duration-500 
-    lg:text-lg font-bold
+    text-base lg:text-lg font-bold
+    whitespace-nowrap
   `;
 
   const hamburgerBtn = `

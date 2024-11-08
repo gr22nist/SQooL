@@ -54,14 +54,19 @@ const config = {
           '0%': { opacity: 0, transform: 'translateY(24px)' },
           '100%': { opacity: 1, transform: 'translateY(0)' },
         },
-        spin: {
-          '0%': { transform: 'rotate(0deg)' },
-          '100%': { transform: 'rotate(360deg)' },
+        slideLeft: {
+          '0%': { opacity: 0, transform: 'translateX(-24px)' },
+          '100%': { opacity: 1, transform: 'translateX(0)' },
         },
+        slideRight: {
+          '0%': { opacity: 0, transform: 'translateX(24px)' },
+          '100%': { opacity: 1, transform: 'translateX(0)' },
+        }
       },
       animation: {
         fadeIn: 'fadeIn .6s ease-out',
-        spin: 'spin 1s linear infinite',
+        slideLeft: 'slideLeft .6s ease-out',
+        slideRight: 'slideRight .6s ease-out',
       },
     },
     darkMode: 'class',

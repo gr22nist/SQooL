@@ -11,6 +11,9 @@
   --drag-text-color: #000000;
   --navbar-height-mobile: 56px;
   --navbar-height-desktop: 72px;
+  --editor-width: clamp(400px, 50vw, 800px);
+  --header-height: 4rem;
+  --content-spacing: 2rem;
 }
 
 .dark {
@@ -58,4 +61,11 @@ html {
 
 * {
   touch-action: manipulation;
+}
+
+@font-face {
+  font-family: 'EliceDigitalCoding';
+  src: url('/fonts/EliceDigitalCodingverH_Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
 }

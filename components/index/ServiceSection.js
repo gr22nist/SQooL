@@ -35,11 +35,25 @@ const ServiceSection = () => {
       {service.linkText && (
         <a 
           href={service.linkUrl}
-          className={`text-center mt-4 transition-colors duration-200 ${
-            isDarkMode 
-              ? 'text-primaryDark hover:text-secondaryDark' 
-              : 'text-primaryLight hover:text-secondaryLight'
-          }`}
+          className={`
+            relative
+            w-auto inline-flex items-center justify-center
+            px-4 py-2 sm:px-5 sm:py-2.5
+            rounded-lg
+            text-sm
+            overflow-hidden
+            ${isDarkMode
+              ? 'bg-slate-50 text-slate-900 hover:bg-secondaryDark'
+              : 'bg-slate-900 text-slate-50 hover:bg-secondaryLight'
+            }
+            transition-all duration-300
+            before:absolute before:inset-0 
+            before:bg-gradient-to-r 
+            before:from-transparent before:via-white/20 before:to-transparent
+            before:translate-x-[-200%]
+            hover:before:translate-x-[200%]
+            before:transition-transform before:duration-700
+          `}
         >
           {service.linkText}
         </a>

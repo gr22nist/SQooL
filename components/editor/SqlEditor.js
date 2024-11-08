@@ -11,13 +11,25 @@ import { createSqoolTheme } from './Styles';
 // 코드미러 관련 동적 임포트
 const CodeMirrorImports = dynamic(() => 
   Promise.all([
-    import('@codemirror/view').then(mod => ({ EditorView: mod.EditorView, placeholder: mod.placeholder })),
+    import('@codemirror/view').then(mod => {
+      const theme = EditorView.theme({
+        "&": {
+          fontFamily: 'EliceDigitalCoding, monospace'
+        }
+      });
+      return { 
+        EditorView: mod.EditorView, 
+        placeholder: mod.placeholder,
+        theme 
+      };
+    }),
     import('@codemirror/state').then(mod => ({ EditorState: mod.EditorState })),
     import('codemirror').then(mod => ({ basicSetup: mod.basicSetup })),
     import('@codemirror/lang-sql').then(mod => ({ sql: mod.sql({ dialect: mod.SQLite }) }))
   ]).then(([view, state, codemirror, sql]) => ({
     EditorView: view.EditorView,
     placeholder: view.placeholder,
+    theme: view.theme,
     EditorState: state.EditorState,
     basicSetup: codemirror.basicSetup,
     sql: sql.sql
@@ -42,22 +54,30 @@ const SQLEditor = ({
   const { showToast } = useStore();
   const editorViewRef = useRef(null);
   const [queryValue, setQueryValue] = useState(initialValue);
+  const [localQueryResult, setLocalQueryResult] = useState(queryResult || { columns: [], rows: [] });
 
   const executeQuery = useCallback((query) => {
     if (query) {
-      executeQueryApi(query, setQueryResult).catch((error) => {
+      executeQueryApi(query, setLocalQueryResult).catch((error) => {
         console.error("Query execution failed:", error);
         showToast('쿼리 실행에 실패했습니다.', 'error');
       });
     }
-  }, [showToast, setQueryResult]);
+  }, [showToast]);
 
-  const resetDatabase = useCallback(() => {
+  useEffect(() => {
+    if (setQueryResult) {
+      setQueryResult(localQueryResult);
+    }
+  }, [localQueryResult, setQueryResult]);
+
+  const resetDatabaseHandler = useCallback(() => {
     resetDatabaseApi().then(() => {
-      setQueryResult({ columns: [], rows: [] });
+      setLocalQueryResult({ columns: [], rows: [] });
+      setQueryValue('');
       if (editorViewRef.current) {
         editorViewRef.current.dispatch({
-          changes: { from: 0, to: editorViewRef.current.state.doc.length, insert: '' },
+          changes: { from: 0, to: editorViewRef.current.state.doc.length, insert: '' }
         });
       }
       showToast('데이터베이스가 초기화되었습니다.', 'success');
@@ -65,7 +85,7 @@ const SQLEditor = ({
       console.error('Database reset failed:', error);
       showToast('데이터베이스 초기화에 실패했습니다.', 'error');
     });
-  }, [showToast, setQueryResult]);
+  }, [showToast, setLocalQueryResult, setQueryValue]);
 
   const containerClass = `
     flex flex-col w-full
@@ -85,12 +105,12 @@ const SQLEditor = ({
         setEditorView={(view) => {
           editorViewRef.current = view;
         }}
-        resetDatabase={resetDatabase}
+        resetDatabase={resetDatabaseHandler}
         isEditorPage={isEditorPage}
         setQueryValue={setQueryValue}
       />
       <ResultSection
-        queryResult={queryResult}
+        queryResult={localQueryResult}
         minHeight={isMobile || isEditorPage ? 'auto' : 'flex-1'}
         isMobile={isMobile}
         isEditorPage={isEditorPage}

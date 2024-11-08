@@ -7,10 +7,6 @@ export const extend = {
     colors: colors,
     ...theme,
   },
-
-  maxWidth: {
-    custom: "1400px",
-  },
   container: {
     center: true,
     padding: "1rem",

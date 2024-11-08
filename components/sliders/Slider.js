@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import Slide from './Slide';
 import SliderControls from './SliderControls';
+import Link from 'next/link';
 
 const Slider = ({ slides }) => {
   const [currentSlide, setCurrentSlide] = useState(1);
@@ -96,6 +97,23 @@ const Slider = ({ slides }) => {
     flex 
     ${transitionEnabled ? 'transition-transform duration-500 ease-in-out' : ''}
   `;
+
+  const SlideContent = ({ slide }) => {
+    return (
+      <div className="flex flex-col items-center gap-4 text-center p-4">
+        <p className="text-lg">{slide.content}</p>
+        {slide.link && (
+          <Link 
+            href={slide.link} 
+            className="slide-link"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {slide.buttonText}
+          </Link>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div

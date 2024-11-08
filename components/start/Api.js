@@ -4,10 +4,14 @@ const contentUrl = process.env.NEXT_PUBLIC_API_CONTENTS_URL;
 export const getCategoryList = async () => {
   try {
     const response = await fetch(categoryUrl);
+    console.log('Category URL:', categoryUrl);
+    console.log('Category Response:', response);
+    
     if (!response.ok) {
       throw new Error(`Failed to fetch categories: ${response.statusText}`);
     }
     const data = await response.json();
+    console.log('Category Data:', data);
     return data;
   } catch (error) {
     console.error("Error fetching category list:", error);

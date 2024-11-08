@@ -1,41 +1,87 @@
-import React, { useState } from 'react';
-import CategoryList from './Category';
+import React, { useEffect, useMemo } from 'react';
+import CategoryDropdown from './CategoryDropdown';
 import Content from './Content';
-import { useStore } from '../../store/store';
+import useStore from '@/store/useStore';
+import useMediaQuery from '@/hooks/useMediaQuery';
+import { useCategories } from '@/hooks/useCategories';
 
-const Document = ({ onSelectCategory, selectedCategoryId }) => {
-  const { isDarkMode } = useStore();
+const SELECTED_CATEGORY_KEY = 'selectedDocCategory';
+
+const Document = ({ showEditor }) => {
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  const isDesktop = useMediaQuery('(min-width: 1280px)');
+  const { categories, isLoading } = useCategories();
+  const [selectedCategoryId, setSelectedCategoryId] = React.useState(null);
+  const { isDarkMode, totalOffset } = useStore();
+
+  const filteredCategories = useMemo(() => {
+    if (!Array.isArray(categories)) return [];
+    return categories.filter(category => 
+      category.Tree === 'doc' || category.Tree === 'main'
+    );
+  }, [categories]);
+
+  useEffect(() => {
+    if (!isLoading && filteredCategories.length > 0) {
+      const savedCategoryId = localStorage.getItem(SELECTED_CATEGORY_KEY);
+      
+      if (savedCategoryId) {
+        const categoryExists = filteredCategories.some(cat => cat.Id === savedCategoryId);
+        if (categoryExists) {
+          setSelectedCategoryId(savedCategoryId);
+          return;
+        }
+      }
+      
+      if (!selectedCategoryId) {
+        const firstDocCategory = filteredCategories.find(category => category.Tree === 'doc');
+        if (firstDocCategory) {
+          setSelectedCategoryId(firstDocCategory.Id);
+        }
+      }
+    }
+  }, [filteredCategories, isLoading, selectedCategoryId]);
+
+  const handleCategorySelect = (categoryId) => {
+    localStorage.setItem(SELECTED_CATEGORY_KEY, categoryId);
+    setSelectedCategoryId(categoryId);
+  };
+
+  const documentClass = `
+    flex flex-col gap-4
+    w-full h-full 
+    px-4 sm:px-6
+    ${showEditor && isDesktop 
+      ? 'xl:max-w-[calc(1200px-504px)] xl:px-0 xl:min-h-[calc(100vh-${totalOffset}px)] xl:overflow-y-auto' 
+      : 'xl:px-6'}
+    ${!isDesktop && 'w-full min-h-full'}
+    mx-auto
+    transition-all duration-300 ease-in-out
+  `;
+
+  const dropdownClass = `
+    z-50
+    w-full
+  `;
+
+  const contentClass = `
+    w-full h-full
+    overflow-auto
+  `;
 
   return (
-    <section className="w-full h-full flex gap-6">
-      {/* 카테고리 영역 */}
-      <div className="w-[280px] flex-shrink-0 h-[calc(100vh-4rem-2rem)]">
-        <CategoryList 
-          onSelectCategory={onSelectCategory}
+    <div className={documentClass}>
+      <div className={dropdownClass}>
+        <CategoryDropdown 
+          categories={filteredCategories}
           selectedCategoryId={selectedCategoryId}
+          onSelectCategory={handleCategorySelect}
         />
       </div>
-
-      {/* 문서 영역 */}
-      <div className={`
-        flex-1 h-[calc(100vh-4rem-2rem)]
-        overflow-y-auto
-        scrollbar-thin scrollbar-thumb-rounded
-        ${isDarkMode 
-          ? 'scrollbar-thumb-slate-700 scrollbar-track-slate-800/50' 
-          : 'scrollbar-thumb-slate-300 scrollbar-track-slate-100'}
-      `}>
-        <div className="min-h-full">
-          {selectedCategoryId ? (
-            <Content documentId={selectedCategoryId} />
-          ) : (
-            <div className="h-full flex justify-center items-center">
-              카테고리를 선택해주세요
-            </div>
-          )}
-        </div>
+      <div className={contentClass}>
+        <Content documentId={selectedCategoryId} />
       </div>
-    </section>
+    </div>
   );
 };
 

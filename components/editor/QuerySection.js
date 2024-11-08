@@ -1,5 +1,5 @@
 // components/editor/QuerySection.js
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import useStore from "../../store/useStore";
 import useEditor from "@/hooks/useEditor";
 import { CodeCopy, DBReset, ChevronDown, ChevronUp } from "../icons/IconSet";
@@ -18,8 +18,8 @@ const QuerySection = ({
   isEditorPage,
   setQueryValue
 }) => {
-  const isDarkMode = useStore((state) => state.isDarkMode);
-  const { showToast } = useStore();
+
+  const { isDarkMode, showToast } = useStore();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const editorRef = useRef(null);
@@ -135,8 +135,10 @@ const QuerySection = ({
   `;
 
   const handleCopyCode = async () => {
-    const code = useEditor.current.state.doc.toString();
+    if (!editorRef.current) return;
+    
     try {
+      const code = editorRef.current.state.doc.toString();
       await navigator.clipboard.writeText(code);
       showToast("코드를 복사했습니다.", "success");
     } catch (err) {
@@ -178,6 +180,20 @@ const QuerySection = ({
     isMobile
   );
 
+  const handleResetDatabase = async () => {
+    try {
+      if (editorRef.current) {
+        editorRef.current.dispatch({
+          changes: { from: 0, to: editorRef.current.state.doc.length, insert: '' }
+        });
+      }
+      setQueryValue('');
+      await resetDatabase();
+    } catch (error) {
+      console.error('Reset failed:', error);
+    }
+  };
+
   return (
     <section
       className={`${queryWrap} transition-[height] duration-300 ease-in-out`}
@@ -209,7 +225,7 @@ const QuerySection = ({
           </button>
           <button
             className={editorBtn}
-            onClick={resetDatabase}
+            onClick={handleResetDatabase}
             aria-label="데이터베이스 초기화"
           >
             <DBReset className={editorIcon} />

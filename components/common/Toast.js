@@ -14,7 +14,7 @@ const Toast = () => {
     if (toastMessage) {
       const timer = setTimeout(() => {
         hideToast();
-      }, 3000);
+      }, 1500);
       return () => clearTimeout(timer);
     }
   }, [toastMessage, hideToast]);
@@ -25,14 +25,14 @@ const Toast = () => {
     fixed top-32 left-1/2 transform -translate-x-1/2 
     py-4 px-8 rounded-lg shadow-lg
     transition-all duration-500 ease-in-out
-    font-medium text-slate-50
+    font-medium text-slate-50 z-[150]
   `;
 
   const typeClasses = {
-    success: 'bg-green-500 bg-opacity-90',
-    error: 'bg-red-500 bg-opacity-90',
-    warning: 'bg-yellow-500 bg-opacity-90',
-    info: 'bg-blue-500 bg-opacity-90'
+    success: 'bg-green-500 bg-opacity-80',
+    error: 'bg-red-500 bg-opacity-80',
+    warning: 'bg-yellow-500 bg-opacity-80',
+    info: 'bg-blue-500 bg-opacity-80'
   };
 
   const toastClass = `${baseClass} ${typeClasses[toastType] || typeClasses.info}`;

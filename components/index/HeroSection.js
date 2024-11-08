@@ -21,24 +21,19 @@ import heroBgDark from '@/public/img/hero_bg_dark.png';
 const HeroSection = ({ scrollToContent }) => {
   const isDarkMode = useStore((state) => state.isDarkMode);
   const isMobile = useMediaQuery('(max-width: 640px)');
-  const [typedText, setTypedText] = useState('');
-  const fullText = '한글 데이터로 배우는\n마음 편한 SQLite!';
+  const [visibleLines, setVisibleLines] = useState([]);
+  const textLines = ['한글 데이터로 배우는', '마음 편한 SQLite!'];
   
   useEffect(() => {
-    let currentText = '';
-    let currentIndex = 0;
-    
-    const typeText = () => {
-      if (currentIndex < fullText.length) {
-        currentText += fullText[currentIndex];
-        setTypedText(currentText);
-        currentIndex++;
-        setTimeout(typeText, 100);
+    const showLines = async () => {
+      for (let i = 0; i < textLines.length; i++) {
+        await new Promise(resolve => setTimeout(resolve, 500));
+        setVisibleLines(prev => [...prev, i]);
       }
     };
     
-    typeText();
-  }, []);
+    showLines();
+  }, [textLines.length]);
 
   const hero = `
     w-full
@@ -104,8 +99,20 @@ const HeroSection = ({ scrollToContent }) => {
         }}
       />
       <div className={heroContent}>
-        <h1 className="text-4xl sm:text-5xl font-semibold text-center whitespace-pre-line leading-normal lg:leading-relaxed">
-          {typedText}
+        <h1 className="text-4xl sm:text-5xl font-semibold text-center leading-normal lg:leading-relaxed">
+          {textLines.map((line, index) => (
+            <div
+              key={index}
+              className={`
+                transition-all duration-700
+                ${visibleLines.includes(index) 
+                  ? 'opacity-100 transform translate-y-0' 
+                  : 'opacity-0 transform translate-y-4'}
+              `}
+            >
+              {line}
+            </div>
+          ))}
         </h1>
         <Link href="/editor" className={heroBtn}>
           <HeroBtn width={20} height={21} className={heroIcon} />

@@ -11,7 +11,7 @@ const Layout = ({ children }) => {
   const [isMobile, setIsMobile] = useState(false);
 
   const isLargeScreen = useCallback(() => {
-    return window.innerWidth >= 1024;
+    return window.innerWidth >= 1280;
   }, []);
 
   const [isLarge, setIsLarge] = useState(false);
@@ -19,7 +19,7 @@ const Layout = ({ children }) => {
   useEffect(() => {
     const checkScreen = () => {
       setIsMobile(window.innerWidth < 768);
-      setIsLarge(window.innerWidth >= 1024);
+      setIsLarge(window.innerWidth >= 1280);
     };
     
     checkScreen();

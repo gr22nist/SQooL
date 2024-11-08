@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Dropdown from '@/components/common/Dropdown';
+
+const SELECTED_ARTICLE_CATEGORY_KEY = 'selectedArticleCategory';
 
 /**
  * 
@@ -21,8 +23,17 @@ const CategoryList = ({ onSelectCategory }) => {
     { Id: '최신이슈', Title: '최신이슈', Tree: 'doc' }
   ];
 
+  useEffect(() => {
+    const savedCategory = localStorage.getItem(SELECTED_ARTICLE_CATEGORY_KEY);
+    if (savedCategory && categories.some(cat => cat.Id === savedCategory)) {
+      setSelectedCategory(savedCategory);
+      onSelectCategory(savedCategory);
+    }
+  }, []);
+
   const handleSelect = (categoryId) => {
     setSelectedCategory(categoryId);
+    localStorage.setItem(SELECTED_ARTICLE_CATEGORY_KEY, categoryId);
     onSelectCategory(categoryId);
   };
 

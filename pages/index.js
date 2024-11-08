@@ -59,11 +59,23 @@ const Index = () => {
   }, [scrollToContent, isScrolling]);
 
   const handleTouchStart = useCallback((e) => {
+    const target = e.target;
+    if (target.closest('a') || 
+        target.closest('button') || 
+        target.closest('[role="button"]') || 
+        target.closest('.swiper-slide')) return;
+    
     setTouchStart(e.touches[0].clientY);
   }, []);
 
   const handleTouchMove = useCallback((e) => {
-    if (!touchStart || isScrolling) return;
+    const target = e.target;
+    if (!touchStart || 
+        isScrolling || 
+        target.closest('a') || 
+        target.closest('button') || 
+        target.closest('[role="button"]') || 
+        target.closest('.swiper-slide')) return;
 
     const heroSection = document.getElementById('hero-section');
     if (!heroSection) return;
@@ -72,9 +84,11 @@ const Index = () => {
     const deltaY = touchStart - touchEnd;
     const heroRect = heroSection.getBoundingClientRect();
 
-    if (deltaY > 50 && heroRect.bottom > 0) {
+    if (deltaY > 50 && heroRect.bottom > 0 && !isScrolling) {
       e.preventDefault();
+      setIsScrolling(true);
       scrollToContent();
+      setTimeout(() => setIsScrolling(false), 1000);
     }
   }, [touchStart, isScrolling, scrollToContent]);
 

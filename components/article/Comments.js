@@ -17,6 +17,7 @@ const Comment = ({
   const [deletingCommentId, setDeletingCommentId] = useState(null);
   const [showOptions, setShowOptions] = useState({});
   const { isDarkMode, showToast } = useStore();
+  const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
     if (articleId) {
@@ -67,23 +68,31 @@ const Comment = ({
       return;
     }
 
+    setIsUpdating(true);
     try {
-      await updateArticleComment(
+      await updateArticleComment({
         articleId,
-        editingCommentId,
-        passwords[editingCommentId],
-        editingContent
-      );
-      const updatedComments = await getArticleComments(articleId);
-      setComments(updatedComments);
-      setEditingCommentId(null);
-      setEditingContent("");
-      setPasswords((prev) => ({ ...prev, [editingCommentId]: "" }));
-      setShowOptions((prev) => ({ ...prev, [editingCommentId]: false }));
+        commentId: editingCommentId,
+        password: passwords[editingCommentId],
+        content: editingContent
+      });
+      
+      // 낙관적 업데이트
+      setComments(prev => prev.map(comment => 
+        comment.id === editingCommentId 
+          ? { ...comment, content: editingContent }
+          : comment
+      ));
+      
       showToast('댓글이 수정되었습니다.', 'success');
     } catch (error) {
-      console.error("댓글 수정 중 오류 발생:", error);
-      showToast('댓글 수정 중 오류가 발생했습니다.', 'error');
+      showToast('댓글 수정 실패. 다시 시도해주세요.', 'error');
+      // 실패 시 원래 상태로 복구
+      const updatedComments = await getArticleComments(articleId);
+      setComments(updatedComments);
+    } finally {
+      setIsUpdating(false);
+      resetEditState();
     }
   };
 
