@@ -73,6 +73,8 @@ const Layout = ({ children }) => {
         <meta name="twitter:title" content="SQooL" />
         <meta name="twitter:description" content="한글 데이터로 배우는 마음 편한 SQLite!" />
         <meta name="twitter:image" content="/img/wise-meta-img-tw.jpg" />
+        <meta name="google-site-verification" content="M0yA1GfTchsrHTZERt45sLXDU7RjbWwlaPWRjo3wkUI" />
+        <meta name="naver-site-verification" content="fc8db8a4e1673f39e0b3be97f060bf4019c8e286" />
       </Head>
       <Navbar isFullWidth={isFullWidth} />
       <main className={mainClass}>
