@@ -32,7 +32,7 @@ const ScrollToTop = () => {
       ? 'bg-slate-800 hover:bg-slate-700' 
       : 'bg-white hover:bg-slate-50'}
     ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
-    z-50
+    z-80
   `;
 
   return (

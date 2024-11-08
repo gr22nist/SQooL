@@ -40,7 +40,7 @@ const NavBar = ({ isFullWidth }) => {
     backdrop-blur-md
     transition-colors duration-200
     ${isDarkMode ? 'bg-slate-900/80' : 'bg-slate-50/80'}
-    z-50
+    z-[90]
   `;
 
   const navWrap = `
@@ -51,6 +51,7 @@ const NavBar = ({ isFullWidth }) => {
     transition-all duration-300
     xl:max-w-[1200px]
     px-4 sm:px-6 lg:px-8 xl:px-0
+    z-[70]
   `;
 
   const desktopNavItem = `
@@ -78,7 +79,7 @@ const NavBar = ({ isFullWidth }) => {
     transform transition-transform duration-300 ease-in-out
     ${isMenuOpen ? 'translate-y-0 shadow-lg' : '-translate-y-full shadow-none'}
     ${isDarkMode ? 'bg-slate-900/90' : 'bg-slate-50/90'}
-    z-40
+    z-[85]
   `;
 
   const mobileMenuItem = `
@@ -104,7 +105,7 @@ const NavBar = ({ isFullWidth }) => {
             )}
           </Link>
 
-          <div className="hidden lg:flex items-center gap-8">
+          <div className="hidden lg:flex items-center gap-8 z-[60]">
             <ul className="flex items-center gap-8">
               <li className={desktopNavItem}><Link href="/start">학습하기</Link></li>
               <li className={desktopNavItem}><Link href="/editor">에디터</Link></li>

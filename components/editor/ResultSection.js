@@ -50,7 +50,7 @@ const getStyles = (isDarkMode, isEditorPage, isMobile, minHeight) => ({
     ${isDarkMode 
       ? 'bg-slate-700 hover:bg-slate-600 text-slate-200' 
       : 'bg-slate-200 hover:bg-slate-300 text-slate-700'}
-    hover:shadow-xl z-50
+    hover:shadow-xl z-70
     ${showScrollTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}
   `
 });

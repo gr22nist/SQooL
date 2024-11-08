@@ -16,7 +16,7 @@ const CategoryDropdown = ({ categories, selectedCategoryId, onSelectCategory }) 
       isTree={true}
       customStyles={{
         container: 'w-full relative',
-        menu: 'z-[100] absolute top-full left-0 w-full max-h-[300px] overflow-y-auto'
+        menu: 'z-[60] absolute top-full left-0 w-full max-h-[300px] overflow-y-auto'
       }}
     />
   );

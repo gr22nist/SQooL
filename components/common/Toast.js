@@ -25,7 +25,7 @@ const Toast = () => {
     fixed top-32 left-1/2 transform -translate-x-1/2 
     py-4 px-8 rounded-lg shadow-lg
     transition-all duration-500 ease-in-out
-    font-medium text-slate-50 z-[150]
+    font-medium text-slate-50 z-[100]
   `;
 
   const typeClasses = {
