@@ -19,8 +19,8 @@ const CategoryList = ({ onSelectCategory }) => {
   const categories = [
     { Id: '전체', Title: '전체', Tree: 'doc' },
     { Id: '공지사항', Title: '공지사항', Tree: 'doc' },
-    { Id: '개발 팁', Title: '개발 팁', Tree: 'doc' },
-    { Id: '최신이슈', Title: '최신이슈', Tree: 'doc' }
+    { Id: '개발일기', Title: '개발일기', Tree: 'doc' },
+    { Id: '이슈&뉴스', Title: '이슈&뉴스', Tree: 'doc' }
   ];
 
   useEffect(() => {
