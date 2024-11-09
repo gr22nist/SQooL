@@ -29,17 +29,22 @@ const Index = () => {
     const serviceSection = document.getElementById('service-section');
     
     if (heroSection && serviceSection) {
-      const heroRect = heroSection.getBoundingClientRect();
-      const targetScroll = window.scrollY + heroRect.height;
+      const targetScroll = heroSection.offsetHeight;
       
       window.scrollTo({ 
         top: targetScroll, 
         behavior: 'smooth' 
       });
 
-      setTimeout(() => {
-        setIsScrolling(false);
-      }, 1000);
+      const checkScrollEnd = () => {
+        if (window.pageYOffset === targetScroll) {
+          setIsScrolling(false);
+        } else {
+          requestAnimationFrame(checkScrollEnd);
+        }
+      };
+      
+      requestAnimationFrame(checkScrollEnd);
     }
   }, [isScrolling]);
   
@@ -65,14 +70,20 @@ const Index = () => {
         target.closest('[role="button"]') || 
         target.closest('.swiper-slide')) return;
     
-    setTouchStart(e.touches[0].clientY);
+    const heroSection = document.getElementById('hero-section');
+    if (!heroSection) return;
+    
+    const heroRect = heroSection.getBoundingClientRect();
+    if (heroRect.bottom > 0 && heroRect.top <= window.innerHeight) {
+      setTouchStart(e.touches[0].clientY);
+    }
   }, []);
 
   const handleTouchMove = useCallback((e) => {
+    if (!touchStart || isScrolling) return;
+
     const target = e.target;
-    if (!touchStart || 
-        isScrolling || 
-        target.closest('a') || 
+    if (target.closest('a') || 
         target.closest('button') || 
         target.closest('[role="button"]') || 
         target.closest('.swiper-slide')) return;
@@ -84,11 +95,10 @@ const Index = () => {
     const deltaY = touchStart - touchEnd;
     const heroRect = heroSection.getBoundingClientRect();
 
-    if (deltaY > 50 && heroRect.bottom > 0 && !isScrolling) {
+    if (Math.abs(deltaY) > 30 && deltaY > 0 && heroRect.bottom > 0) {
       e.preventDefault();
-      setIsScrolling(true);
       scrollToContent();
-      setTimeout(() => setIsScrolling(false), 1000);
+      setTouchStart(null);
     }
   }, [touchStart, isScrolling, scrollToContent]);
 

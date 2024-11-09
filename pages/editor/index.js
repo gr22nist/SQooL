@@ -42,7 +42,7 @@ const Editor = () => {
     ${isMobile 
       ? ''
       : `min-h-[calc(100vh-${totalOffset}px)]`}
-    px-6 sm:px-8 lg:px-6
+    px-3 sm:px-4 lg:px-6
     py-8
   `;
 

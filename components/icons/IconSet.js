@@ -59,6 +59,30 @@ export const LightLogo = ({ title, width, height, ...props }) => (
   </Icon>
 );
 
+export const SymbolDarkLogo = ({ title, width, height, ...props }) => (
+  <Icon title={title} width={width} height={height} viewBox="0 0 144 144" {...props}>
+    <rect width="67.4533" height="24.92" rx="5.67074" transform="matrix(0.893235 -0.44959 -0.44959 -0.893235 22.9453 111.585)" fill="#94A3B8"/>
+    <rect x="62.6387" y="58.999" width="67.4533" height="24.92" rx="5.67074" transform="rotate(26.7174 62.6387 58.999)" fill="#94A3B8"/>
+    <rect x="55.2197" y="85.1216" width="67.4533" height="24.92" rx="5.67074" transform="rotate(-90 55.2197 85.1216)" fill="#94A3B8"/>
+    <rect x="22.9453" y="38.4604" width="67.4533" height="24.92" rx="5.67074" transform="rotate(26.7174 22.9453 38.4604)" fill="#AA55FF"/>
+    <rect width="45.0989" height="24.92" rx="3.7805" transform="matrix(0.893235 -0.44959 -0.44959 -0.893235 62.6387 91.0474)" fill="#AA55FF"/>
+    <rect width="24.9135" height="24.92" rx="3.7805" transform="matrix(0.893235 -0.44959 -0.44959 -0.893235 108.009 68.1396)" fill="#33E364"/>
+    <rect width="67.4533" height="24.92" rx="5.67074" transform="matrix(-4.37114e-08 1 1 4.37114e-08 55.2197 61.1431)" fill="#AA55FF"/>
+  </Icon>
+);
+
+export const SymbolLightLogo = ({ title, width, height, ...props }) => (
+  <Icon title={title} width={width} height={height} viewBox="0 0 144 144" {...props}>
+    <rect width="67.4533" height="24.92" rx="5.67074" transform="matrix(0.893235 -0.44959 -0.44959 -0.893235 22.9453 111.585)" fill="#CBD5E1"/>
+    <rect x="62.6387" y="58.999" width="67.4533" height="24.92" rx="5.67074" transform="rotate(26.7174 62.6387 58.999)" fill="#CBD5E1"/>
+    <rect x="55.2197" y="85.1216" width="67.4533" height="24.92" rx="5.67074" transform="rotate(-90 55.2197 85.1216)" fill="#CBD5E1"/>
+    <rect x="22.9453" y="38.4604" width="67.4533" height="24.92" rx="5.67074" transform="rotate(26.7174 22.9453 38.4604)" fill="#8A2BE2"/>
+    <rect width="45.0989" height="24.92" rx="3.7805" transform="matrix(0.893235 -0.44959 -0.44959 -0.893235 62.6387 91.0474)" fill="#8A2BE2"/>
+    <rect width="24.9135" height="24.92" rx="3.7805" transform="matrix(0.893235 -0.44959 -0.44959 -0.893235 108.009 68.1396)" fill="#0CAD4D"/>
+    <rect width="67.4533" height="24.92" rx="5.67074" transform="matrix(-4.37114e-08 1 1 4.37114e-08 55.2197 61.1431)" fill="#8A2BE2"/>
+  </Icon>
+);
+
 export const DarkToggle = ({ title, width, height, ...props }) => (
   <Icon title={title} width={width} height={height} {...props}>
     <rect width="24" height="24" rx="8" fill="#111519"/>
@@ -204,5 +228,17 @@ export const ChevronDown = ({ title, width, height, ...props }) => (
 export const ChevronUp = ({ title, width, height, ...props }) => (
   <Icon title={title} width={width} height={height} {...props}>
     <path fillRule="evenodd" clipRule="evenodd" d="M12 8.5L19.5 16L18.1 17.4L12 11.3L5.9 17.4L4.5 16L12 8.5Z"/>
+  </Icon>
+);
+
+export const ArrowLeft = ({ title, width, height, ...props }) => (
+  <Icon title={title} width={width} height={height} {...props}>
+    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+  </Icon>
+);
+
+export const ArrowRight = ({ title, width, height, ...props }) => (
+  <Icon title={title} width={width} height={height} {...props}>
+    <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
   </Icon>
 );

@@ -27,6 +27,9 @@ const config = {
         nanum: ['var(--font-nanum)'],
         code: ['var(--font-elice)', 'monospace'],
       },
+      fontSize: {
+        'xxs': '12px',
+      },
       width: {
         'card-pc': '288px',
         'article': '588px',

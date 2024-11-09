@@ -17,14 +17,14 @@ const Start = () => {
 
   const container = `
     w-full min-h-[calc(100vh-${totalOffset}px)]
-    px-6 py-8
+    px-3 sm:px-4 md:px-6 py-8
     flex items-start justify-center
     overflow-hidden
     ${isDarkMode ? 'bg-slate-900' : 'bg-white'}
   `;
 
   const contentWrapper = `
-    w-full max-w-content-full
+    w-full xl:max-w-content-full
     flex items-start gap-6
     relative
   `;

@@ -45,9 +45,9 @@ const Layout = ({ children }) => {
 
   const mainClass = `
     flex-1
-    ${isEditorPage ? 'mb-12' : ''}
+    ${isEditorPage ? 'mb-4' : ''}
     ${!isMainPage && !isEditorPage && !useFullHeight 
-      ? 'pt-4 sm:pt-6'
+      ? 'pt-2 sm:pt-6'
       : ''}
   `;
 

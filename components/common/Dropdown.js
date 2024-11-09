@@ -35,7 +35,7 @@ const Dropdown = ({
   const buttonClass = `
     w-full
     flex items-center justify-between
-    px-6 py-4
+    p-4
     text-sm font-bold
     transition-all duration-200 ease-in-out
     ${isDarkMode 

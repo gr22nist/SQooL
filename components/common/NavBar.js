@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import useStore from '@/store/useStore';
 import DarkModeToggle from './DarkModeToggle';
-import { DarkLogo, LightLogo } from '../icons/IconSet';
+import { DarkLogo, LightLogo, SymbolDarkLogo, SymbolLightLogo } from '../icons/IconSet';
 import { useRouter } from 'next/router';
 
 const NavBar = ({ isFullWidth }) => {
@@ -11,6 +11,7 @@ const NavBar = ({ isFullWidth }) => {
   const { isDarkMode } = useStore();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,6 +33,16 @@ const NavBar = ({ isFullWidth }) => {
       router.events.off('routeChangeStart', handleRouteChange);
     };
   }, [router]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const container = `
     fixed top-0 left-0 right-0
@@ -83,7 +94,7 @@ const NavBar = ({ isFullWidth }) => {
   `;
 
   const mobileMenuItem = `
-    block w-full text-base font-bold
+    block w-full text-sm font-extrabold
     ${isDarkMode 
       ? 'bg-slate-800 hover:bg-slate-700 text-slate-50 border-b border-slate-600/70'
       : 'bg-slate-100 hover:bg-slate-200 text-slate-900 border-b border-slate-300/70'
@@ -98,10 +109,30 @@ const NavBar = ({ isFullWidth }) => {
       <nav className={container}>
         <div className={navWrap}>
           <Link href="/">
-            {isDarkMode ? (
-              <DarkLogo width={128} height={34} title="Logo" />
+            {isMobile ? (
+              <div className="w-8 h-8 relative">
+                {isDarkMode ? (
+                  <SymbolDarkLogo 
+                    width={32} 
+                    height={32} 
+                    title="Logo"
+                    className="object-contain"
+                  />
+                ) : (
+                  <SymbolLightLogo 
+                    width={32} 
+                    height={32} 
+                    title="Logo"
+                    className="object-contain"
+                  />
+                )}
+              </div>
             ) : (
-              <LightLogo width={128} height={34} title="Logo" />
+              isDarkMode ? (
+                <DarkLogo width={128} height={34} title="Logo" />
+              ) : (
+                <LightLogo width={128} height={34} title="Logo" />
+              )
             )}
           </Link>
 
@@ -114,13 +145,16 @@ const NavBar = ({ isFullWidth }) => {
             <DarkModeToggle />
           </div>
 
-          <button 
-            className={hamburgerBtn}
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="메뉴 열기"
-          >
-            {isMenuOpen ? '✕' : '☰'}
-          </button>
+          <div className="lg:hidden flex items-center gap-4">
+            <DarkModeToggle />
+            <button 
+              className={hamburgerBtn}
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="메뉴 열기"
+            >
+              {isMenuOpen ? '✕' : '☰'}
+            </button>
+          </div>
         </div>
       </nav>
 

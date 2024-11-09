@@ -50,10 +50,10 @@ const Document = ({ showEditor }) => {
   const documentClass = `
     flex flex-col gap-4
     w-full h-full 
-    px-4 sm:px-6
+    sm:px-4
     ${showEditor && isDesktop 
       ? 'xl:max-w-[calc(1200px-504px)] xl:px-0 xl:min-h-[calc(100vh-${totalOffset}px)] xl:overflow-y-auto' 
-      : 'xl:px-6'}
+      : ''}
     ${!isDesktop && 'w-full min-h-full'}
     mx-auto
     transition-all duration-300 ease-in-out

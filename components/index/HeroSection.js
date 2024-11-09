@@ -25,10 +25,17 @@ const HeroSection = ({ scrollToContent }) => {
   const textLines = ['한글 데이터로 배우는', '마음 편한 SQLite!'];
   
   useEffect(() => {
+    const hasSeenAnimation = localStorage.getItem('hasSeenHeroAnimation');
+    
     const showLines = async () => {
-      for (let i = 0; i < textLines.length; i++) {
-        await new Promise(resolve => setTimeout(resolve, 500));
-        setVisibleLines(prev => [...prev, i]);
+      if (!hasSeenAnimation) {
+        for (let i = 0; i < textLines.length; i++) {
+          await new Promise(resolve => setTimeout(resolve, 500));
+          setVisibleLines(prev => [...prev, i]);
+        }
+        localStorage.setItem('hasSeenHeroAnimation', 'true');
+      } else {
+        setVisibleLines([0, 1]); // 모든 라인 바로 표시
       }
     };
     
@@ -54,7 +61,7 @@ const HeroSection = ({ scrollToContent }) => {
     w-auto inline-flex items-center
     px-6 py-3 sm:px-8 sm:py-4 
     rounded-lg gap-2 
-    text-base sm:text-lg
+    text-sm sm:text-lg
     overflow-hidden
     ${isDarkMode
       ? 'bg-slate-50 text-slate-900 hover:bg-secondaryDark'
@@ -99,7 +106,7 @@ const HeroSection = ({ scrollToContent }) => {
         }}
       />
       <div className={heroContent}>
-        <h1 className="text-4xl sm:text-5xl font-semibold text-center leading-normal lg:leading-relaxed">
+        <h1 className="text-3xl md:text-5xl font-semibold text-center leading-normal lg:leading-relaxed">
           {textLines.map((line, index) => (
             <div
               key={index}

@@ -53,8 +53,8 @@ const ArticleCard = ({ article, onSelectArticle }) => {
     rounded-full
     font-bold
     ${isDarkMode 
-      ? "bg-primaryDark text-slate-900" 
-      : "bg-primaryLight text-slate-50"}
+      ? "bg-secondaryDark text-slate-900" 
+      : "bg-secondaryLight text-slate-50"}
   `;
 
   return (

@@ -12,12 +12,24 @@ const TeamMember = ({ avatarDark, avatarLight, bio, role, nickname, github, emai
   const { isDarkMode } = useStore();
   const showToast = useToast();
   
-  const copyClipboard = () => {
-    navigator.clipboard.writeText(email).then(() => {
+  const copyClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(email);
       showToast("✉️ 이메일 주소가 복사 되었습니다", 'success');
-    }).catch(() => {
-      showToast("⚠️ 이메일 주소 복사에 실패했습니다", 'error');
-    });
+    } catch (err) {
+      // fallback
+      const textArea = document.createElement("textarea");
+      textArea.value = email;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showToast("✉️ 이메일 주소가 복사 되었습니다", 'success');
+      } catch (err) {
+        showToast("⚠️ 이메일 주소 복사에 실패했습니다", 'error');
+      }
+      document.body.removeChild(textArea);
+    }
   };
   
   const memberCard = `w-card-pc flex flex-col gap-4 py-8 justify-center items-center border-1 rounded-2xl`;

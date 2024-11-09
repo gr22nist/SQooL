@@ -7,7 +7,7 @@ export const createContentStyles = (isDarkMode) => ({
   `,
   
   contentHead: `
-    p-6 sm:px-8 pt-6 sm:pt-8
+    p-4 sm:px-6
     text-xl sm:text-2xl font-bold
     ${isDarkMode ? 'text-slate-100' : 'text-slate-900'}
     border-b
@@ -16,7 +16,7 @@ export const createContentStyles = (isDarkMode) => ({
   
   contentBody: `
     flex-1
-    px-6 sm:px-8 pb-6 sm:pb-8
+    p-4
     overflow-y-auto
     scrollbar-thin scrollbar-thumb-rounded
     ${isDarkMode 

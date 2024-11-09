@@ -23,7 +23,7 @@ const ArticlePage = () => {
 
   const container = `
     max-w-content-full mx-auto
-    px-6 sm:px-8 lg:px-6
+    px-3 sm:px-4 lg:px-6
     min-h-screen
     flex flex-col gap-6
   `;
