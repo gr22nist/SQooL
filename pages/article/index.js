@@ -29,27 +29,37 @@ const ArticlePage = () => {
   `;
 
   useEffect(() => {
-    const fetchArticles = async () => {
+    const loadArticles = async () => {
       setIsLoading(true);
       try {
         const data = await getArticleList(page, perPage, selectedCategory);
-        if (selectedCategory === '전체') {
-          setArticles(prev => page === 1 ? data : [...prev, ...data]);
-        } else {
-          setArticles(data);
-        }
+        
+        setArticles(prev => 
+          selectedCategory === '전체' && page > 1 
+            ? [...prev, ...data] 
+            : data
+        );
+        
         setHasMore(data.length === perPage);
+        
       } catch (error) {
-        console.error("Error fetching articles:", error);
+        console.error("Error loading articles:", error);
         setArticles([]);
         setHasMore(false);
+        
+        if (error.response?.status === 404) {
+          router.replace(router.asPath, {
+            shallow: true,
+            state: { errorStatusCode: 404 }
+          });
+        }
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchArticles();
-  }, [page, selectedCategory]);
+    loadArticles();
+  }, [page, selectedCategory, perPage, router]);
 
   const handleLoadMore = () => {
     if (!isLoading && hasMore) {

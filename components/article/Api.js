@@ -20,25 +20,40 @@ const adjustImagePaths = (htmlContent) => {
 
 export const getArticleList = async (page, perPage, category) => {
   try {
-    const url = category === '전체' 
-      ? `${articleListUrl}?page=${page}&perpage=${perPage}`
-      : `${articleListUrl}?page=${page}&perpage=${perPage}&category=${category}`;
+    const queryParams = new URLSearchParams({
+      page,
+      perpage: perPage,
+      ...(category && category !== '전체' && { category })
+    });
 
-    const response = await fetch(url);
+    const response = await fetch(`${articleListUrl}?${queryParams}`);
+    
     if (!response.ok) {
-      throw new Error(`Failed to fetch articles: ${response.statusText}`);
+      const errorData = await response.json();
+      throw new Error(errorData.status || `HTTP error! status: ${response.status}`);
     }
     
     const data = await response.json();
-    const articleList = data.articlelist || [];
     
-    return articleList.map((article) => ({
+    if (!data.articlelist) {
+      throw new Error('Invalid response format: articlelist is missing');
+    }
+
+    return data.articlelist.map((article) => ({
       ...article,
-      Tags: typeof article.Tags === "string" ? article.Tags.split(",") : [],
+      Tags: Array.isArray(article.Tags) 
+        ? article.Tags 
+        : typeof article.Tags === "string" 
+          ? article.Tags.split(",").filter(Boolean)
+          : [],
       Thumbnail: article.Thumbnail
-        ? `${contentsBaseUrl}${article.Thumbnail}`
+        ? article.Thumbnail.startsWith('http') 
+          ? article.Thumbnail
+          : `${contentsBaseUrl}${article.Thumbnail}`
         : null,
-      Description: article.Description,
+      Description: article.Description || '',
+      View_count: parseInt(article.View_count, 10) || 0,
+      Created_at: new Date(article.Created_at).toISOString()
     }));
   } catch (error) {
     console.error("Error fetching article list:", error);

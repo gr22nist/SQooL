@@ -3,7 +3,7 @@ import ArticleCard from './ArticleCard';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import useStore from '@/store/useStore';
 
-const ArticleList = ({ articles, onSelectArticle, isLoading, hasMore, onLoadMore }) => {
+const ArticleList = ({ articles, onSelectArticle, isLoading, hasMore, onLoadMore, category }) => {
   const { isDarkMode } = useStore();
   const observerRef = useRef();
   const [loadingMore, setLoadingMore] = useState(false);
@@ -15,12 +15,12 @@ const ArticleList = ({ articles, onSelectArticle, isLoading, hasMore, onLoadMore
     observerRef.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting && hasMore) {
         setLoadingMore(true);
-        onLoadMore().finally(() => setLoadingMore(false));
+        onLoadMore(category).finally(() => setLoadingMore(false));
       }
     });
 
     if (node) observerRef.current.observe(node);
-  }, [isLoading, hasMore, onLoadMore]);
+  }, [isLoading, hasMore, onLoadMore, category]);
 
   if (isLoading && articles.length === 0) {
     return (
