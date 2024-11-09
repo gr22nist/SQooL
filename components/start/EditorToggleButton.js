@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import useStore from '@/store/useStore';
 
 const EditorToggleButton = ({ isEditorOpen, onClick }) => {
   const isDarkMode = useStore((state) => state.isDarkMode);
+  const [showTooltip, setShowTooltip] = useState(false);
 
   return (
     <button
       onClick={onClick}
+      onMouseEnter={() => setShowTooltip(true)}
+      onMouseLeave={() => setShowTooltip(false)}
       className={`
         fixed right-0 top-1/2 -translate-y-1/2
         flex items-center gap-2
@@ -24,6 +27,22 @@ const EditorToggleButton = ({ isEditorOpen, onClick }) => {
       `}
       aria-label={isEditorOpen ? '에디터 닫기' : '에디터 열기'}
     >
+      {showTooltip && (
+        <div 
+          className={`
+            absolute bottom-full right-2
+            px-2 py-1 mb-2
+            text-sm whitespace-nowrap
+            rounded
+            ${isDarkMode 
+              ? 'bg-slate-800 text-slate-200' 
+              : 'bg-white text-slate-800'}
+            shadow-lg
+          `}
+        >
+          {isEditorOpen ? '에디터 닫기' : '에디터 열기'}
+        </div>
+      )}
       <svg
         width="20" 
         height="20" 
