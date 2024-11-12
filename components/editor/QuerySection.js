@@ -4,6 +4,11 @@ import useStore from "../../store/useStore";
 import useEditor from "@/hooks/useEditor";
 import { CodeCopy, DBReset, ChevronDown, ChevronUp } from "../icons/IconSet";
 
+const DB_CONFIGS = {
+  "K-idol": { label: "한국아이돌 DB", defaultQuery: "SELECT * FROM Artist;" },
+  "K-movie": { label: "한국영화 DB", defaultQuery: "SELECT * FROM Movie;" }
+};
+
 /**
  * QuerySection 컴포넌트
  * - SQL 쿼리 작성, 실행, 데이터베이스 초기화 기능을 담당합니다.
@@ -19,6 +24,7 @@ const QuerySection = ({
   setQueryValue
 }) => {
 
+  const [selectedDB, setSelectedDB] = useState("K-idol");
   const { isDarkMode, showToast } = useStore();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -71,44 +77,58 @@ const QuerySection = ({
   `;
 
   const sectionHead = `
-    w-full 
-    flex flex-col sm:flex-row 
-    justify-between 
-    items-center sm:items-center 
-    gap-4 sm:gap-0 
-    p-4 
-    text-sm font-bold 
-    border-b rounded-t-xl
-    transition-colors duration-300
-    ${
-      isDarkMode
-        ? "border-slate-800 bg-slate-900/80 text-slate-200"
-        : "border-slate-100 bg-slate-50 text-slate-700"
-    }
+    flex flex-col
+    items-start
+    justify-between
+    gap-3
+    p-4
+    border-b
+    ${isDarkMode ? "border-slate-700" : "border-slate-200"}
+    ${isEditorPage && !isMobile ? "sm:flex-row sm:items-center" : ""}
+  `;
+
+  const dbSelectWrapper = `
+    flex flex-col
+    items-start
+    gap-2
+    text-sm font-bold
+    w-full
+    ${isEditorPage && !isMobile ? "sm:flex-row sm:items-center sm:w-auto" : ""}
+  `;
+
+  const dbSelect = `
+    w-full
+    px-3 py-2 
+    rounded-lg 
+    text-sm font-bold
+    ${isDarkMode 
+      ? "bg-slate-800 text-slate-300 border-slate-700" 
+      : "bg-slate-100 text-slate-600 border-slate-200"}
+    border
+    ${isEditorPage && !isMobile ? "sm:w-auto" : ""}
   `;
 
   const buttonGroup = `
-    flex flex-row 
-    items-stretch sm:items-center 
+    flex flex-wrap
+    items-center 
     gap-2
-    mt-2 sm:mt-0 
+    w-full
+    justify-end
+    ${isEditorPage && !isMobile ? "sm:w-auto" : ""}
   `;
 
   const editorBtn = `
     flex items-center justify-center
     gap-2
-    px-4 py-2.5
+    px-3 py-2
     rounded-lg
     text-sm font-bold
-    transition-all duration-300
-    w-full sm:w-auto
-    ${
-      isDarkMode
-        ? "bg-slate-800/80 text-slate-200 hover:bg-slate-700"
-        : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-    }
-    hover:shadow-sm
-    active:scale-95
+    transition-colors duration-300
+    ${isDarkMode 
+      ? "bg-slate-800 hover:bg-slate-700 text-slate-200" 
+      : "bg-slate-100 hover:bg-slate-200 text-slate-700"}
+    flex-1
+    ${isEditorPage && !isMobile ? "sm:flex-none" : ""}
   `;
 
   const editorIcon = `
@@ -134,6 +154,39 @@ const QuerySection = ({
     disabled:cursor-not-allowed
   `;
 
+  const handleDBChange = async (dbName) => {
+    try {
+      setSelectedDB(dbName);
+      
+      // DB 초기화
+      await fetch(process.env.NEXT_PUBLIC_API_INIT_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ dbname: dbName }),
+        credentials: 'include',
+      });
+
+      // 에디터 쿼리 업데이트
+      if (editorRef.current) {
+        const defaultQuery = DB_CONFIGS[dbName].defaultQuery;
+        editorRef.current.dispatch({
+          changes: { 
+            from: 0, 
+            to: editorRef.current.state.doc.length, 
+            insert: defaultQuery 
+          }
+        });
+        setQueryValue(defaultQuery);
+      }
+      
+      showToast(`${DB_CONFIGS[dbName].label}로 전환되었습니다.`, "success");
+    } catch (error) {
+      console.error('DB 전환 실패:', error);
+      showToast("DB 전환에 실패했습니다.", "error");
+    }
+  };
   const handleCopyCode = async () => {
     if (!editorRef.current) return;
     
@@ -203,12 +256,23 @@ const QuerySection = ({
       }}
     >
       <div className={sectionHead}>
-        <span>SQL 코드 작성</span>
+        <div className={dbSelectWrapper}>
+          <span className="text-sm font-bold">SQL 코드 작성</span>
+          <select 
+            className={dbSelect}
+            value={selectedDB}
+            onChange={(e) => handleDBChange(e.target.value)}
+          >
+            {Object.entries(DB_CONFIGS).map(([key, { label }]) => (
+              <option key={key} value={key}>{label}</option>
+            ))}
+          </select>
+        </div>
         <div className={buttonGroup}>
-          {!isMobile && (
+          {isEditorPage && !isMobile && (
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className={`${editorBtn} ml-auto`}
+              className={editorBtn}
               aria-label={isExpanded ? "에디터 축소" : "에디터 확장"}
             >
               <ChevronIcon expanded={isExpanded} />
@@ -221,7 +285,7 @@ const QuerySection = ({
             aria-label="코드 복사"
           >
             <CodeCopy className={editorIcon} />
-            <span className="whitespace-nowrap">코드 복사</span>
+            <span className="whitespace-nowrap text-sm font-bold">코드 복사</span>
           </button>
           <button
             className={editorBtn}
@@ -229,7 +293,7 @@ const QuerySection = ({
             aria-label="데이터베이스 초기화"
           >
             <DBReset className={editorIcon} />
-            <span className="whitespace-nowrap">DB 초기화</span>
+            <span className="whitespace-nowrap text-sm font-bold">DB 초기화</span>
           </button>
         </div>
       </div>

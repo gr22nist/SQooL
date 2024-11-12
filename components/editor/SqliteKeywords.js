@@ -53,7 +53,7 @@ const sqliteKeywords = [
   "CAST", "TYPEOF", "EXPLAIN", "VACUUM", "ATTACH", "DETACH",
 
   // 테이블명 (프로젝트 특정)
-  "Artist", "Album", "Member",
+  "Artist", "Album", "Member",, "Movie", "Director", "Distributor", "Actor", "Casting", "Review",
 
   // 고급 함수 및 키워드
   "CORR", "STDEV", "VARIANCE", "PERCENTILE_CONT", "PERCENTILE_DISC",
@@ -85,7 +85,7 @@ sqliteKeywords.forEach(keyword => {
     keyword.boost = 2;
   }
   // 프로젝트 특정 테이블명
-  if (["Artist", "Album", "Member"].includes(keyword.label)) {
+  if (["Artist", "Album", "Member", "Movie", "Director", "Distributor", "Actor", "Casting", "Review"].includes(keyword.label)) {
     keyword.boost = 1.5;
   }
   // 자주 사용되는 집계 함수 및 윈도우 함수

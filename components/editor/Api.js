@@ -1,9 +1,14 @@
 const apiInitUrl = process.env.NEXT_PUBLIC_API_INIT_URL;
 const apiQueryUrl = process.env.NEXT_PUBLIC_API_QUERY_URL;
-const DB_NAME = 'Artist';
 
+let currentDB = 'K-idol';
 let isInitializing = false;
 let isInitialized = false;
+
+export const setCurrentDB = (dbName) => {
+  currentDB = dbName;
+  isInitialized = false;
+};
 
 export const createDatabase = async () => {
   if (isInitialized) {
@@ -23,7 +28,7 @@ export const createDatabase = async () => {
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: JSON.stringify({ dbname: DB_NAME }),
+      body: JSON.stringify({ dbname: currentDB }),
       credentials: 'include',
     });
 
@@ -49,7 +54,7 @@ export const resetDatabase = async () => {
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: JSON.stringify({ dbname: DB_NAME, reset: true }),
+      body: JSON.stringify({ dbname: currentDB, reset: true }),
       credentials: 'include',
     });
 
@@ -68,7 +73,6 @@ export const executeQuery = async (query, setQueryResult) => {
   console.log('Executing query:', query);
 
   try {
-    // DB가 초기화되지 않았다면 먼저 초기화
     if (!isInitialized) {
       try {
         await createDatabase();
@@ -91,16 +95,16 @@ export const executeQuery = async (query, setQueryResult) => {
       },
       body: JSON.stringify({ 
         query,
-        dbname: DB_NAME  // dbname 추가
+        dbname: currentDB
       }),
       credentials: 'include',
     });
 
     if (!response.ok) {
-      // 412 에러가 발생하면 DB를 다시 초기화
+
       if (response.status === 412) {
-        isInitialized = false;  // 초기화 상태 리셋
-        return executeQuery(query, setQueryResult);  // 재귀적으로 다시 시도
+        isInitialized = false;
+        return executeQuery(query, setQueryResult);
       }
       throw new Error(`Query failed with status: ${response.status}`);
     }
@@ -120,5 +124,32 @@ export const executeQuery = async (query, setQueryResult) => {
       rows: [],
       error: null
     });
+  }
+};
+
+export const downloadDB = async (dbName) => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/sqool/download/${dbName}`, {
+      method: 'GET',
+      credentials: 'include',
+    });
+
+    if (!response.ok) {
+      throw new Error('Download failed');
+    }
+
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${dbName}_DB.zip`;
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+
+  } catch (error) {
+    console.error('Error downloading database:', error);
+    throw error;
   }
 };
