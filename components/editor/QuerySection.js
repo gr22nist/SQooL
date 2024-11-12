@@ -98,13 +98,13 @@ const QuerySection = ({
 
   const dbSelect = `
     w-full
-    px-3 py-2 
+    p-3
     rounded-lg 
     text-sm font-bold
+    border-0
     ${isDarkMode 
-      ? "bg-slate-800 text-slate-300 border-slate-700" 
-      : "bg-slate-100 text-slate-600 border-slate-200"}
-    border
+      ? "bg-slate-800 text-slate-300" 
+      : "bg-slate-100 text-slate-600"}
     ${isEditorPage && !isMobile ? "sm:w-auto" : ""}
   `;
 
@@ -120,9 +120,9 @@ const QuerySection = ({
   const editorBtn = `
     flex items-center justify-center
     gap-2
-    px-3 py-2
+    p-2
     rounded-lg
-    text-sm font-bold
+    text-xs font-bold
     transition-colors duration-300
     ${isDarkMode 
       ? "bg-slate-800 hover:bg-slate-700 text-slate-200" 

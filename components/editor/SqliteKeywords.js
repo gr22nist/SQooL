@@ -53,7 +53,7 @@ const sqliteKeywords = [
   "CAST", "TYPEOF", "EXPLAIN", "VACUUM", "ATTACH", "DETACH",
 
   // 테이블명 (프로젝트 특정)
-  "Artist", "Album", "Member",, "Movie", "Director", "Distributor", "Actor", "Casting", "Review",
+  "Artist", "Album", "Member", "Movie", "Director", "Distributor", "Actor", "Casting", "Review",
 
   // 고급 함수 및 키워드
   "CORR", "STDEV", "VARIANCE", "PERCENTILE_CONT", "PERCENTILE_DISC",
