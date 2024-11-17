@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo, useRef, useCallback } from "react"
 import useStore from "../../store/useStore";
 import useEditor from "@/hooks/useEditor";
 import { CodeCopy, DBReset, ChevronDown, ChevronUp } from "../icons/IconSet";
+import { setCurrentDB } from "./Api";
 
 const DB_CONFIGS = {
   "K-idol": { label: "한국아이돌 DB", defaultQuery: "SELECT * FROM Artist;" },
@@ -28,6 +29,7 @@ const QuerySection = ({
   const { isDarkMode, showToast } = useStore();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
   const editorRef = useRef(null);
 
   useEffect(() => {
@@ -40,10 +42,21 @@ const QuerySection = ({
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  useEffect(() => {
+    const checkTablet = () => {
+      setIsTablet(window.innerWidth >= 768 && window.innerWidth < 1024);
+    };
+
+    checkTablet();
+    window.addEventListener("resize", checkTablet);
+    return () => window.removeEventListener("resize", checkTablet);
+  }, []);
+
   const calculatedHeight = useMemo(() => {
     if (isMobile) return 320;
-    return isExpanded ? 600 : 320;
-  }, [isMobile, isExpanded]);
+    if (isTablet) return 450;
+    return isExpanded ? 600 : 400;
+  }, [isMobile, isTablet, isExpanded]);
 
   const ChevronIcon = ({ expanded }) =>
     expanded ? (
@@ -69,6 +82,7 @@ const QuerySection = ({
     rounded-xl border
     shadow-sm
     transition-colors duration-300
+    h-[45vh]
     ${
       isDarkMode
         ? "border-slate-800 bg-slate-900/50"
@@ -157,6 +171,7 @@ const QuerySection = ({
   const handleDBChange = async (dbName) => {
     try {
       setSelectedDB(dbName);
+      setCurrentDB(dbName);
       
       // DB 초기화
       await fetch(process.env.NEXT_PUBLIC_API_INIT_URL, {
@@ -235,15 +250,25 @@ const QuerySection = ({
 
   const handleResetDatabase = async () => {
     try {
+      await resetDatabase(selectedDB);
+      
+      // DB 초기화 성공 후 에디터 업데이트
       if (editorRef.current) {
+        const defaultQuery = DB_CONFIGS[selectedDB].defaultQuery;
         editorRef.current.dispatch({
-          changes: { from: 0, to: editorRef.current.state.doc.length, insert: '' }
+          changes: { 
+            from: 0, 
+            to: editorRef.current.state.doc.length, 
+            insert: defaultQuery 
+          }
         });
+        setQueryValue(defaultQuery);
       }
-      setQueryValue('');
-      await resetDatabase();
+      
+      showToast('데이터베이스가 초기화되었습니다.', 'success');
     } catch (error) {
       console.error('Reset failed:', error);
+      showToast(error.message, 'error');
     }
   };
 

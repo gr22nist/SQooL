@@ -1,13 +1,18 @@
 const apiInitUrl = process.env.NEXT_PUBLIC_API_INIT_URL;
 const apiQueryUrl = process.env.NEXT_PUBLIC_API_QUERY_URL;
 
-let currentDB = 'K-idol';
+let currentDB = localStorage.getItem('selectedDB') || 'K-idol';
 let isInitializing = false;
 let isInitialized = false;
 
 export const setCurrentDB = (dbName) => {
   currentDB = dbName;
   isInitialized = false;
+  localStorage.setItem('selectedDB', dbName);
+};
+
+export const getCurrentDB = () => {
+  return currentDB;
 };
 
 export const createDatabase = async () => {
@@ -28,7 +33,7 @@ export const createDatabase = async () => {
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: JSON.stringify({ dbname: currentDB }),
+      body: JSON.stringify({ dbname: getCurrentDB() }),
       credentials: 'include',
     });
 

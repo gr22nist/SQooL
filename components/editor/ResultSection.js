@@ -12,11 +12,18 @@ import dynamic from 'next/dynamic';
  * @param {number} minHeight - 섹션의 최소 높이 (픽셀 단위)
  * @param {boolean} isMobile - 모바일 환경 여부
  */
-const getStyles = (isDarkMode, isEditorPage, isMobile, minHeight) => ({
+const getStyles = (isDarkMode, isEditorPage, isMobile, isTablet, minHeight) => ({
   resultWrap: `
     w-full flex flex-col 
     ${minHeight === 'flex-1' ? 'flex-1' : ''}
-    ${!isEditorPage ? 'h-[calc(100%-400px)]' : 'min-h-[320px]'}
+    ${!isEditorPage 
+      ? 'h-[calc(100%-400px)]' 
+      : isMobile 
+        ? 'min-h-[320px]'
+        : isTablet
+          ? 'min-h-[450px]'
+          : 'min-h-[400px]'
+    }
     rounded-xl border shadow-sm overflow-hidden
     transition-colors duration-300
     ${isDarkMode ? "border-slate-800 bg-slate-900/50" : "border-slate-200 bg-white"}
@@ -94,7 +101,7 @@ const ResultContent = memo(({ queryResult, isDarkMode, isMobile, styles }) => {
 
 ResultContent.displayName = 'ResultContent';
 
-const ResultSection = ({ queryResult, minHeight, isMobile, isEditorPage }) => {
+const ResultSection = ({ queryResult, minHeight, isMobile, isEditorPage, isTablet }) => {
   const { isDarkMode, showToast } = useStore();
   const [isLargeScreen, setIsLargeScreen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -129,8 +136,8 @@ const ResultSection = ({ queryResult, minHeight, isMobile, isEditorPage }) => {
   }, [isEditorPage]);
 
   const styles = useMemo(() => 
-    getStyles(isDarkMode, isEditorPage, isMobile, minHeight),
-    [isDarkMode, isEditorPage, isMobile, minHeight]
+    getStyles(isDarkMode, isEditorPage, isMobile, isTablet, minHeight),
+    [isDarkMode, isEditorPage, isMobile, isTablet, minHeight]
   );
 
   return (

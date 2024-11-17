@@ -48,6 +48,7 @@ const SQLEditor = ({
   queryResult, 
   setQueryResult, 
   isMobile,
+  isTablet,
   isEditorPage
 }) => {
   const isDarkMode = useStore((state) => state.isDarkMode);
@@ -90,7 +91,11 @@ const SQLEditor = ({
   const containerClass = `
     flex flex-col w-full
     ${isEditorPage
-      ? 'gap-4'
+      ? isMobile
+        ? 'gap-4'
+        : isTablet
+          ? 'min-h-[calc(100vh-80px)] gap-4'
+          : 'gap-4'
       : isMobile
         ? 'gap-4'
         : 'h-[calc(100vh-4rem-2rem-2rem)]'}
