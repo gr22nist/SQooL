@@ -26,6 +26,7 @@ const Editor = () => {
   const totalOffset = useStore((state) => state.totalOffset); 
   const [queryResult, setQueryResult] = useState({ columns: [], rows: [] });
   const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
   
   useEffect(() => {
     const checkMobile = () => {
@@ -37,11 +38,24 @@ const Editor = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
   
+  useEffect(() => {
+    const checkTablet = () => {
+      setIsTablet(window.innerWidth < 1024);
+    };
+    
+    checkTablet();
+    window.addEventListener('resize', checkTablet);
+    return () => window.removeEventListener('resize', checkTablet);
+  }, []);
+  
   const container = `
     max-w-content-full mx-auto
     ${isMobile 
       ? ''
-      : `min-h-[calc(100vh-${totalOffset}px)]`}
+      : isTablet
+        ? 'min-h-[calc(100vh-80px)]'
+        : `min-h-[calc(100vh-${totalOffset}px)]`
+    }
     px-3 sm:px-4 lg:px-6
     py-8
   `;

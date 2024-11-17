@@ -4,10 +4,12 @@ import useStore from '@/store/useStore';
 import { HeroBtn, ScrollDown } from'../icons/IconSet'; 
 import Image from 'next/image';
 import useMediaQuery from '@/hooks/useMediaQuery';
-import heroBgLightMobile from '@/public/img/hero_bg_light_mobile.png';
-import heroBgLight from '@/public/img/hero_bg_light.png';
-import heroBgDarkMobile from '@/public/img/hero_bg_dark_mobile.png';
-import heroBgDark from '@/public/img/hero_bg_dark.png';
+import heroBgLightMobile from '@/public/img/hero-m-light.jpg';
+import heroBgLightTablet from '@/public/img/hero-t-light.jpg';
+import heroBgLight from '@/public/img/hero-pc-light.jpg';
+import heroBgDarkMobile from '@/public/img/hero-m-dark.jpg';
+import heroBgDarkTablet from '@/public/img/hero-t-dark.jpg';
+import heroBgDark from '@/public/img/hero-pc-dark.jpg';
 
 /**
  * HeroSection 컴포넌트
@@ -20,7 +22,8 @@ import heroBgDark from '@/public/img/hero_bg_dark.png';
  */
 const HeroSection = ({ scrollToContent }) => {
   const isDarkMode = useStore((state) => state.isDarkMode);
-  const isMobile = useMediaQuery('(max-width: 640px)');
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  const isTablet = useMediaQuery('(max-width: 1024px)');
   const [visibleLines, setVisibleLines] = useState([]);
   const textLines = ['한글 데이터로 배우는', '마음 편한 SQLite!'];
   
@@ -91,11 +94,14 @@ const HeroSection = ({ scrollToContent }) => {
   return (
     <div className="hero relative w-full h-screen">
       <Image
-        src={isMobile 
-          ? (isDarkMode ? heroBgDarkMobile : heroBgLightMobile)
-          : (isDarkMode ? heroBgDark : heroBgLight)
+        src={
+          isMobile 
+            ? (isDarkMode ? heroBgDarkMobile : heroBgLightMobile)
+            : isTablet
+              ? (isDarkMode ? heroBgDarkTablet : heroBgLightTablet)
+              : (isDarkMode ? heroBgDark : heroBgLight)
         }
-        alt="Background"
+        alt="Hero Background"
         fill
         priority
         quality={75}
@@ -106,7 +112,7 @@ const HeroSection = ({ scrollToContent }) => {
         }}
       />
       <div className={heroContent}>
-        <h1 className="text-3xl md:text-5xl font-semibold text-center leading-normal lg:leading-relaxed">
+        <h1 className="text-3xl md:text-5xl font-semibold text-center leading-normal md:leading-relaxed">
           {textLines.map((line, index) => (
             <div
               key={index}
