@@ -10,6 +10,9 @@ const nextConfig = {
   images: {
     domains: ['back.sqool.kr'],
   },
+  experimental: {
+    appDir: true,
+  },
 };
 
 export default withBundleAnalyzer(nextConfig);
